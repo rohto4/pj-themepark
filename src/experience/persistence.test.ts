@@ -132,4 +132,16 @@ describe('guest-state persistence', () => {
     expect(() => loadGuestState(storage)).not.toThrow();
     expect(loadGuestState(storage)).toBeNull();
   });
+
+  it('round-trips a calm Hushgarden staging point', () => {
+    const storage = new MemoryStorage();
+    const started = reduceGuestState(createGuestState(26), { type: 'LIGHT_STAR' });
+    const resting = reduceGuestState(started, { type: 'ENTER_SCENE', scene: 'hushgarden' });
+
+    saveGuestState(storage, resting);
+    expect(loadGuestState(storage)).toMatchObject({
+      phase: 'explore',
+      currentScene: 'hushgarden',
+    });
+  });
 });

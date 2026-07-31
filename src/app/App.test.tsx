@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { describe, expect, it } from 'vitest';
 
 import { createGuestState, reduceGuestState } from '../experience/guest-state';
+import { encodeNightCode } from '../experience/night-code';
 import { GUEST_STATE_STORAGE_KEY, saveGuestState } from '../experience/persistence';
 import { App } from './App';
 
@@ -39,16 +40,20 @@ describe('Morrowlight guest journey', () => {
     await user.click(screen.getByRole('button', { name: 'Touch the last light of today' }));
 
     await user.click(screen.getByRole('button', { name: /Enter Bloomworks/ }));
-    await user.click(screen.getByRole('button', { name: 'Grow bridges' }));
+    await user.click(screen.getByRole('button', { name: 'Gather seed gear' }));
+    await user.click(screen.getByRole('button', { name: 'Connect seed gear' }));
+    await user.click(screen.getByRole('button', { name: 'Wander seed gear' }));
     await user.click(screen.getByRole('button', { name: 'Wake Bloomworks' }));
 
     expect(screen.getByText('1 of 3 lights gathered')).toBeInTheDocument();
     await user.click(screen.getByRole('button', { name: /Enter Driftglass Sea/ }));
-    await user.click(screen.getByRole('button', { name: 'Follow the far horizon' }));
-    await user.click(screen.getByRole('button', { name: 'Set the current' }));
+    await user.click(screen.getByRole('button', { name: 'Starboard' }));
+    await user.click(screen.getByRole('button', { name: 'Starboard' }));
+    await user.click(screen.getByRole('button', { name: 'Starboard' }));
 
     await user.click(screen.getByRole('button', { name: /Enter the Cabinet of Near Things/ }));
-    await user.click(screen.getByRole('button', { name: 'Adopt the weather loom' }));
+    await user.click(screen.getByRole('button', { name: 'Inspect staircase seed drawer' }));
+    await user.click(screen.getByRole('button', { name: 'Inspect weather loom drawer' }));
     await user.click(screen.getByRole('button', { name: 'Let it follow me' }));
 
     expect(screen.getByText('3 of 3 lights gathered')).toBeInTheDocument();
@@ -59,10 +64,17 @@ describe('Morrowlight guest journey', () => {
     expect(screen.getByText(/bloom:bridge/)).toBeInTheDocument();
     expect(screen.getByText(/drift:horizon/)).toBeInTheDocument();
     expect(screen.getByText(/near:weather-loom/)).toBeInTheDocument();
-    expect(screen.getByRole('list', { name: 'Visible score' }).children).toHaveLength(4);
+    expect(screen.getByRole('list', { name: 'Constellary pulse sequence' }).children).toHaveLength(
+      4,
+    );
 
-    await user.click(screen.getByRole('button', { name: 'Conduct this night' }));
+    await user.click(screen.getByRole('button', { name: 'Let the park remember for me' }));
     expect(screen.getByRole('button', { name: 'Download my Night Chart' })).toBeInTheDocument();
+    expect(screen.getByText(encodeNightCode(createGuestState(901)))).toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: 'Begin another night' }));
+    expect(
+      screen.getByRole('button', { name: 'Touch the last light of today' }),
+    ).toBeInTheDocument();
   });
 
   it('authors reduced motion and low power as explicit guest settings', async () => {
@@ -82,6 +94,31 @@ describe('Morrowlight guest journey', () => {
     ).toBeInTheDocument();
   });
 
+  it('rejects a damaged Night Code and opens a valid seeded night without an account', async () => {
+    const user = userEvent.setup();
+    const returnState = createGuestState(0x12ab34cd);
+    render(<App initialState={createGuestState(5)} />);
+
+    await user.click(screen.getByRole('button', { name: 'Touch the last light of today' }));
+    await user.click(screen.getByRole('button', { name: 'Visit settings' }));
+    const input = screen.getByRole('textbox', { name: 'Return by Night Code' });
+
+    await user.type(input, 'ML-00000000-00');
+    await user.click(screen.getByRole('button', { name: 'Open night' }));
+    expect(screen.getByText(/does not match a Morrowlight night/)).toBeInTheDocument();
+
+    await user.clear(input);
+    await user.type(input, encodeNightCode(returnState).toLowerCase());
+    await user.click(screen.getByRole('button', { name: 'Open night' }));
+
+    expect(
+      screen.getByRole('button', { name: 'Touch the last light of today' }),
+    ).toBeInTheDocument();
+    expect(JSON.parse(window.localStorage.getItem(GUEST_STATE_STORAGE_KEY) ?? '{}').seed).toBe(
+      returnState.seed,
+    );
+  });
+
   it('remembers a night locally and resumes at the exact scene', async () => {
     const remembered = reduceGuestState(createGuestState(73), { type: 'LIGHT_STAR' });
     saveGuestState(window.localStorage, remembered);
@@ -97,5 +134,22 @@ describe('Morrowlight guest journey', () => {
     unmount();
     render(<App />);
     expect(screen.getByRole('heading', { name: 'Bloomworks' })).toBeInTheDocument();
+  });
+
+  it('offers Hushgarden as rest without a completion meter', async () => {
+    const user = userEvent.setup();
+    render(<App initialState={createGuestState(211)} />);
+
+    await user.click(screen.getByRole('button', { name: 'Touch the last light of today' }));
+    await user.click(screen.getByRole('button', { name: 'Rest in Hushgarden' }));
+
+    expect(
+      screen.getByRole('heading', { name: 'Nothing needs completing here.' }),
+    ).toBeInTheDocument();
+    expect(screen.queryByText(/of 3 lights gathered/)).not.toBeInTheDocument();
+
+    await user.click(screen.getByRole('button', { name: 'Listen to the patient fern' }));
+    expect(screen.getByText('1 quiet detail noticed')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Return to the Morrowspire' })).toBeInTheDocument();
   });
 });

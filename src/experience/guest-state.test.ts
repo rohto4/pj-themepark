@@ -160,4 +160,47 @@ describe('guest state', () => {
     expect(returned.finale).toEqual(state.finale);
     expect(returned.completedAttractions).toEqual(state.completedAttractions);
   });
+
+  it('treats Hushgarden rest as valid exploration without a completion gate', () => {
+    const started = reduceGuestState(createGuestState(19), { type: 'LIGHT_STAR' });
+    const resting = reduceGuestState(started, { type: 'ENTER_SCENE', scene: 'hushgarden' });
+    const noticed = reduceGuestState(resting, {
+      type: 'DISCOVER',
+      discoveryId: 'hush-listening-fern',
+    });
+
+    expect(resting).toMatchObject({ phase: 'explore', currentScene: 'hushgarden' });
+    expect(noticed.discoveries).toContain('hush-listening-fern');
+    expect(noticed.completedAttractions).toEqual([]);
+  });
+
+  it('rewards a genuinely different replay with a discoverable finale layer', () => {
+    let state = reduceGuestState(createGuestState(80), { type: 'LIGHT_STAR' });
+    state = complete(state, { attractionId: 'bloomworks', pattern: 'bridge', pulse: 4 });
+    const same = complete(state, { attractionId: 'bloomworks', pattern: 'bridge', pulse: 4 });
+    const replayed = complete(same, { attractionId: 'bloomworks', pattern: 'wild', pulse: 5 });
+
+    expect(same).toBe(state);
+    expect(replayed.discoveries).toContain('revisit:bloomworks:wild');
+    expect(deriveFinaleRecipe(replayed).motifIds).toContain('secret:revisit:bloomworks:wild');
+  });
+
+  it('begins another night with preferences intact and progress cleared', () => {
+    let state = createGuestState(12, { motion: 'reduced', audio: 'on' });
+    state = reduceGuestState(state, { type: 'LIGHT_STAR' });
+    state = complete(state, { attractionId: 'cabinet', nearThing: 'enough-clock' });
+
+    const another = reduceGuestState(state, { type: 'BEGIN_NEW_NIGHT', seed: 99 });
+
+    expect(another).toMatchObject({
+      seed: 99,
+      nightId: 'night-00000063',
+      phase: 'arrival',
+      currentScene: 'arrival',
+      completedAttractions: [],
+      discoveries: [],
+      traces: {},
+      preferences: { motion: 'reduced', audio: 'on' },
+    });
+  });
 });

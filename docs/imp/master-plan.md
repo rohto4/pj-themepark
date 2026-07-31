@@ -1,7 +1,7 @@
 # MORROWLIGHT master implementation ledger
 
 Status timestamp: 2026-08-01 JST  
-Overall state: **Phase 3 — park build-out in progress**
+Overall state: **Phase 4 — batched browser QA and polish in progress**
 Hard continuity rule: update this file before changing phase or ending a session.
 
 ## Objective
@@ -22,14 +22,14 @@ The overall project may continue for up to 48 hours. If the result still cannot 
 
 ## Capability evals
 
-| ID  | Capability              | Observable pass condition                                                                                         | State                                                       |
-| --- | ----------------------- | ----------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------- |
-| E1  | Immediate wonder        | First-time guest causes a delightful audiovisual/visual response within 10 seconds, without external instructions | Not run                                                     |
-| E2  | Park legibility         | Guest can identify current location, available destinations, and how to return                                    | Not run                                                     |
-| E3  | Consequential play      | Two different action histories produce visibly different later state and finales                                  | Automated pass: deterministic divergent-recipe tests        |
-| E4  | Short and deep routes   | A 5-minute completion route and a 30–60 minute discovery route both work                                          | Not run                                                     |
-| E5  | Inclusive critical path | Keyboard-only, touch, reduced-motion, muted, and low-power routes reach the finale                                | Automated pass: 8/8 desktop/mobile E2E; observed QA pending |
-| E6  | Production resilience   | Live Cloudflare URL loads and completes the critical path on representative desktop and mobile viewports          | Not run                                                     |
+| ID  | Capability              | Observable pass condition                                                                                         | State                                                                      |
+| --- | ----------------------- | ----------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
+| E1  | Immediate wonder        | First-time guest causes a delightful audiovisual/visual response within 10 seconds, without external instructions | Not run                                                                    |
+| E2  | Park legibility         | Guest can identify current location, available destinations, and how to return                                    | Automated pass: desktop/mobile/keyboard routes; observed QA pending        |
+| E3  | Consequential play      | Two different action histories produce visibly different later state and finales                                  | Automated pass: deterministic divergent-recipe tests                       |
+| E4  | Short and deep routes   | A 5-minute completion route and a 30–60 minute discovery route both work                                          | Automated short/deep branches pass; literal dwell-time observation pending |
+| E5  | Inclusive critical path | Keyboard-only, touch, reduced-motion, muted, and low-power routes reach the finale                                | Automated pass: 12/12 desktop/mobile E2E; observed QA pending              |
+| E6  | Production resilience   | Live Cloudflare URL loads and completes the critical path on representative desktop and mobile viewports          | Not run                                                                    |
 
 ## Regression evals
 
@@ -73,11 +73,11 @@ Done when: the complete emotional loop works locally and is evaluated before sca
 
 ### P3 — Park build-out
 
-- [ ] Implement remaining authored attractions and discoveries.
-- [ ] Integrate generative score, atmosphere, and finale composition.
-- [ ] Add replay, secrets, keepsake, content polish, and fault boundaries.
+- [x] Implement remaining authored attractions and discoveries.
+- [x] Integrate generative score, atmosphere, and finale composition.
+- [x] Add replay, secrets, keepsake, content polish, and fault boundaries.
 
-Done when: E1–E5 pass locally with evidence.
+Implementation closure: 83 Vitest tests and 12 desktop/mobile Playwright routes pass; asset budget and static Cloudflare dry-run pass. Human-observed E1, composition/audio quality, and literal long-dwell evidence continue in P4 before E1–E5 are declared complete.
 
 ### P4 — Batched visual QA and polish
 
@@ -110,11 +110,16 @@ Done when: all `PROJECT.md` completion conditions are evidenced.
 | U008 Persistence and keepsake         | Losing or leaking the guest's night              | Primary + Terra Max        | Safe local roundtrip and offline SVG export pass     | Completed   | 0 / parallel    |
 | U009 Generative score core            | Audio blocking or excluding muted guests         | Terra Max                  | Pure score + safe gesture-gated runtime tests pass   | Completed   | 0 / parallel    |
 | U010 Inclusive browser route          | DOM checks hiding browser/device failures        | Primary + Terra Max        | 8 desktop/mobile Playwright routes pass              | Completed   | 1 mobile fix    |
-| U011 Attraction depth                 | Park feeling like a styled questionnaire         | Primary / Sol Max          | Each realm has a distinct learn-play-transform loop  | In progress | 0 / —           |
+| U011 Attraction depth                 | Park feeling like a styled questionnaire         | Primary + Terra Max        | Each realm has a distinct learn-play-transform loop  | Completed   | 0 / parallel    |
+| U012 Consequence and replay           | Choices being forgotten after each scene         | Primary / Sol Max          | Echoes, alternate replay, and secret motifs regress  | Completed   | 0 / ~25m        |
+| U013 Quiet and resilient routes       | Completion pressure or a single-scene crash      | Primary + Terra Max        | Hushgarden and scoped fault escape tests pass        | Completed   | 0 / parallel    |
+| U014 Returnable nights                | Keepsake being inert or account-dependent        | Primary + Terra Max        | Download, Night Code, and fresh-night tests pass     | Completed   | 0 / parallel    |
+| U015 Hosted CI design                 | Local-only confidence                            | Terra Max                  | Read-only CI workflow and evidence validate locally  | Completed   | 0 / parallel    |
+| U016 Batched browser QA               | Automation hiding visual/audio defects           | Primary / Sol Max          | Representative desktop/mobile evidence is reviewed   | In progress | 0 / —           |
 
 ## Session handoff
 
-Last verified state: functional checkpoint `8c5d09b` is on `origin/main`. P2 is locally closed: TypeScript, 38 Vitest tests, production Vite build, and 8/8 desktop/mobile Playwright routes pass. Static Cloudflare asset validation and an unauthenticated dry-run pass with no bindings.
-Exact next action: checkpoint P2 to GitHub, then replace the attraction choice shells with distinct learn-play-transform mechanics, beginning with Bloomworks.
-External state: GitHub P2 is pushed; no Cloudflare resource has been created and no deployment has occurred.
-Known risks: attraction interactions are currently expressive choice shells rather than deep play; browser audio quality is fake-node verified but not listened to; visual hierarchy and overflow await the planned batched screenshot QA; live Cloudflare authentication/deployment is deferred to P5.
+Last verified state: P3 functional build-out is locally closed. The full gate passes: repository formatting/lint/typecheck, 83 Vitest tests, production build, and 12/12 desktop/mobile Playwright routes. Asset budget is 11 files / 418.91 KiB; static Wrangler dry-run reports no bindings. See `docs/evidence/p3-local-verification.md`.
+Exact next action: commit and push the P3 functional checkpoint, then read the browser-QA procedure and capture the smallest representative desktop/mobile screenshot batch.
+External state: `origin/main` still points to checkpoint `c41f501` until the current P3 changes are committed; no Cloudflare resource has been created and no deployment has occurred. The new CI workflow has not yet run on GitHub.
+Known risks: browser audio quality is fake-node verified but not listened to; visual hierarchy, composition, and overflow await batched screenshot QA; the 30–60 minute promise has branch coverage but not literal dwell-time observation; live Cloudflare authentication/deployment remains P5.

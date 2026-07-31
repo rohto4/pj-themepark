@@ -39,7 +39,7 @@ export type GuestState = {
   nightId: string;
   seed: number;
   phase: 'arrival' | 'explore' | 'finale' | 'farewell';
-  currentScene: 'arrival' | 'map' | AttractionId | 'constellary' | 'keepsake';
+  currentScene: 'arrival' | 'map' | 'hushgarden' | AttractionId | 'constellary' | 'keepsake';
   preferences: GuestPreferences;
   completedAttractions: AttractionId[];
   traces: Partial<{ [K in AttractionId]: Extract<AttractionTrace, { attractionId: K }> }>;
@@ -50,12 +50,13 @@ export type GuestState = {
 
 export type GuestAction =
   | { type: 'LIGHT_STAR' }
-  | { type: 'ENTER_SCENE'; scene: 'map' | AttractionId }
+  | { type: 'ENTER_SCENE'; scene: 'map' | 'hushgarden' | AttractionId }
   | { type: 'COMPLETE_ATTRACTION'; trace: AttractionTrace }
   | { type: 'DISCOVER'; discoveryId: string }
   | { type: 'SET_PREFERENCE'; key: PreferenceKey; value: GuestPreferences[PreferenceKey] }
   | { type: 'BEGIN_FINALE' }
-  | { type: 'COMPLETE_FINALE' };
+  | { type: 'COMPLETE_FINALE' }
+  | { type: 'BEGIN_NEW_NIGHT'; seed: number };
 
 const DEFAULT_PREFERENCES: GuestPreferences = {
   audio: 'off',
@@ -148,6 +149,19 @@ function setPreference(
   }
 }
 
+function traceVariation(trace: AttractionTrace): string {
+  switch (trace.attractionId) {
+    case 'bloomworks':
+      return trace.pattern;
+    case 'driftglass':
+      return trace.route;
+    case 'cabinet':
+      return trace.nearThing;
+    case 'windthread':
+      return trace.flight;
+  }
+}
+
 export function reduceGuestState(state: GuestState, action: GuestAction): GuestState {
   switch (action.type) {
     case 'LIGHT_STAR':
@@ -185,11 +199,19 @@ export function reduceGuestState(state: GuestState, action: GuestAction): GuestS
         : [...state.completedAttractions, attractionId].sort(
             (left, right) => ATTRACTION_ORDER.indexOf(left) - ATTRACTION_ORDER.indexOf(right),
           );
+      const replayDiscovery = existingTrace
+        ? `revisit:${attractionId}:${traceVariation(action.trace)}`
+        : null;
+      const discoveries =
+        replayDiscovery && !state.discoveries.includes(replayDiscovery)
+          ? [...state.discoveries, replayDiscovery].sort()
+          : state.discoveries;
 
       return {
         ...state,
         completedAttractions,
         traces: { ...state.traces, [attractionId]: action.trace },
+        discoveries,
         currentScene: 'map',
         revision: state.revision + 1,
       };
@@ -229,6 +251,9 @@ export function reduceGuestState(state: GuestState, action: GuestAction): GuestS
         currentScene: 'keepsake',
         revision: state.revision + 1,
       };
+
+    case 'BEGIN_NEW_NIGHT':
+      return createGuestState(action.seed, state.preferences);
   }
 }
 

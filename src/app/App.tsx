@@ -1,4 +1,12 @@
-import { useEffect, useReducer, useRef, useState, type CSSProperties, type Dispatch } from 'react';
+import {
+  useEffect,
+  useReducer,
+  useRef,
+  useState,
+  type CSSProperties,
+  type Dispatch,
+  type FormEvent,
+} from 'react';
 
 import { createScorePlan } from '../audio/score-plan';
 import {
@@ -7,6 +15,11 @@ import {
   type Soundscape,
   type SoundscapeStatus,
 } from '../audio/soundscape';
+import { BloomworksExperience } from '../attractions/BloomworksExperience';
+import { CabinetExperience } from '../attractions/CabinetExperience';
+import { ConstellaryConductor } from '../attractions/ConstellaryConductor';
+import { DriftglassExperience } from '../attractions/DriftglassExperience';
+import { WindthreadExperience } from '../attractions/WindthreadExperience';
 import { ATTRACTIONS, getAttraction, type AttractionChoice } from '../content/attractions';
 import {
   createGuestState,
@@ -14,8 +27,11 @@ import {
   type AttractionId,
   type GuestState,
 } from '../experience/guest-state';
-import { loadGuestState, saveGuestState } from '../experience/persistence';
 import { buildNightChartSvg, nightChartFilename } from '../experience/keepsake';
+import { decodeNightCode, encodeNightCode } from '../experience/night-code';
+import { deriveParkEchoes } from '../experience/park-echoes';
+import { loadGuestState, saveGuestState } from '../experience/persistence';
+import { SceneErrorBoundary } from './SceneErrorBoundary';
 
 type AppProps = {
   initialState?: GuestState;
@@ -64,16 +80,31 @@ function SettingsPanel({
   state,
   onAction,
   onToggleAudio,
+  onResumeNight,
   soundStatus,
   onClose,
 }: {
   state: GuestState;
   onAction: Dispatch<Parameters<typeof reduceGuestState>[1]>;
   onToggleAudio: () => void;
+  onResumeNight: (seed: number) => void;
   soundStatus: SoundscapeStatus;
   onClose: () => void;
 }) {
   const { preferences } = state;
+  const [nightCode, setNightCode] = useState('');
+  const [nightCodeError, setNightCodeError] = useState('');
+
+  const resumeNight = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const decoded = decodeNightCode(nightCode);
+    if (!decoded) {
+      setNightCodeError('That code does not match a Morrowlight night. Check every mark.');
+      return;
+    }
+    onResumeNight(decoded.seed);
+    onClose();
+  };
 
   return (
     <aside className="settings-panel" aria-labelledby="settings-title">
@@ -168,6 +199,27 @@ function SettingsPanel({
           </button>
         </div>
       </div>
+      <form className="night-code-entry" onSubmit={resumeNight}>
+        <label htmlFor="night-code-input">Return by Night Code</label>
+        <p>Start a fresh route through the same seeded park. Your accessibility settings stay.</p>
+        <div>
+          <input
+            id="night-code-input"
+            value={nightCode}
+            onChange={(event) => {
+              setNightCode(event.target.value);
+              setNightCodeError('');
+            }}
+            placeholder="ML-XXXXXXXX-CC"
+            autoComplete="off"
+            spellCheck={false}
+          />
+          <button type="submit">Open night</button>
+        </div>
+        <span className="night-code-entry__error" aria-live="polite">
+          {nightCodeError}
+        </span>
+      </form>
     </aside>
   );
 }
@@ -278,13 +330,16 @@ function MapIllustration({ completed }: { completed: AttractionId[] }) {
 function ParkMap({
   state,
   onEnter,
+  onHushgarden,
   onFinale,
 }: {
   state: GuestState;
   onEnter: (id: AttractionId) => void;
+  onHushgarden: () => void;
   onFinale: () => void;
 }) {
   const gathered = Math.min(state.completedAttractions.length, 3);
+  const echoes = deriveParkEchoes(state).slice(-2);
 
   return (
     <section className="scene map-scene" aria-labelledby="map-heading">
@@ -296,6 +351,16 @@ function ParkMap({
         <p>
           Choose by curiosity. Every path returns to the Morrowspire, and no choice closes another.
         </p>
+        {echoes.length > 0 ? (
+          <aside className="map-echoes" aria-label="Changes from your night">
+            <p>The park has changed</p>
+            <ul>
+              {echoes.map((echo) => (
+                <li key={echo.id}>{echo.line}</li>
+              ))}
+            </ul>
+          </aside>
+        ) : null}
       </header>
       <div className="map-stage">
         <MapIllustration completed={state.completedAttractions} />
@@ -327,6 +392,18 @@ function ParkMap({
             );
           })}
         </ol>
+        <button
+          type="button"
+          className="hushgarden-entry"
+          aria-label="Rest in Hushgarden"
+          onClick={onHushgarden}
+        >
+          <span aria-hidden="true">☾</span>
+          <span>
+            <strong>Rest in Hushgarden</strong>
+            <small>No completion meter · stay as long as you like</small>
+          </span>
+        </button>
         <div className="map-progress" aria-live="polite">
           <StarMark quiet />
           <span>
@@ -348,34 +425,108 @@ function ParkMap({
   );
 }
 
-function RealmInstrument({ realm, choice }: { realm: string; choice: string | null }) {
+const HUSH_NOTES = [
+  {
+    id: 'hush-listening-fern',
+    label: 'Listen to the patient fern',
+    text: 'It uncurls only between sounds. The park calls that listening.',
+  },
+  {
+    id: 'hush-bench-constellation',
+    label: 'Read the bench constellation',
+    text: 'Five brass marks remember everyone who chose to sit before choosing again.',
+  },
+  {
+    id: 'hush-slow-wind',
+    label: 'Slow the paper wind',
+    text: 'The leaves settle into a route that asks for nothing and still goes somewhere.',
+  },
+] as const;
+
+function HushgardenScene({
+  state,
+  onDiscover,
+  onReturn,
+}: {
+  state: GuestState;
+  onDiscover: (id: string) => void;
+  onReturn: () => void;
+}) {
+  const noticed = HUSH_NOTES.filter((note) => state.discoveries.includes(note.id));
+
   return (
-    <div
-      className={`realm-instrument realm-instrument--${realm} ${choice ? 'is-awake' : ''}`}
-      aria-hidden="true"
-    >
-      <span className="realm-instrument__ring realm-instrument__ring--outer" />
-      <span className="realm-instrument__ring realm-instrument__ring--middle" />
-      <span className="realm-instrument__ring realm-instrument__ring--inner" />
-      <span className="realm-instrument__axis" />
-      <span className="realm-instrument__spark" />
-      <span className="realm-instrument__choice">{choice?.slice(0, 1).toUpperCase()}</span>
-    </div>
+    <section className="scene hushgarden-scene" aria-labelledby="hushgarden-heading">
+      <button type="button" className="return-thread" onClick={onReturn}>
+        <span aria-hidden="true">←</span> Return to the Morrowspire
+      </button>
+      <div className="hushgarden-scene__copy">
+        <p className="eyebrow">Hushgarden · the park’s breath</p>
+        <h1 id="hushgarden-heading" data-scene-heading tabIndex={-1}>
+          Nothing needs completing here.
+        </h1>
+        <p>
+          Slow the wind, notice a field note, or simply stay. Rest is one of the ways this park
+          moves.
+        </p>
+        <p className="hushgarden-count" aria-live="polite">
+          {noticed.length} quiet {noticed.length === 1 ? 'detail' : 'details'} noticed
+        </p>
+      </div>
+      <div className="hushgarden-orbit" aria-hidden="true">
+        <span />
+        <span />
+        <span />
+      </div>
+      <div className="hush-notes" aria-label="Quiet field notes">
+        {HUSH_NOTES.map((note, index) => {
+          const isNoticed = state.discoveries.includes(note.id);
+          return (
+            <article key={note.id} className={isNoticed ? 'is-noticed' : ''}>
+              <p>Field note 0{index + 1}</p>
+              <button type="button" aria-pressed={isNoticed} onClick={() => onDiscover(note.id)}>
+                {note.label}
+              </button>
+              <p>{isNoticed ? note.text : 'A small detail is waiting for unhurried attention.'}</p>
+            </article>
+          );
+        })}
+      </div>
+    </section>
   );
+}
+
+function RealmExperience({
+  id,
+  onComplete,
+}: {
+  id: AttractionId;
+  onComplete: (choice: AttractionChoice) => void;
+}) {
+  switch (id) {
+    case 'bloomworks':
+      return <BloomworksExperience onComplete={onComplete} />;
+    case 'driftglass':
+      return <DriftglassExperience onComplete={onComplete} />;
+    case 'cabinet':
+      return <CabinetExperience onComplete={onComplete} />;
+    case 'windthread':
+      return <WindthreadExperience onComplete={onComplete} />;
+  }
 }
 
 function AttractionScene({
   id,
+  state,
   onComplete,
   onReturn,
 }: {
   id: AttractionId;
+  state: GuestState;
   onComplete: (choice: AttractionChoice) => void;
   onReturn: () => void;
 }) {
   const attraction = getAttraction(id);
-  const [choiceId, setChoiceId] = useState<string | null>(null);
-  const choice = attraction.choices.find((candidate) => candidate.id === choiceId) ?? null;
+  const echoes = deriveParkEchoes(state, id);
 
   return (
     <section
@@ -386,45 +537,29 @@ function AttractionScene({
         <span aria-hidden="true">←</span> Return to the Morrowspire
       </button>
       <div className="attraction-scene__copy">
-        <p className="eyebrow">Attraction {attraction.number} · expressive play</p>
+        <p className="eyebrow">Attraction {attraction.number} · learn, play, transform</p>
         <h1 id="attraction-heading" data-scene-heading tabIndex={-1}>
           {attraction.title}
         </h1>
         <p className="attraction-scene__invitation">{attraction.invitation}</p>
         <p>{attraction.description}</p>
       </div>
-      <div className="attraction-scene__instrument">
-        <RealmInstrument realm={attraction.realm} choice={choiceId} />
-        <p>{choice ? choice.note : 'The instrument is waiting for your first idea.'}</p>
+      {echoes.length > 0 ? (
+        <aside className="attraction-echoes" aria-label="Arrivals from elsewhere in the park">
+          <p>Something followed you here</p>
+          <ul>
+            {echoes.slice(-3).map((echo) => (
+              <li key={echo.id}>
+                <span>{echo.mark}</span>
+                {echo.line}
+              </li>
+            ))}
+          </ul>
+        </aside>
+      ) : null}
+      <div className="attraction-scene__play">
+        <RealmExperience id={id} onComplete={onComplete} />
       </div>
-      <fieldset className="choice-rail">
-        <legend>{attraction.prompt}</legend>
-        {attraction.choices.map((candidate, index) => (
-          <button
-            type="button"
-            key={candidate.id}
-            className={candidate.id === choiceId ? 'is-selected' : ''}
-            aria-label={candidate.label}
-            aria-pressed={candidate.id === choiceId}
-            onClick={() => setChoiceId(candidate.id)}
-          >
-            <span className="choice-rail__index">0{index + 1}</span>
-            <span>
-              <strong>{candidate.label}</strong>
-              <small>{candidate.note}</small>
-            </span>
-          </button>
-        ))}
-      </fieldset>
-      <button
-        className="primary-action"
-        type="button"
-        disabled={!choice}
-        onClick={() => choice && onComplete(choice)}
-      >
-        <span>{attraction.completionLabel}</span>
-        <span aria-hidden="true">✦</span>
-      </button>
     </section>
   );
 }
@@ -461,20 +596,7 @@ function FinaleScene({ state, onComplete }: { state: GuestState; onComplete: () 
             <li key={motif}>{motif}</li>
           ))}
         </ul>
-        <ol className="score-pulses" aria-label="Visible score">
-          {score.visiblePulseSequence.map((pulse) => (
-            <li key={pulse.index} data-emphasis={pulse.emphasis}>
-              <span aria-hidden="true" />
-              <span>{pulse.caption}</span>
-              <small>{pulse.note}</small>
-            </li>
-          ))}
-        </ol>
-        <p className="equivalence-note">{score.equivalence.audio.visibleLabel}</p>
-        <button type="button" className="primary-action" onClick={onComplete}>
-          <span>Conduct this night</span>
-          <span aria-hidden="true">✦</span>
-        </button>
+        <ConstellaryConductor plan={score} onComplete={onComplete} />
       </div>
     </section>
   );
@@ -490,7 +612,15 @@ function downloadNightChart(state: GuestState) {
   URL.revokeObjectURL(url);
 }
 
-function KeepsakeScene({ state, onReturn }: { state: GuestState; onReturn: () => void }) {
+function KeepsakeScene({
+  state,
+  onReturn,
+  onNewNight,
+}: {
+  state: GuestState;
+  onReturn: () => void;
+  onNewNight: () => void;
+}) {
   return (
     <section className="scene keepsake-scene" aria-labelledby="keepsake-heading">
       <div className="night-chart">
@@ -515,6 +645,11 @@ function KeepsakeScene({ state, onReturn }: { state: GuestState; onReturn: () =>
           Your route is held only in this browser. Take an illustrated Night Chart with you—no
           account, upload, or borrowed memory required.
         </p>
+        <div className="night-code-card" aria-label="Night Code">
+          <span>Return to this park seed</span>
+          <code>{encodeNightCode(state)}</code>
+          <small>Keep this short code with your chart. It contains no route history.</small>
+        </div>
         <button
           type="button"
           className="primary-action keepsake-download"
@@ -525,6 +660,9 @@ function KeepsakeScene({ state, onReturn }: { state: GuestState; onReturn: () =>
         </button>
         <button type="button" className="text-link" onClick={onReturn}>
           Return to the living map
+        </button>
+        <button type="button" className="text-link new-night-link" onClick={onNewNight}>
+          Begin another night
         </button>
       </div>
     </section>
@@ -562,6 +700,13 @@ export function App({ initialState }: AppProps) {
 
   const enterScene = (scene: AttractionId) => dispatch({ type: 'ENTER_SCENE', scene });
   const returnToMap = () => dispatch({ type: 'ENTER_SCENE', scene: 'map' });
+  const escapeSceneFault = () => {
+    if (state.phase === 'arrival') {
+      dispatch({ type: 'LIGHT_STAR' });
+      return;
+    }
+    returnToMap();
+  };
   const toggleAudio = () => {
     if (state.preferences.audio === 'on') {
       soundscapeRef.current?.stop();
@@ -643,36 +788,54 @@ export function App({ initialState }: AppProps) {
           state={state}
           onAction={dispatch}
           onToggleAudio={toggleAudio}
+          onResumeNight={(seed) => dispatch({ type: 'BEGIN_NEW_NIGHT', seed })}
           soundStatus={soundStatus}
           onClose={() => setSettingsOpen(false)}
         />
       ) : null}
 
       <main id="park-scene">
-        {state.currentScene === 'arrival' ? (
-          <ArrivalScene onEnter={() => dispatch({ type: 'LIGHT_STAR' })} />
-        ) : null}
-        {state.currentScene === 'map' ? (
-          <ParkMap
-            state={state}
-            onEnter={enterScene}
-            onFinale={() => dispatch({ type: 'BEGIN_FINALE' })}
-          />
-        ) : null}
-        {ATTRACTIONS.some((attraction) => attraction.id === state.currentScene) ? (
-          <AttractionScene
-            key={state.currentScene}
-            id={state.currentScene as AttractionId}
-            onReturn={returnToMap}
-            onComplete={(choice) => dispatch({ type: 'COMPLETE_ATTRACTION', trace: choice.trace })}
-          />
-        ) : null}
-        {state.currentScene === 'constellary' ? (
-          <FinaleScene state={state} onComplete={() => dispatch({ type: 'COMPLETE_FINALE' })} />
-        ) : null}
-        {state.currentScene === 'keepsake' ? (
-          <KeepsakeScene state={state} onReturn={returnToMap} />
-        ) : null}
+        <SceneErrorBoundary sceneKey={state.currentScene} onEscape={escapeSceneFault}>
+          {state.currentScene === 'arrival' ? (
+            <ArrivalScene onEnter={() => dispatch({ type: 'LIGHT_STAR' })} />
+          ) : null}
+          {state.currentScene === 'map' ? (
+            <ParkMap
+              state={state}
+              onEnter={enterScene}
+              onHushgarden={() => dispatch({ type: 'ENTER_SCENE', scene: 'hushgarden' })}
+              onFinale={() => dispatch({ type: 'BEGIN_FINALE' })}
+            />
+          ) : null}
+          {ATTRACTIONS.some((attraction) => attraction.id === state.currentScene) ? (
+            <AttractionScene
+              key={state.currentScene}
+              id={state.currentScene as AttractionId}
+              state={state}
+              onReturn={returnToMap}
+              onComplete={(choice) =>
+                dispatch({ type: 'COMPLETE_ATTRACTION', trace: choice.trace })
+              }
+            />
+          ) : null}
+          {state.currentScene === 'hushgarden' ? (
+            <HushgardenScene
+              state={state}
+              onDiscover={(discoveryId) => dispatch({ type: 'DISCOVER', discoveryId })}
+              onReturn={returnToMap}
+            />
+          ) : null}
+          {state.currentScene === 'constellary' ? (
+            <FinaleScene state={state} onComplete={() => dispatch({ type: 'COMPLETE_FINALE' })} />
+          ) : null}
+          {state.currentScene === 'keepsake' ? (
+            <KeepsakeScene
+              state={state}
+              onReturn={returnToMap}
+              onNewNight={() => dispatch({ type: 'BEGIN_NEW_NIGHT', seed: createNightSeed() })}
+            />
+          ) : null}
+        </SceneErrorBoundary>
       </main>
 
       <footer className="park-footer">

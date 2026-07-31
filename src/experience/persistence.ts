@@ -147,6 +147,7 @@ function isCurrentScene(value: unknown): value is GuestState['currentScene'] {
   return (
     value === 'arrival' ||
     value === 'map' ||
+    value === 'hushgarden' ||
     value === 'constellary' ||
     value === 'keepsake' ||
     isAttractionId(value)
@@ -155,7 +156,9 @@ function isCurrentScene(value: unknown): value is GuestState['currentScene'] {
 
 function hasValidPhaseScene(phase: GuestState['phase'], currentScene: GuestState['currentScene']) {
   if (phase === 'arrival') return currentScene === 'arrival';
-  if (phase === 'explore') return currentScene === 'map' || isAttractionId(currentScene);
+  if (phase === 'explore') {
+    return currentScene === 'map' || currentScene === 'hushgarden' || isAttractionId(currentScene);
+  }
   if (phase === 'finale') return currentScene === 'constellary';
   return currentScene === 'keepsake';
 }

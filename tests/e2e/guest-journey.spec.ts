@@ -1,3 +1,4 @@
+import AxeBuilder from '@axe-core/playwright';
 import { expect, test, type Page } from '@playwright/test';
 
 type AttractionStep = {
@@ -40,11 +41,24 @@ async function completeAttraction(page: Page, step: AttractionStep, completed: n
   await expect(page.getByText(completed + ' of 3 lights gathered', { exact: true })).toBeVisible();
 }
 
+async function expectNoWcagViolations(page: Page, scene: string) {
+  const results = await new AxeBuilder({ page })
+    .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
+    .analyze();
+  const violations = results.violations.map(({ id, impact, nodes }) => ({
+    id,
+    impact,
+    targets: nodes.flatMap((node) => node.target),
+  }));
+  expect(violations, `${scene} should have no automated WCAG A/AA violations`).toEqual([]);
+}
+
 test.describe('Morrowlight guest journey', () => {
   test('takes a first-time guest from arrival through three choices to a keepsake', async ({
     page,
   }) => {
     await page.goto('/');
+    await expectNoWcagViolations(page, 'Arrival');
 
     await expect(
       page.getByRole('button', { name: 'Touch the last light of today', exact: true }),
@@ -52,6 +66,7 @@ test.describe('Morrowlight guest journey', () => {
     await page.getByRole('button', { name: 'Touch the last light of today', exact: true }).click();
 
     await expect(page.getByRole('heading', { name: 'Where will your light go?' })).toBeVisible();
+    await expectNoWcagViolations(page, 'Park map');
 
     for (const [index, step] of threeAttractionRoute.entries()) {
       await completeAttraction(page, step, index + 1);
@@ -59,6 +74,21 @@ test.describe('Morrowlight guest journey', () => {
 
     await page.getByRole('button', { name: 'Open the Constellary', exact: true }).click();
     await expect(page.getByRole('heading', { name: 'The Constellary remembers' })).toBeVisible();
+    await expectNoWcagViolations(page, 'Constellary');
+    const finaleClipping = await page.locator('.finale-scene__copy').evaluate((copy) => {
+      const viewportWidth = document.documentElement.clientWidth;
+      return Array.from(copy.querySelectorAll('h1, h2, p, li, button'))
+        .map((element) => {
+          const rect = element.getBoundingClientRect();
+          return {
+            text: element.textContent?.trim().slice(0, 48),
+            left: rect.left,
+            right: rect.right,
+          };
+        })
+        .filter(({ left, right }) => left < -1 || right > viewportWidth + 1);
+    });
+    expect(finaleClipping).toEqual([]);
 
     await page.getByRole('button', { name: 'Let the park remember for me', exact: true }).click();
     await expect(page.getByRole('heading', { name: 'This night can wait here.' })).toBeVisible();
@@ -177,6 +207,16 @@ test.describe('Morrowlight guest journey', () => {
       await expect(
         page.getByRole('button', { name: 'Touch the last light of today', exact: true }),
       ).toBeVisible();
+      const arrivalClipping = await page.locator('.arrival-scene__copy').evaluate((copy) => {
+        const viewportWidth = document.documentElement.clientWidth;
+        return Array.from(copy.querySelectorAll('h1 span, .arrival-scene__dek'))
+          .map((element) => {
+            const rect = element.getBoundingClientRect();
+            return { text: element.textContent?.trim(), left: rect.left, right: rect.right };
+          })
+          .filter(({ left, right }) => left < -1 || right > viewportWidth + 1);
+      });
+      expect(arrivalClipping).toEqual([]);
 
       await page
         .getByRole('button', { name: 'Touch the last light of today', exact: true })
@@ -189,6 +229,33 @@ test.describe('Morrowlight guest journey', () => {
       await expect(
         page.getByRole('button', { name: 'Enter the Cabinet of Near Things', exact: true }),
       ).toBeVisible();
+      const coveredDestinations = await page.locator('.map-stage').evaluate((stage) => {
+        const progress = stage.querySelector('.map-progress')?.getBoundingClientRect();
+        if (!progress) return ['missing progress'];
+        return Array.from(stage.querySelectorAll('.destination'))
+          .filter((destination) => {
+            const rect = destination.getBoundingClientRect();
+            return !(
+              rect.right <= progress.left ||
+              rect.left >= progress.right ||
+              rect.bottom <= progress.top ||
+              rect.top >= progress.bottom
+            );
+          })
+          .map((destination) => destination.textContent?.trim().slice(0, 32));
+      });
+      expect(coveredDestinations).toEqual([]);
+      const routeOrder = await page.locator('.map-stage').evaluate((stage) =>
+        Array.from(stage.querySelectorAll('.destination button, .hushgarden-entry')).map(
+          (element) => ({
+            name: element.getAttribute('aria-label'),
+            top: Math.round(element.getBoundingClientRect().top),
+          }),
+        ),
+      );
+      expect(routeOrder.map(({ top }) => top)).toEqual(
+        routeOrder.map(({ top }) => top).toSorted((left, right) => left - right),
+      );
     });
   });
 

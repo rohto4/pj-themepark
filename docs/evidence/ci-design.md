@@ -30,3 +30,10 @@ The action READMEs use the maintained `@v7` major references. At the recorded ac
 - Passed: the repository's existing Prettier 3.9.6 parsed and format-checked `.github/workflows/ci.yml` and this evidence file with `./node_modules/.bin/prettier.cmd --check .github/workflows/ci.yml docs/evidence/ci-design.md`.
 - Passed: a read-only local structural assertion confirmed the workflow's trigger, permission, action references, Node version, cache inputs, commands, concurrency fields, failure condition, artifact paths, and retention field.
 - Not locally runnable: a GitHub-hosted Ubuntu runner is required to observe Node/tool-cache resolution, npm-cache restore/save, Linux dependency provisioning for Playwright, the complete CI environment, cancellation behavior, and artifact upload. These remain unverified until a push or pull request starts the workflow.
+
+## First hosted observation
+
+- Run: [CI #30647701455](https://github.com/rohto4/pj-themepark/actions/runs/30647701455)
+- Commit: `85247a1488cf51c0eb5ba39366965b5f46d1ba30`
+- Observed: `completed` / `success`, 2026-08-01 01:34–01:36 JST.
+- No rerun, workflow mutation, or failure diagnosis was needed.

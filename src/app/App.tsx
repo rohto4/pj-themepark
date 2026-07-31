@@ -406,7 +406,7 @@ function ParkMap({
         </button>
         <div className="map-progress" aria-live="polite">
           <StarMark quiet />
-          <span>
+          <span className="map-progress__copy">
             <strong>{gathered} of 3 lights gathered</strong>
             <small>
               {gathered < 3

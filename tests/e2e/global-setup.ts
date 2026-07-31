@@ -4,7 +4,7 @@ export default async function startMorrowlight() {
   const server = await createServer({
     server: {
       host: '127.0.0.1',
-      port: 4173,
+      port: 4318,
       strictPort: true,
     },
   });

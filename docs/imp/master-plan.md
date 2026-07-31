@@ -1,7 +1,7 @@
 # MORROWLIGHT master implementation ledger
 
 Status timestamp: 2026-08-01 JST  
-Overall state: **Phase 4 — batched browser QA and polish in progress**
+Overall state: **Phase 5 — publish and live verification in progress**
 Hard continuity rule: update this file before changing phase or ending a session.
 
 ## Objective
@@ -22,14 +22,14 @@ The overall project may continue for up to 48 hours. If the result still cannot 
 
 ## Capability evals
 
-| ID  | Capability              | Observable pass condition                                                                                         | State                                                                      |
-| --- | ----------------------- | ----------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
-| E1  | Immediate wonder        | First-time guest causes a delightful audiovisual/visual response within 10 seconds, without external instructions | Not run                                                                    |
-| E2  | Park legibility         | Guest can identify current location, available destinations, and how to return                                    | Automated pass: desktop/mobile/keyboard routes; observed QA pending        |
-| E3  | Consequential play      | Two different action histories produce visibly different later state and finales                                  | Automated pass: deterministic divergent-recipe tests                       |
-| E4  | Short and deep routes   | A 5-minute completion route and a 30–60 minute discovery route both work                                          | Automated short/deep branches pass; literal dwell-time observation pending |
-| E5  | Inclusive critical path | Keyboard-only, touch, reduced-motion, muted, and low-power routes reach the finale                                | Automated pass: 12/12 desktop/mobile E2E; observed QA pending              |
-| E6  | Production resilience   | Live Cloudflare URL loads and completes the critical path on representative desktop and mobile viewports          | Not run                                                                    |
+| ID  | Capability              | Observable pass condition                                                                                         | State                                                                               |
+| --- | ----------------------- | ----------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| E1  | Immediate wonder        | First-time guest causes a delightful audiovisual/visual response within 10 seconds, without external instructions | Local observed pass: one action gives immediate visual response; opt-in audio wakes |
+| E2  | Park legibility         | Guest can identify current location, available destinations, and how to return                                    | Local observed pass at 1440/768/375 after mobile order/overlap fixes                |
+| E3  | Consequential play      | Two different action histories produce visibly different later state and finales                                  | Automated pass: deterministic divergent-recipe tests                                |
+| E4  | Short and deep routes   | A 5-minute completion route and a 30–60 minute discovery route both work                                          | Automated short/deep branches pass; literal dwell-time observation pending          |
+| E5  | Inclusive critical path | Keyboard-only, touch, reduced-motion, muted, and low-power routes reach the finale                                | Local pass: 12/12 routes, keyboard observation, and axe A/AA scans                  |
+| E6  | Production resilience   | Live Cloudflare URL loads and completes the critical path on representative desktop and mobile viewports          | Not run                                                                             |
 
 ## Regression evals
 
@@ -81,9 +81,9 @@ Implementation closure: 83 Vitest tests and 12 desktop/mobile Playwright routes 
 
 ### P4 — Batched visual QA and polish
 
-- [ ] Capture representative screenshots only after functional closure.
-- [ ] Review hierarchy, clarity, atmosphere, motion, contrast, overflow, and device composition in one batched pass.
-- [ ] Fix and repeat the smallest necessary screenshot set.
+- [x] Capture representative screenshots only after functional closure.
+- [x] Review hierarchy, clarity, atmosphere, motion, contrast, overflow, and device composition in one batched pass.
+- [x] Fix and repeat the smallest necessary screenshot set.
 
 Done when: the interface has a coherent visual point of view and no known critical visual defect.
 
@@ -115,11 +115,13 @@ Done when: all `PROJECT.md` completion conditions are evidenced.
 | U013 Quiet and resilient routes       | Completion pressure or a single-scene crash      | Primary + Terra Max        | Hushgarden and scoped fault escape tests pass        | Completed   | 0 / parallel    |
 | U014 Returnable nights                | Keepsake being inert or account-dependent        | Primary + Terra Max        | Download, Night Code, and fresh-night tests pass     | Completed   | 0 / parallel    |
 | U015 Hosted CI design                 | Local-only confidence                            | Terra Max                  | Read-only CI workflow and evidence validate locally  | Completed   | 0 / parallel    |
-| U016 Batched browser QA               | Automation hiding visual/audio defects           | Primary / Sol Max          | Representative desktop/mobile evidence is reviewed   | In progress | 0 / —           |
+| U016 Batched browser QA               | Automation hiding visual/audio defects           | Primary / Sol Max          | Representative desktop/mobile evidence is reviewed   | Completed   | 4 fixes / ~35m  |
+| U017 Accessibility hardening          | Hidden clip or DOM/visual-order failures         | Primary + Terra Max        | Geometry/order regressions and axe A/AA scans pass   | Completed   | 0 / parallel    |
+| U018 Production publication           | Local evidence mistaken for live resilience      | Primary / Sol Max          | Cloudflare URL and independent E6 evidence exist     | In progress | 0 / —           |
 
 ## Session handoff
 
-Last verified state: P3 functional build-out is locally closed. The full gate passes: repository formatting/lint/typecheck, 83 Vitest tests, production build, and 12/12 desktop/mobile Playwright routes. Asset budget is 11 files / 418.91 KiB; static Wrangler dry-run reports no bindings. See `docs/evidence/p3-local-verification.md`.
-Exact next action: commit and push the P3 functional checkpoint, then read the browser-QA procedure and capture the smallest representative desktop/mobile screenshot batch.
-External state: `origin/main` still points to checkpoint `c41f501` until the current P3 changes are committed; no Cloudflare resource has been created and no deployment has occurred. The new CI workflow has not yet run on GitHub.
-Known risks: browser audio quality is fake-node verified but not listened to; visual hierarchy, composition, and overflow await batched screenshot QA; the 30–60 minute promise has branch coverage but not literal dwell-time observation; live Cloudflare authentication/deployment remains P5.
+Last verified state: P4 local browser QA is closed. The post-fix gate passes: formatting/lint/typecheck, 83 Vitest tests, production build, and 12/12 desktop/mobile Playwright routes including axe WCAG-tag scans. Asset budget is 11 files / 419.46 KiB. See `docs/evidence/browser-qa-2026-08-01.md`.
+Exact next action: commit and push the P4 checkpoint, observe its hosted CI run, then authenticate Wrangler only as needed to create one static Cloudflare Worker and run live E6.
+External state: `origin/main` is at P3 checkpoint `85247a1`; its first hosted CI run succeeded. No Cloudflare resource has been created and no deployment has occurred.
+Known risks: artistic audio quality was functionally activated but not listened to by a human; the 30–60 minute promise has branch coverage but not literal dwell-time observation; accessibility evidence is axe plus one Chromium/keyboard audit, not assistive-technology or cross-engine certification; live Cloudflare remains unverified.

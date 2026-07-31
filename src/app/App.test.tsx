@@ -118,8 +118,12 @@ describe('Morrowlight guest journey', () => {
     expect(screen.getByText(/bloom:bridge/)).toBeInTheDocument();
     expect(screen.getByText(/drift:horizon/)).toBeInTheDocument();
     expect(screen.getByText(/near:weather-loom/)).toBeInTheDocument();
-    expect(screen.getByRole('list', { name: 'Constellary pulse sequence' }).children).toHaveLength(
-      4,
+    expect(
+      screen.getByRole('list', { name: 'Constellary performance sequence' }).children,
+    ).toHaveLength(5);
+    expect(screen.getByTestId('constellary-performance-stage')).toHaveAttribute(
+      'data-beat',
+      'awakening',
     );
 
     await user.click(screen.getByRole('button', { name: 'Let the park remember for me' }));

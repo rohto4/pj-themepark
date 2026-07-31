@@ -1,111 +1,201 @@
-import { render, screen } from '@testing-library/react';
+import { act, fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 
-import type { ScorePlan } from '../audio/score-plan';
+import type { FinaleTimelinePlan } from '../experience/finale-timeline';
 import { ConstellaryConductor } from './ConstellaryConductor';
 
-const plan: ScorePlan = {
-  planVersion: 1,
-  finaleTitle: 'The Bridged Far Horizon',
-  palette: 'ember-violet',
-  tempoBpm: 96,
-  emberIdentity: ['A3', 'C4', 'D4', 'E4'],
-  realmLayers: [],
-  visiblePulseSequence: [
-    { index: 0, beat: 0, note: 'A3', emphasis: 'soft', caption: 'Ember wakes' },
-    { index: 1, beat: 1, note: 'C4', emphasis: 'bright', caption: 'Path answers' },
-    { index: 2, beat: 2, note: 'D4', emphasis: 'bright', caption: 'Realm gathers' },
-    { index: 3, beat: 3, note: 'E4', emphasis: 'strong', caption: 'Constellation resolves' },
-  ],
-  equivalence: {
-    audio: { mode: 'muted', visibleLabel: 'Sound is muted. Follow the four amber pulses.' },
-    motion: {
-      mode: 'step',
-      visibleLabel: 'Advance through the constellation one visible pulse at a time.',
-    },
+const beats: FinaleTimelinePlan['beats'] = [
+  {
+    id: 'awakening',
+    act: 1,
+    title: 'The ember remembers its name',
+    caption: 'A3 · C4 · D4 · E4 returns as the first lantern phrase.',
+    note: 'A3',
+    geometryId: 'ember-a3-c4-d4-e4',
+    pace: 'measured',
   },
+  {
+    id: 'gathering',
+    act: 2,
+    title: 'The realms enter the sky',
+    caption: 'Three remembered paths gather without losing their shape.',
+    note: 'C4',
+    geometryId: 'gathering-bloom-drift-cabinet',
+    pace: 'rising',
+  },
+  {
+    id: 'recognition',
+    act: 3,
+    title: 'The garden returns as a constellation',
+    caption: 'Living crossings return above the park.',
+    note: 'D4',
+    geometryId: 'bloom-constellary-bridge-4',
+    pace: 'still',
+  },
+  {
+    id: 'climax',
+    act: 4,
+    title: 'Every route meets at midnight',
+    caption: 'Bell and comet cross the sky.',
+    note: 'E4',
+    geometryId: 'climax-bridge-soar-horizon-bell-comet',
+    pace: 'soaring',
+  },
+  {
+    id: 'release',
+    act: 5,
+    title: 'The night becomes yours to carry',
+    caption: 'One light stays awake for tomorrow.',
+    note: 'A3',
+    geometryId: 'release-weather-loom-5',
+    pace: 'settling',
+  },
+];
+
+const plan: FinaleTimelinePlan = {
+  timelineVersion: 1,
+  finaleTitle: 'The Bridged Far Horizon',
+  beats,
+  recognition: {
+    geometryId: 'bloom-constellary-bridge-4',
+    viewBox: '0 0 300 180',
+    accessibleLabel: 'Bloomworks living crossings, 4 answering lights',
+    paths: [
+      {
+        id: 'recognition-bridge',
+        d: 'M24 128C70 31 118 27 150 108C182 27 230 31 276 128',
+        role: 'bridge',
+      },
+    ],
+    nodes: [{ id: 'recognition-light', cx: 150, cy: 108, radius: 5, role: 'resident' }],
+  },
+  resultFingerprint: 'finale:bridged-night',
+  presentation: { audio: 'audible', motion: 'animated' },
 };
 
-function pulseButton(number: number, caption: string, note: string) {
-  return screen.getByRole('button', {
-    name: `Conduct pulse ${number}: ${caption} (${note})`,
-  });
+function actButton(number: number, title: string, note: string) {
+  return screen.getByRole('button', { name: `Conduct act ${number}: ${title} (${note})` });
 }
 
+afterEach(() => {
+  vi.useRealTimers();
+});
+
 describe('ConstellaryConductor', () => {
-  it('offers four visible semantic pulses, a current caption, and the no-timing route', () => {
-    render(<ConstellaryConductor plan={plan} onComplete={vi.fn()} />);
+  it('opens on a real stage with five semantic acts and a patient active route', () => {
+    render(<ConstellaryConductor timeline={plan} onComplete={vi.fn()} />);
 
     expect(
-      screen.getByRole('heading', { name: 'Conduct the four amber pulses' }),
+      screen.getByRole('heading', { name: 'Conduct a night in five acts' }),
     ).toBeInTheDocument();
-    expect(screen.getByRole('status')).toHaveTextContent('0 of 4 pulses conducted');
-    expect(screen.getByRole('status')).toHaveTextContent('Current pulse: Ember wakes');
-    expect(pulseButton(1, 'Ember wakes', 'A3')).toHaveAttribute('aria-pressed', 'false');
-    expect(pulseButton(4, 'Constellation resolves', 'E4')).toBeInTheDocument();
+    expect(screen.getByRole('status')).toHaveTextContent('0 of 5 acts conducted');
+    expect(screen.getByRole('status')).toHaveTextContent(
+      'Current act: The ember remembers its name',
+    );
+    expect(screen.getByTestId('constellary-performance-stage')).toHaveAttribute(
+      'data-beat',
+      'awakening',
+    );
+    expect(screen.getByTestId('constellary-performance-stage')).toHaveAttribute(
+      'data-result-fingerprint',
+      plan.resultFingerprint,
+    );
     expect(
-      screen.queryByRole('button', { name: 'Resolve my constellation' }),
-    ).not.toBeInTheDocument();
-    expect(
-      screen.getByRole('button', { name: 'Let the park remember for me' }),
-    ).toBeInTheDocument();
+      screen.getByRole('list', { name: 'Constellary performance sequence' }).children,
+    ).toHaveLength(5);
+    expect(actButton(1, beats[0]!.title, beats[0]!.note)).toHaveAttribute('aria-pressed', 'false');
+    expect(actButton(5, beats[4]!.title, beats[4]!.note)).toBeInTheDocument();
   });
 
-  it('explains an out-of-order attempt without losing the guest’s progress', async () => {
+  it('explains an out-of-order act without losing the guest’s progress', async () => {
     const user = userEvent.setup();
-    render(<ConstellaryConductor plan={plan} onComplete={vi.fn()} />);
+    render(<ConstellaryConductor timeline={plan} onComplete={vi.fn()} />);
 
-    await user.click(pulseButton(3, 'Realm gathers', 'D4'));
+    await user.click(actButton(3, beats[2]!.title, beats[2]!.note));
 
     expect(screen.getByRole('status')).toHaveTextContent(
-      'Pulse 3 is waiting. Begin with Ember wakes.',
+      'Act 3 is waiting. Begin with The ember remembers its name.',
     );
-    expect(screen.getByRole('status')).toHaveTextContent('0 of 4 pulses conducted');
+    expect(screen.getByRole('status')).toHaveTextContent('0 of 5 acts conducted');
 
-    await user.click(pulseButton(1, 'Ember wakes', 'A3'));
+    await user.click(actButton(1, beats[0]!.title, beats[0]!.note));
 
-    expect(screen.getByRole('status')).toHaveTextContent('1 of 4 pulses conducted');
-    expect(screen.getByRole('status')).toHaveTextContent('Current pulse: Path answers');
+    expect(screen.getByRole('status')).toHaveTextContent('1 of 5 acts conducted');
+    expect(screen.getByRole('status')).toHaveTextContent('Current act: The realms enter the sky');
+    expect(screen.getByTestId('constellary-performance-stage')).toHaveAttribute(
+      'data-beat',
+      'gathering',
+    );
   });
 
-  it('conducts all four in sequence before explicitly resolving the constellation', async () => {
+  it('conducts all five acts before resolving the exact timeline result', async () => {
     const user = userEvent.setup();
     const onComplete = vi.fn();
-    render(<ConstellaryConductor plan={plan} onComplete={onComplete} />);
+    render(<ConstellaryConductor timeline={plan} onComplete={onComplete} />);
 
-    await user.click(pulseButton(1, 'Ember wakes', 'A3'));
-    await user.click(pulseButton(2, 'Path answers', 'C4'));
-    await user.click(pulseButton(3, 'Realm gathers', 'D4'));
-    await user.click(pulseButton(4, 'Constellation resolves', 'E4'));
+    for (const beat of beats) await user.click(actButton(beat.act, beat.title, beat.note));
 
     expect(onComplete).not.toHaveBeenCalled();
-    expect(screen.getByRole('status')).toHaveTextContent('4 of 4 pulses conducted');
-    expect(screen.getByRole('status')).toHaveTextContent('All four pulses are ready to resolve.');
-    expect(screen.getByRole('button', { name: 'Resolve my constellation' })).toBeEnabled();
+    expect(screen.getByRole('status')).toHaveTextContent('5 of 5 acts conducted');
+    expect(screen.getByTestId('constellary-performance-stage')).toHaveAttribute(
+      'data-beat',
+      'release',
+    );
 
-    await user.click(screen.getByRole('button', { name: 'Resolve my constellation' }));
-
-    expect(onComplete).toHaveBeenCalledTimes(1);
+    await user.click(screen.getByRole('button', { name: 'Carry this night with me' }));
+    expect(onComplete).toHaveBeenCalledWith(plan.resultFingerprint);
   });
 
-  it('supports keyboard conduct/reset controls and an equivalent immediate completion route', async () => {
+  it('performs the same five acts as an animated watch-only route', async () => {
+    vi.useFakeTimers();
+    const onComplete = vi.fn();
+    render(<ConstellaryConductor timeline={plan} onComplete={onComplete} />);
+
+    fireEvent.click(screen.getByRole('button', { name: 'Watch the park perform' }));
+    for (let index = 0; index < 5; index += 1) {
+      await act(async () => vi.advanceTimersByTime(1000));
+    }
+
+    expect(screen.getByRole('status')).toHaveTextContent('5 of 5 acts performed');
+    expect(screen.getByTestId('constellary-performance-stage')).toHaveAttribute(
+      'data-result-fingerprint',
+      plan.resultFingerprint,
+    );
+    fireEvent.click(screen.getByRole('button', { name: 'Carry this night with me' }));
+    expect(onComplete).toHaveBeenCalledWith(plan.resultFingerprint);
+  });
+
+  it('offers the five equivalent still acts without timers in reduced or low-power mode', async () => {
+    vi.useFakeTimers();
+    const stepPlan: FinaleTimelinePlan = {
+      ...plan,
+      presentation: { audio: 'muted', motion: 'step' },
+    };
+    render(<ConstellaryConductor timeline={stepPlan} onComplete={vi.fn()} />);
+
+    fireEvent.click(screen.getByRole('button', { name: 'Watch the park perform' }));
+
+    expect(screen.getAllByRole('img', { name: /Act \d of 5:/ })).toHaveLength(5);
+    expect(screen.getByRole('status')).toHaveTextContent('5 of 5 acts performed');
+    expect(vi.getTimerCount()).toBe(0);
+    expect(screen.getByRole('button', { name: 'Carry this night with me' })).toBeEnabled();
+  });
+
+  it('supports keyboard conducting, reset, and the generous immediate route', async () => {
     const user = userEvent.setup();
     const onComplete = vi.fn();
-    render(<ConstellaryConductor plan={plan} onComplete={onComplete} />);
+    render(<ConstellaryConductor timeline={plan} onComplete={onComplete} />);
 
-    const firstPulse = pulseButton(1, 'Ember wakes', 'A3');
-    firstPulse.focus();
+    const firstAct = actButton(1, beats[0]!.title, beats[0]!.note);
+    firstAct.focus();
     await user.keyboard(' ');
+    expect(firstAct).toHaveAttribute('aria-pressed', 'true');
 
-    expect(firstPulse).toHaveAttribute('aria-pressed', 'true');
-    expect(screen.getByRole('status')).toHaveTextContent('1 of 4 pulses conducted');
-
-    await user.click(screen.getByRole('button', { name: 'Reset pulses' }));
-    expect(screen.getByRole('status')).toHaveTextContent('0 of 4 pulses conducted');
-    expect(firstPulse).toHaveAttribute('aria-pressed', 'false');
+    await user.click(screen.getByRole('button', { name: 'Reset performance' }));
+    expect(screen.getByRole('status')).toHaveTextContent('0 of 5 acts conducted');
 
     await user.click(screen.getByRole('button', { name: 'Let the park remember for me' }));
-    expect(onComplete).toHaveBeenCalledTimes(1);
+    expect(onComplete).toHaveBeenCalledWith(plan.resultFingerprint);
   });
 });

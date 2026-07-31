@@ -41,6 +41,15 @@ async function completeAttraction(page: Page, step: AttractionStep, completed: n
   await expect(page.getByText(completed + ' of 3 lights gathered', { exact: true })).toBeVisible();
 }
 
+async function enterConstellary(page: Page) {
+  await page.getByRole('button', { name: 'Touch the last light of today', exact: true }).click();
+  for (const [index, step] of threeAttractionRoute.entries()) {
+    await completeAttraction(page, step, index + 1);
+  }
+  await page.getByRole('button', { name: 'Open the Constellary', exact: true }).click();
+  await expect(page.getByRole('heading', { name: 'The Constellary remembers' })).toBeVisible();
+}
+
 async function expectNoWcagViolations(page: Page, scene: string) {
   const results = await new AxeBuilder({ page })
     .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
@@ -132,13 +141,61 @@ test.describe('Morrowlight guest journey', () => {
     await expect(page.getByText('secret:hush-bench-constellation', { exact: true })).toBeVisible();
 
     const pulses = page
-      .getByRole('list', { name: 'Constellary pulse sequence' })
+      .getByRole('list', { name: 'Constellary performance sequence' })
       .getByRole('button');
-    await expect(pulses).toHaveCount(4);
-    for (let index = 0; index < 4; index += 1) await pulses.nth(index).click();
+    await expect(pulses).toHaveCount(5);
+    for (let index = 0; index < 5; index += 1) await pulses.nth(index).click();
 
-    await page.getByRole('button', { name: 'Resolve my constellation', exact: true }).click();
+    await page.getByRole('button', { name: 'Carry this night with me', exact: true }).click();
     await expect(page.getByRole('button', { name: 'Begin another night' })).toBeVisible();
+  });
+
+  test('lets the park perform the same fingerprint without requiring conducting', async ({
+    page,
+  }) => {
+    await page.goto('/');
+    await enterConstellary(page);
+
+    const stage = page.getByTestId('constellary-performance-stage');
+    const fingerprint = await stage.getAttribute('data-result-fingerprint');
+    expect(fingerprint).toMatch(/^finale:/);
+
+    await page.getByRole('button', { name: 'Watch the park perform', exact: true }).click();
+    await expect(page.getByRole('status')).toContainText('5 of 5 acts performed');
+    await expect(stage).toHaveAttribute('data-beat', 'release');
+    await expect(stage).toHaveAttribute('data-result-fingerprint', fingerprint!);
+
+    await page.getByRole('button', { name: 'Carry this night with me', exact: true }).click();
+    await expect(page.getByRole('heading', { name: 'This night can wait here.' })).toBeVisible();
+  });
+
+  test('opens all five equivalent still acts with reduced motion and low power', async ({
+    page,
+  }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.goto('/');
+    await page.getByRole('button', { name: 'Visit settings', exact: true }).click();
+    await page.getByRole('button', { name: 'Use low power mode', exact: true }).click();
+    await page.getByRole('button', { name: 'Visit settings', exact: true }).click();
+    await enterConstellary(page);
+
+    await page.getByRole('button', { name: 'Watch the park perform', exact: true }).click();
+
+    await expect(page.getByRole('img', { name: /Act \d of 5:/ })).toHaveCount(5);
+    await expect(page.getByRole('status')).toContainText('5 of 5 acts performed');
+    const runningAnimations = await page
+      .locator('.constellary-storyboard')
+      .evaluate(
+        (storyboard) =>
+          storyboard
+            .getAnimations({ subtree: true })
+            .filter((animation) => animation.playState === 'running').length,
+      );
+    expect(runningAnimations).toBe(0);
+    const hasNoHorizontalClipping = await page
+      .locator('html')
+      .evaluate((html) => html.scrollWidth <= html.clientWidth + 1);
+    expect(hasNoHorizontalClipping).toBe(true);
   });
 
   test('keeps arrival, destination, choice, and completion controls keyboard reachable', async ({

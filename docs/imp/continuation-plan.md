@@ -145,8 +145,8 @@ reduced-motion, and low-power routes finish with the same result fingerprint.
 | P6-B Eval fixtures      | Spectacle without measurable depth              | E7–E12 assertions and failure signatures checked in   | Completed   |
 | P6-C Hero attraction    | More buttons disguised as mastery               | Multi-stage strategy loop passes unit/component/E2E   | Completed   |
 | P6-D Living consequence | Text describing state instead of world response | Three downstream authored surfaces diverge            | Completed   |
-| P6-E Performance finale | Checklist finale                                | Deterministic five-beat Constellary passes all modes  | In progress |
-| P6-F Return/deep route  | Content padding                                 | Seeded continuity and observed deep-route evidence    | Pending     |
+| P6-E Performance finale | Checklist finale                                | Deterministic five-beat Constellary passes all modes  | Completed   |
+| P6-F Return/deep route  | Content padding                                 | Seeded continuity and observed deep-route evidence    | In progress |
 | P6-G Closure            | Breaking stable release                         | Full/local/live/independent gates and rollback record | Pending     |
 
 ## P6-C implementation record
@@ -187,3 +187,33 @@ reduced-motion, and low-power routes finish with the same result fingerprint.
   persist it; session-only topology is never substituted after reload.
 - Exact next fixture: a pure five-beat finale timeline must keep watch-only and active-conduct routes
   on the same fingerprint while using the WorldProjection in the recognition and climax beats.
+
+## P6-E implementation record
+
+- Pure-timeline RED observed: three fixtures failed on the absent five-beat sequence, missing
+  history divergence, and incorrect preference presentation; the clock/randomness guard already
+  passed because the placeholder was inert.
+- Pure-timeline GREEN observed: `npm.cmd test -- src/experience/finale-timeline.test.ts` — 4/4;
+  `npm.cmd run typecheck` — pass. The deterministic plan now owns awakening, gathering,
+  recognition, climax, and release; derives visible geometry from WorldProjection; carries realm
+  layers, companions, movement, palette, and notes into authored beats; and excludes audio,
+  reduced-motion, and low-power settings from the semantic result fingerprint.
+- Exact next fixture: replace the four-pulse Constellary component with an actual five-beat stage.
+  Active conducting and watch-only playback must traverse the same plan and resolve the same
+  fingerprint; step-mode must expose an equivalent still storyboard without timers.
+- Component RED observed: all six new stage fixtures failed against the old four-pulse API. GREEN
+  observed: 6/6 for five semantic stage acts, patient out-of-order recovery, active completion,
+  animated watch-only playback, timer-free still equivalence, and keyboard/reset/skip behavior.
+- Constellary now renders authored SVG geometry for every act. Recognition uses the persisted
+  WorldProjection paths/nodes; the other acts derive bounded visual variants from their semantic
+  geometry IDs. The guest can conduct, watch, or take the generous immediate route, and every path
+  passes the same timeline fingerprint to completion.
+- Full P6-E gate observed: format, lint, typecheck, production build, 18 Vitest files / 103 tests,
+  and 20 Playwright desktop/mobile routes all pass. Browser coverage includes active conducting,
+  a 4.5-second watch-only performance, and reduced-motion + low-power five-panel equivalence with
+  zero running storyboard animations and no horizontal clipping. Asset budget passes at 11 files /
+  447.39 KiB. The deployed Worker remains unchanged.
+- Exact next fixture: a new night must expose a meaningful authored continuity hook inside the
+  first attraction. The returning guest must recognize what carried forward, then receive a new
+  optional goal whose result persists into the map and finale without adding an account or schema
+  migration.

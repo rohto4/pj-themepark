@@ -21,6 +21,7 @@ import { ConstellaryConductor } from '../attractions/ConstellaryConductor';
 import { DriftglassExperience } from '../attractions/DriftglassExperience';
 import { WindthreadExperience } from '../attractions/WindthreadExperience';
 import { ATTRACTIONS, getAttraction, type AttractionChoice } from '../content/attractions';
+import { createFinaleTimeline } from '../experience/finale-timeline';
 import {
   createGuestState,
   reduceGuestState,
@@ -652,7 +653,7 @@ function AttractionScene({
 function FinaleScene({ state, onComplete }: { state: GuestState; onComplete: () => void }) {
   const finale = state.finale;
   if (!finale) return null;
-  const score = createScorePlan(state, finale);
+  const timeline = createFinaleTimeline(state);
   const bloom = deriveWorldProjection(state).bloom;
 
   return (
@@ -698,7 +699,7 @@ function FinaleScene({ state, onComplete }: { state: GuestState; onComplete: () 
             <li key={motif}>{motif}</li>
           ))}
         </ul>
-        <ConstellaryConductor plan={score} onComplete={onComplete} />
+        <ConstellaryConductor timeline={timeline} onComplete={onComplete} />
       </div>
     </section>
   );

@@ -2264,6 +2264,192 @@ button:disabled {
   line-height: 1.45;
 }
 
+.constellary-play__modes {
+  display: flex;
+  gap: 0.45rem;
+}
+
+.constellary-play__modes button {
+  flex: 1;
+  padding: 0.72rem 0.85rem;
+  border: 1px solid var(--line);
+  color: var(--moon-dim);
+  font: inherit;
+  font-size: 0.72rem;
+  background: rgb(10 12 28 / 45%);
+  cursor: pointer;
+}
+
+.constellary-play__modes button[aria-pressed='true'] {
+  border-color: var(--ember-hot);
+  color: var(--paper);
+  background: rgb(242 167 95 / 12%);
+  box-shadow: inset 0 -2px 0 var(--ember-hot);
+}
+
+.constellary-stage {
+  position: relative;
+  display: grid;
+  min-height: 17rem;
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid rgb(242 167 95 / 28%);
+  background:
+    radial-gradient(circle at 50% 46%, rgb(242 167 95 / 16%), transparent 18%),
+    radial-gradient(circle at 75% 20%, rgb(146 214 160 / 10%), transparent 30%),
+    linear-gradient(155deg, rgb(17 16 40 / 96%), rgb(5 7 20 / 96%));
+  isolation: isolate;
+}
+
+.constellary-stage::before {
+  position: absolute;
+  inset: 8%;
+  z-index: -1;
+  border: 1px dashed rgb(255 248 220 / 10%);
+  border-radius: 50%;
+  content: '';
+}
+
+.constellary-stage svg {
+  display: block;
+  width: 100%;
+  min-height: 17rem;
+  color: var(--ember-pale);
+  filter: drop-shadow(0 0 0.8rem rgb(242 167 95 / 22%));
+}
+
+.constellary-stage path,
+.constellary-stage circle {
+  vector-effect: non-scaling-stroke;
+}
+
+.constellary-stage path {
+  fill: none;
+  stroke: currentcolor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.6;
+  transform-origin: center;
+  animation: constellary-enter 720ms var(--ease-out) both;
+}
+
+.constellary-stage circle {
+  fill: var(--ink-deep);
+  stroke: var(--ember-hot);
+  stroke-width: 1.5;
+  transform-origin: center;
+  animation: constellary-kindling 1.8s ease-in-out infinite alternate;
+}
+
+.constellary-stage [data-path-role='bridge'] {
+  color: var(--bloom);
+}
+
+.constellary-stage [data-path-role='runner'] {
+  color: var(--rose);
+  stroke-dasharray: 3 7;
+}
+
+.constellary-stage [data-path-role='chorus'],
+.constellary-stage__comet {
+  color: var(--ember-hot);
+  stroke-dasharray: 2 5;
+}
+
+.constellary-stage [data-node-role='resident'] {
+  fill: var(--bloom);
+}
+
+.constellary-stage [data-node-role='echo'] {
+  fill: var(--ember-hot);
+}
+
+.constellary-stage__orbit {
+  fill: none !important;
+  opacity: 0.5;
+}
+
+.constellary-stage__tomorrow {
+  fill: var(--paper) !important;
+}
+
+.constellary-stage[data-pace='soaring'] path {
+  animation-name: constellary-soar;
+  animation-duration: 950ms;
+}
+
+.constellary-stage[data-pace='settling'] path {
+  animation-duration: 1.2s;
+}
+
+.constellary-stage figcaption {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.12rem 0.65rem;
+  padding: 0.85rem 1rem;
+  background: linear-gradient(transparent, rgb(5 7 20 / 92%) 28%);
+}
+
+.constellary-stage figcaption span {
+  grid-row: 1 / 3;
+  color: var(--ember-hot);
+  font-family: var(--display);
+  font-size: 1.2rem;
+}
+
+.constellary-stage figcaption strong {
+  color: var(--paper);
+  font-family: var(--display);
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.constellary-stage figcaption small {
+  max-width: 54ch;
+  overflow: hidden;
+  color: var(--moon-dim);
+  font-size: 0.68rem;
+  line-height: 1.35;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.constellary-storyboard {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+  gap: 0.4rem;
+}
+
+.constellary-stage--compact {
+  min-height: 9rem;
+}
+
+.constellary-stage--compact svg {
+  min-height: 9rem;
+}
+
+.constellary-stage--compact figcaption {
+  grid-template-columns: 1fr;
+  padding: 0.55rem;
+}
+
+.constellary-stage--compact figcaption span {
+  grid-row: auto;
+  font-size: 0.7rem;
+}
+
+.constellary-stage--compact figcaption strong {
+  font-size: 0.7rem;
+}
+
+.constellary-stage--compact figcaption small {
+  display: none;
+}
+
 .constellary-play__status {
   padding: 0.7rem 0.85rem;
   border-left: 2px solid var(--ember-hot);
@@ -2284,7 +2470,7 @@ button:disabled {
 
 .constellary-play__pulse-list {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 0.45rem;
   margin: 0;
   padding: 0;
@@ -2296,7 +2482,7 @@ button:disabled {
   grid-template-columns: auto 1fr;
   gap: 0.2rem 0.45rem;
   width: 100%;
-  min-height: 5rem;
+  min-height: 6.2rem;
   padding: 0.65rem;
   border: 1px solid var(--line);
   color: var(--moon-dim);
@@ -2324,6 +2510,7 @@ button:disabled {
 
 .constellary-play__pulse-caption {
   font-size: 0.72rem;
+  line-height: 1.3;
 }
 
 .constellary-play__pulse-note {
@@ -2571,7 +2758,9 @@ button:disabled {
 .park-root[data-power='low'] .map-bloom-afterlight__node,
 .park-root[data-power='low'] .hushgarden-afterlight__path,
 .park-root[data-power='low'] .finale-recognition__path,
-.park-root[data-power='low'] .finale-recognition__node {
+.park-root[data-power='low'] .finale-recognition__node,
+.park-root[data-power='low'] .constellary-stage path,
+.park-root[data-power='low'] .constellary-stage circle {
   animation: none;
 }
 
@@ -2604,6 +2793,27 @@ button:disabled {
   from {
     opacity: 0;
     transform: translateX(3rem);
+  }
+}
+
+@keyframes constellary-enter {
+  from {
+    opacity: 0;
+    transform: scale(0.82) rotate(-4deg);
+  }
+}
+
+@keyframes constellary-soar {
+  from {
+    opacity: 0;
+    transform: translateY(2.4rem) scale(0.88);
+  }
+}
+
+@keyframes constellary-kindling {
+  to {
+    filter: drop-shadow(0 0 0.7rem currentcolor);
+    transform: scale(1.16);
   }
 }
 
@@ -2889,6 +3099,10 @@ button:disabled {
 
   .constellary-play__pulse-list {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .constellary-play__pulse-item:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
   }
 }
 

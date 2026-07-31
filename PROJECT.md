@@ -1,10 +1,10 @@
-# Project ASTERIA
+# Project MORROWLIGHT
 
 ## Mission
 
 Create the best theme park that can exist natively on the open web: an authored, explorable night of wonder that feels playful in seconds, rewards curiosity for an hour, and leaves each guest with a personal finale worth sharing.
 
-Working title: **ASTERIA — The Park Between Tomorrows**.
+Working title: **MORROWLIGHT — The Park Between Tomorrows**.
 
 This is not a marketing site for a hypothetical physical park. The website is the park.
 
@@ -26,12 +26,12 @@ The memorable promise is: **“The park noticed how I played.”**
 
 ## Initial park shape
 
-- **The Arrival Concourse:** a cinematic but skippable dusk-to-night opening and immediate tactile “light your star” moment.
-- **Verdant Engine:** a kinetic garden where rhythm and arrangement awaken a cooperative machine-ecosystem.
-- **Lantern Sea:** a dreamy navigation attraction about guiding lost lights through sound, current, and reflection.
-- **The Museum of Almost:** interactive cabinets containing playful futures that were nearly invented; observation changes the exhibits.
-- **Cloudline:** a high, wind-swept traversal space built around timing, perspective, and controlled exhilaration.
-- **Midnight Assembly:** a personalized parade in the sky that recombines motifs earned across the park.
+- **Emberwake Gate:** a cinematic but skippable dusk-to-night opening and immediate tactile “light your star” moment.
+- **Bloomworks:** a kinetic garden where rhythm and arrangement awaken a cooperative machine-ecosystem.
+- **Driftglass Sea:** a dreamy navigation attraction about guiding lost lights through sound, current, and reflection.
+- **The Cabinet of Near Things:** interactive exhibits containing playful futures that were nearly invented; observation changes them.
+- **Windthread:** a high, wind-swept traversal space built around timing, perspective, and controlled exhilaration.
+- **The Constellary:** a personalized parade in the sky that recombines motifs earned across the park.
 
 Names and mechanics remain working material until the concept gate, but the north star above is fixed unless evidence shows a serious usability, originality, or feasibility problem.
 

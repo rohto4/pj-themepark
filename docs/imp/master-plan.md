@@ -1,7 +1,7 @@
-# ASTERIA master implementation ledger
+# MORROWLIGHT master implementation ledger
 
 Status timestamp: 2026-08-01 JST  
-Overall state: **Phase 0 — foundation and research in progress**  
+Overall state: **Phase 2 — vertical slice in progress**
 Hard continuity rule: update this file before changing phase or ending a session.
 
 ## Objective
@@ -48,18 +48,18 @@ The overall project may continue for up to 48 hours. If the result still cannot 
 - [x] Add `AGENTS.md`, `PROJECT.md`, account ledger, and this task ledger.
 - [x] Add LLM-Wiki-style raw/wiki/schema structure.
 - [x] Verify the current Karpathy LLM Wiki source and record any relevant deltas.
-- [ ] Run parallel research on physical park experience, browser-native immersion, and Cloudflare/runtime constraints.
-- [ ] Synthesize confirmed facts, counterevidence, inferences, and recommendations.
+- [x] Run parallel research on physical park experience, browser-native immersion, and Cloudflare/runtime constraints.
+- [x] Synthesize confirmed facts, counterevidence, inferences, and recommendations.
 
 Done when: sources are dated/cited, accounts are minimal, and unresolved design questions are explicit.
 
 ### P1 — Concept and architecture gate
 
-- [ ] Freeze guest promise, emotional arc, park map, attraction portfolio, replay loop, and finale logic.
-- [ ] Define visual, typography, motion, sound, and low-power systems.
-- [ ] Define app/state/scene architecture, asset budget, analytics/privacy boundary, and deployment resources.
-- [ ] Write decision records for high-risk choices.
-- [ ] Specify E1–E6 test fixtures and baseline failure signatures.
+- [x] Freeze guest promise, emotional arc, park map, attraction portfolio, replay loop, and finale logic.
+- [x] Define visual, typography, motion, sound, and low-power systems.
+- [x] Define app/state/scene architecture, asset budget, analytics/privacy boundary, and deployment resources.
+- [x] Write decision records for high-risk choices.
+- [x] Specify E1–E6 test fixtures and baseline failure signatures.
 
 Done when: another capable agent could implement a vertical slice without inventing core product decisions.
 
@@ -100,15 +100,17 @@ Done when: all `PROJECT.md` completion conditions are evidenced.
 
 | Unit | Dominant risk | Owner/model | Done condition | State | Retries/time |
 |---|---|---|---|---|---|
-| U001 Foundation records | Context loss | Primary / Sol Max | Init and ledger files read back from disk | In progress | 0 / tracking |
-| U002 Experience research | Copying surface features instead of principles | Research agent / Terra Max | Dated, cited principles plus counterevidence | Queued | 0 / — |
-| U003 Browser immersion research | Choosing spectacle that harms access/performance | Research agent / Terra Max | Current technical options and failure modes | Queued | 0 / — |
-| U004 Cloudflare architecture research | Premature infrastructure | Research agent / Terra Max | Smallest live architecture with constraints | Queued | 0 / — |
-| U005 Concept synthesis | Generic or derivative park | Primary / Sol Max | Fixed distinctive concept and journey | Queued | 0 / — |
+| U001 Foundation records | Context loss | Primary / Sol Max | Init and ledger files read back from disk | Completed | 0 / ~35m |
+| U002 Experience research | Copying surface features instead of principles | Research agent / Terra Max | Dated, cited principles plus counterevidence | Completed | 0 / parallel |
+| U003 Browser immersion research | Choosing spectacle that harms access/performance | Research agent / Terra Max | Current technical options and failure modes | Completed | 0 / parallel |
+| U004 Cloudflare architecture research | Premature infrastructure | Research agent / Terra Max | Smallest live architecture with constraints | Completed | 0 / parallel |
+| U005 Concept synthesis | Generic or derivative park | Primary / Sol Max | Fixed distinctive concept and journey | Completed | 1 rename / ~45m |
+| U006 Application bootstrap | Toolchain drift | Primary / Sol Max | Check script runs red baselines, then scaffold builds | In progress | 0 / tracking |
+| U007 Guest reducer | State inconsistency | Primary / Sol Max | Determinism, migration, and divergent-finale tests pass | Queued | 0 / — |
 
 ## Session handoff
 
-Last verified state: repository cloned empty by design; foundation and LLM-Wiki records added; U002–U004 research agents launched.  
-Exact next action: read back foundation files, inspect research outputs, and synthesize the concept gate.  
-External state: no GitHub push or Cloudflare resource creation has occurred.  
-Known risks: very broad creative scope; visual ambition versus performance/accessibility; browser audio permission; live auth/tool availability not yet verified.
+Last verified state: foundation commit `284934c` is on `origin/main`; 54 dated research/source records were reviewed; P0 and P1 are closed; concept gate accepted.
+Exact next action: start U006 with toolchain discovery, failing eval baselines, and the smallest React/Vite/TypeScript scaffold.
+External state: GitHub foundation was pushed; no Cloudflare resource has been created.
+Known risks: actual local toolchain/dependency availability; visual ambition versus measured performance; browser audio quality; Cloudflare CLI/account state deferred to P5.

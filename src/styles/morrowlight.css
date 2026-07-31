@@ -742,6 +742,49 @@ button:disabled {
   filter: drop-shadow(0 0 0.8rem currentColor);
 }
 
+.map-bloom-afterlight {
+  color: var(--bloom);
+  filter: drop-shadow(0 0 0.45rem rgb(146 214 160 / 38%));
+  pointer-events: none;
+}
+
+.map-bloom-afterlight__path {
+  fill: none;
+  stroke: currentcolor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 3;
+  animation: bloom-root-draw 850ms var(--ease-out) both;
+}
+
+.map-bloom-afterlight__path--bridge {
+  stroke-width: 4;
+}
+
+.map-bloom-afterlight__path--runner {
+  stroke-dasharray: 4 9;
+}
+
+.map-bloom-afterlight__path--chorus {
+  color: var(--ember-hot);
+  stroke-dasharray: 2 7;
+}
+
+.map-bloom-afterlight__node {
+  fill: var(--ink);
+  stroke: currentcolor;
+  stroke-width: 2;
+  animation: star-pulse 3.8s ease-in-out infinite alternate;
+}
+
+.map-bloom-afterlight__node--resident {
+  fill: var(--bloom);
+}
+
+.map-bloom-afterlight__node--echo {
+  color: var(--ember-hot);
+}
+
 .destination-list {
   position: absolute;
   inset: 0;
@@ -1022,6 +1065,69 @@ button:disabled {
 .hushgarden-orbit span:nth-child(3) {
   bottom: 13%;
   left: 29%;
+}
+
+.hushgarden-afterlight {
+  position: absolute;
+  z-index: 1;
+  inset: 12%;
+  display: grid;
+  place-items: center;
+}
+
+.hushgarden-afterlight__figure {
+  width: 90%;
+  overflow: visible;
+  color: var(--bloom);
+  filter: drop-shadow(0 0 0.55rem rgb(146 214 160 / 32%));
+}
+
+.hushgarden-afterlight__path {
+  fill: none;
+  stroke: currentcolor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2;
+  animation: bloom-root-draw 950ms var(--ease-out) both;
+}
+
+.hushgarden-afterlight__path--runner {
+  color: var(--rose);
+  stroke-dasharray: 3 6;
+}
+
+.hushgarden-afterlight__path--chorus {
+  color: var(--ember-hot);
+  stroke-dasharray: 2 5;
+}
+
+.hushgarden-afterlight__node {
+  fill: var(--ink);
+  stroke: currentcolor;
+  stroke-width: 1.5;
+}
+
+.hushgarden-afterlight__node--resident {
+  fill: var(--bloom);
+}
+
+.hushgarden-afterlight button {
+  position: absolute;
+  bottom: 0;
+  max-width: 16rem;
+  padding: 0.55rem 0.75rem;
+  border: 1px solid rgb(146 214 160 / 55%);
+  border-radius: 2rem;
+  color: var(--moon);
+  font-size: 0.72rem;
+  background: rgb(12 11 29 / 82%);
+  cursor: pointer;
+}
+
+.hushgarden-afterlight button:hover,
+.hushgarden-afterlight button[aria-pressed='true'] {
+  color: var(--ink);
+  background: var(--bloom);
 }
 
 .hush-notes {
@@ -2013,6 +2119,49 @@ button:disabled {
   content: '';
 }
 
+.finale-recognition {
+  position: absolute;
+  z-index: 1;
+  width: 82%;
+  overflow: visible;
+  color: var(--bloom);
+  filter: drop-shadow(0 0 0.75rem rgb(146 214 160 / 34%));
+}
+
+.finale-recognition__path {
+  fill: none;
+  stroke: currentcolor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2;
+  animation: bloom-root-draw 1.2s var(--ease-out) both;
+}
+
+.finale-recognition__path--runner {
+  color: var(--rose);
+  stroke-dasharray: 3 7;
+}
+
+.finale-recognition__path--chorus {
+  color: var(--ember-hot);
+  stroke-dasharray: 2 5;
+}
+
+.finale-recognition__node {
+  fill: var(--ink);
+  stroke: currentcolor;
+  stroke-width: 1.5;
+  animation: star-pulse 4.2s ease-in-out infinite alternate;
+}
+
+.finale-recognition__node--resident {
+  fill: var(--bloom);
+}
+
+.finale-recognition__node--echo {
+  color: var(--ember-hot);
+}
+
 .finale-scene h1 {
   font-size: clamp(3.5rem, 6vw, 7rem);
 }
@@ -2417,7 +2566,12 @@ button:disabled {
 }
 
 .park-root[data-power='low'] .bloom-play__edge,
-.park-root[data-power='low'] .bloom-play__node {
+.park-root[data-power='low'] .bloom-play__node,
+.park-root[data-power='low'] .map-bloom-afterlight__path,
+.park-root[data-power='low'] .map-bloom-afterlight__node,
+.park-root[data-power='low'] .hushgarden-afterlight__path,
+.park-root[data-power='low'] .finale-recognition__path,
+.park-root[data-power='low'] .finale-recognition__node {
   animation: none;
 }
 

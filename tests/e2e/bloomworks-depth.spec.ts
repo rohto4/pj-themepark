@@ -59,6 +59,35 @@ test.describe('Bloomworks root instrument depth', () => {
     await page.getByRole('button', { name: 'Wake Bloomworks', exact: true }).click();
     await expect(page.getByRole('heading', { name: 'Where will your light go?' })).toBeFocused();
     await expect(page.getByText('1 of 3 lights gathered', { exact: true })).toBeVisible();
+    await expect(page.getByTestId('bloom-map-afterlight')).toHaveAttribute(
+      'data-geometry',
+      'bloom-map-bridge-8-chorus',
+    );
+
+    await page.getByRole('button', { name: 'Rest in Hushgarden', exact: true }).click();
+    await expect(
+      page.getByRole('img', { name: /Bloomworks living crossings, 8 answering lights/i }),
+    ).toBeVisible();
+    const afterlight = page.getByRole('button', { name: 'Ring the living bridge', exact: true });
+    await afterlight.click();
+    await expect(afterlight).toHaveAttribute('aria-pressed', 'true');
+    await page.getByRole('button', { name: 'Return to the Morrowspire' }).click();
+
+    await page.getByRole('button', { name: 'Enter Driftglass Sea', exact: true }).click();
+    for (let index = 0; index < 3; index += 1) {
+      await page.getByRole('button', { name: 'Starboard', exact: true }).click();
+    }
+    await page
+      .getByRole('button', { name: 'Enter the Cabinet of Near Things', exact: true })
+      .click();
+    await page.getByRole('button', { name: 'Inspect weather loom drawer', exact: true }).click();
+    await page.getByRole('button', { name: 'Inspect enough clock drawer', exact: true }).click();
+    await page.getByRole('button', { name: 'Let it follow me', exact: true }).click();
+    await page.getByRole('button', { name: 'Open the Constellary', exact: true }).click();
+
+    await expect(
+      page.getByRole('img', { name: /Bloomworks living crossings, 8 answering lights/i }),
+    ).toHaveAttribute('data-geometry', 'bloom-constellary-bridge-8-chorus');
   });
 
   test.describe('mobile quiet route', () => {

@@ -31,6 +31,7 @@ import { buildNightChartSvg, nightChartFilename } from '../experience/keepsake';
 import { decodeNightCode, encodeNightCode } from '../experience/night-code';
 import { deriveParkEchoes } from '../experience/park-echoes';
 import { loadGuestState, saveGuestState } from '../experience/persistence';
+import { deriveWorldProjection, type ProjectedSurface } from '../experience/world-projection';
 import { SceneErrorBoundary } from './SceneErrorBoundary';
 
 type AppProps = {
@@ -73,6 +74,39 @@ function StarMark({ quiet = false }: { quiet?: boolean }) {
       <span className="star-mark__core" />
       <span className="star-mark__orbit" />
     </span>
+  );
+}
+
+function ProjectedGeometry({
+  surface,
+  pathClass,
+  nodeClass,
+}: {
+  surface: ProjectedSurface;
+  pathClass: string;
+  nodeClass: string;
+}) {
+  return (
+    <>
+      {surface.paths.map((path) => (
+        <path
+          key={path.id}
+          className={`${pathClass} ${pathClass}--${path.role}`}
+          d={path.d}
+          data-projection-role={path.role}
+        />
+      ))}
+      {surface.nodes.map((node) => (
+        <circle
+          key={node.id}
+          className={`${nodeClass} ${nodeClass}--${node.role}`}
+          cx={node.cx}
+          cy={node.cy}
+          r={node.radius}
+          data-projection-role={node.role}
+        />
+      ))}
+    </>
   );
 }
 
@@ -261,7 +295,9 @@ function ArrivalScene({ onEnter }: { onEnter: () => void }) {
   );
 }
 
-function MapIllustration({ completed }: { completed: AttractionId[] }) {
+function MapIllustration({ state }: { state: GuestState }) {
+  const completed = state.completedAttractions;
+  const bloom = deriveWorldProjection(state).bloom;
   return (
     <svg
       className="park-map-art"
@@ -273,6 +309,7 @@ function MapIllustration({ completed }: { completed: AttractionId[] }) {
       <desc id="park-map-desc">
         The Morrowspire stands at the center. Four illuminated routes lead to Bloomworks, Driftglass
         Sea, the Cabinet of Near Things, and Windthread.
+        {bloom ? ` ${bloom.map.accessibleLabel} now grows across the map.` : ''}
       </desc>
       <defs>
         <radialGradient id="mapGlow">
@@ -299,6 +336,19 @@ function MapIllustration({ completed }: { completed: AttractionId[] }) {
         <path d="m0-126 22 98 38 34-39 18L0 122-20 24-59 6l38-34Z" />
         <circle r="9" />
       </g>
+      {bloom ? (
+        <g
+          className={`map-bloom-afterlight map-bloom-afterlight--${bloom.pattern}`}
+          data-testid="bloom-map-afterlight"
+          data-geometry={bloom.map.geometryId}
+        >
+          <ProjectedGeometry
+            surface={bloom.map}
+            pathClass="map-bloom-afterlight__path"
+            nodeClass="map-bloom-afterlight__node"
+          />
+        </g>
+      ) : null}
       <g
         className={`map-landmark map-landmark--bloom ${completed.includes('bloomworks') ? 'is-complete' : ''}`}
       >
@@ -363,7 +413,7 @@ function ParkMap({
         ) : null}
       </header>
       <div className="map-stage">
-        <MapIllustration completed={state.completedAttractions} />
+        <MapIllustration state={state} />
         <ol className="destination-list" aria-label="Park destinations">
           {ATTRACTIONS.map((attraction) => {
             const locked =
@@ -453,6 +503,11 @@ function HushgardenScene({
   onReturn: () => void;
 }) {
   const noticed = HUSH_NOTES.filter((note) => state.discoveries.includes(note.id));
+  const bloom = deriveWorldProjection(state).bloom;
+  const afterlightNoticed = bloom
+    ? state.discoveries.includes(bloom.hushgarden.discoveryId)
+    : false;
+  const noticedCount = noticed.length + (afterlightNoticed ? 1 : 0);
 
   return (
     <section className="scene hushgarden-scene" aria-labelledby="hushgarden-heading">
@@ -469,13 +524,39 @@ function HushgardenScene({
           moves.
         </p>
         <p className="hushgarden-count" aria-live="polite">
-          {noticed.length} quiet {noticed.length === 1 ? 'detail' : 'details'} noticed
+          {noticedCount} quiet {noticedCount === 1 ? 'detail' : 'details'} noticed
         </p>
       </div>
-      <div className="hushgarden-orbit" aria-hidden="true">
-        <span />
-        <span />
-        <span />
+      <div className="hushgarden-orbit">
+        <span aria-hidden="true" />
+        <span aria-hidden="true" />
+        <span aria-hidden="true" />
+        {bloom ? (
+          <div
+            className={`hushgarden-afterlight hushgarden-afterlight--${bloom.pattern}`}
+            data-geometry={bloom.hushgarden.geometryId}
+          >
+            <svg
+              className="hushgarden-afterlight__figure"
+              viewBox={bloom.hushgarden.viewBox}
+              role="img"
+              aria-label={bloom.hushgarden.accessibleLabel}
+            >
+              <ProjectedGeometry
+                surface={bloom.hushgarden}
+                pathClass="hushgarden-afterlight__path"
+                nodeClass="hushgarden-afterlight__node"
+              />
+            </svg>
+            <button
+              type="button"
+              aria-pressed={afterlightNoticed}
+              onClick={() => onDiscover(bloom.hushgarden.discoveryId)}
+            >
+              {bloom.hushgarden.actionLabel}
+            </button>
+          </div>
+        ) : null}
       </div>
       <div className="hush-notes" aria-label="Quiet field notes">
         {HUSH_NOTES.map((note, index) => {
@@ -572,17 +653,34 @@ function FinaleScene({ state, onComplete }: { state: GuestState; onComplete: () 
   const finale = state.finale;
   if (!finale) return null;
   const score = createScorePlan(state, finale);
+  const bloom = deriveWorldProjection(state).bloom;
 
   return (
     <section className="scene finale-scene" aria-labelledby="finale-heading">
-      <div className="finale-sky" aria-hidden="true">
+      <div className="finale-sky">
         {finale.motifIds.map((motif, index) => (
           <span
             key={motif}
             className="finale-orbit"
+            aria-hidden="true"
             style={{ '--orbit-index': index } as CSSProperties}
           />
         ))}
+        {bloom ? (
+          <svg
+            className={`finale-recognition finale-recognition--${bloom.pattern}`}
+            viewBox={bloom.constellary.viewBox}
+            role="img"
+            aria-label={bloom.constellary.accessibleLabel}
+            data-geometry={bloom.constellary.geometryId}
+          >
+            <ProjectedGeometry
+              surface={bloom.constellary}
+              pathClass="finale-recognition__path"
+              nodeClass="finale-recognition__node"
+            />
+          </svg>
+        ) : null}
         <StarMark />
       </div>
       <div className="finale-scene__copy">

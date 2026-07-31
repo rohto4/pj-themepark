@@ -33,6 +33,60 @@ describe('Morrowlight guest journey', () => {
     expect(screen.getByText('0 of 3 lights gathered')).toBeInTheDocument();
   });
 
+  it('projects a Bloom trace into map geometry and a touchable Hushgarden afterlight', async () => {
+    const user = userEvent.setup();
+    let state = reduceGuestState(createGuestState(44), { type: 'LIGHT_STAR' });
+    state = reduceGuestState(state, {
+      type: 'COMPLETE_ATTRACTION',
+      trace: { attractionId: 'bloomworks', pattern: 'bridge', pulse: 8 },
+    });
+    state = reduceGuestState(state, {
+      type: 'DISCOVER',
+      discoveryId: 'bloom-moon-root-chorus',
+    });
+    render(<App initialState={state} />);
+
+    expect(screen.getByTestId('bloom-map-afterlight')).toHaveAttribute(
+      'data-geometry',
+      'bloom-map-bridge-8-chorus',
+    );
+    expect(
+      screen.getByTestId('bloom-map-afterlight').querySelectorAll('path').length,
+    ).toBeGreaterThan(0);
+
+    await user.click(screen.getByRole('button', { name: 'Rest in Hushgarden' }));
+    expect(
+      screen.getByRole('img', { name: /Bloomworks living crossings, 8 answering lights/i }),
+    ).toBeInTheDocument();
+    const afterlight = screen.getByRole('button', { name: 'Ring the living bridge' });
+    await user.click(afterlight);
+    expect(afterlight).toHaveAttribute('aria-pressed', 'true');
+  });
+
+  it('returns Bloom geometry as a visible Constellary recognition figure', () => {
+    let state = reduceGuestState(createGuestState(44), { type: 'LIGHT_STAR' });
+    state = reduceGuestState(state, {
+      type: 'COMPLETE_ATTRACTION',
+      trace: { attractionId: 'bloomworks', pattern: 'wild', pulse: 7 },
+    });
+    state = reduceGuestState(state, {
+      type: 'COMPLETE_ATTRACTION',
+      trace: { attractionId: 'driftglass', route: 'horizon', companions: ['bell', 'comet'] },
+    });
+    state = reduceGuestState(state, {
+      type: 'COMPLETE_ATTRACTION',
+      trace: { attractionId: 'cabinet', nearThing: 'weather-loom' },
+    });
+    state = reduceGuestState(state, { type: 'BEGIN_FINALE' });
+    render(<App initialState={state} />);
+
+    const recognition = screen.getByRole('img', {
+      name: /Bloomworks pollinator runners, 7 answering lights/i,
+    });
+    expect(recognition).toHaveAttribute('data-geometry', 'bloom-constellary-wild-7');
+    expect(recognition.querySelectorAll('path').length).toBeGreaterThan(0);
+  });
+
   it('carries three authored choices into a personalized finale', async () => {
     const user = userEvent.setup();
     render(<App initialState={createGuestState(901)} />);

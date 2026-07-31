@@ -144,8 +144,8 @@ reduced-motion, and low-power routes finish with the same result fingerprint.
 | P6-A Gap baseline       | Solving the wrong shallowness                   | Three independent audits plus ranked synthesis        | Completed   |
 | P6-B Eval fixtures      | Spectacle without measurable depth              | E7–E12 assertions and failure signatures checked in   | Completed   |
 | P6-C Hero attraction    | More buttons disguised as mastery               | Multi-stage strategy loop passes unit/component/E2E   | Completed   |
-| P6-D Living consequence | Text describing state instead of world response | Three downstream authored surfaces diverge            | In progress |
-| P6-E Performance finale | Checklist finale                                | Deterministic five-beat Constellary passes all modes  | Pending     |
+| P6-D Living consequence | Text describing state instead of world response | Three downstream authored surfaces diverge            | Completed   |
+| P6-E Performance finale | Checklist finale                                | Deterministic five-beat Constellary passes all modes  | In progress |
 | P6-F Return/deep route  | Content padding                                 | Seeded continuity and observed deep-route evidence    | Pending     |
 | P6-G Closure            | Breaking stable release                         | Full/local/live/independent gates and rollback record | Pending     |
 
@@ -168,3 +168,22 @@ reduced-motion, and low-power routes finish with the same result fingerprint.
 - P6-C closed without changing the guest-state schema or the deployed Worker. Exact next fixture is
   F8.1: two fixed Bloom traces must derive different non-text map, later-realm, and Constellary
   geometry from one pure world projection.
+
+## P6-D implementation record
+
+- Pure-projection RED observed: map, Hushgarden, and Constellary geometry fixtures failed while the
+  no-trace and determinism guards passed.
+- `deriveWorldProjection` now accepts only `traces` and `discoveries`; preferences and runtime mode
+  cannot influence semantic geometry. Each surface owns an explicit viewBox, real paths/nodes, a
+  defensive pulse clamp, and an accessible figure label.
+- Cluster, bridge, and wild change actual path geometry. Pulse changes node density on all three
+  surfaces. `bloom-moon-root-chorus` adds a chorus-role path on all three surfaces.
+- Map renders the projection inside its existing SVG; Hushgarden grows a touchable Afterlight that
+  yields one bounded discovery; Constellary exposes the same remembered form as a visible figure.
+- Full gate observed: 17 files / 97 Vitest tests, 16 desktop/mobile Playwright routes, production
+  build, and asset budget 11 files / 437.55 KiB all pass. The deployed Worker remains unchanged.
+- Persistence boundary: the downstream form is a semantic Afterlight derived from pattern, pulse,
+  and mastery. Exact six-socket topology is intentionally not claimed because schema v1 does not
+  persist it; session-only topology is never substituted after reload.
+- Exact next fixture: a pure five-beat finale timeline must keep watch-only and active-conduct routes
+  on the same fingerprint while using the WorldProjection in the recognition and climax beats.

@@ -1,7 +1,7 @@
 # MORROWLIGHT master implementation ledger
 
 Status timestamp: 2026-08-01 JST  
-Overall state: **Phase 2 — vertical slice in progress**
+Overall state: **Phase 3 — park build-out in progress**
 Hard continuity rule: update this file before changing phase or ending a session.
 
 ## Objective
@@ -22,14 +22,14 @@ The overall project may continue for up to 48 hours. If the result still cannot 
 
 ## Capability evals
 
-| ID | Capability | Observable pass condition | State |
-|---|---|---|---|
-| E1 | Immediate wonder | First-time guest causes a delightful audiovisual/visual response within 10 seconds, without external instructions | Not run |
-| E2 | Park legibility | Guest can identify current location, available destinations, and how to return | Not run |
-| E3 | Consequential play | Two different action histories produce visibly different later state and finales | Not run |
-| E4 | Short and deep routes | A 5-minute completion route and a 30–60 minute discovery route both work | Not run |
-| E5 | Inclusive critical path | Keyboard-only, touch, reduced-motion, muted, and low-power routes reach the finale | Not run |
-| E6 | Production resilience | Live Cloudflare URL loads and completes the critical path on representative desktop and mobile viewports | Not run |
+| ID  | Capability              | Observable pass condition                                                                                         | State                                                       |
+| --- | ----------------------- | ----------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------- |
+| E1  | Immediate wonder        | First-time guest causes a delightful audiovisual/visual response within 10 seconds, without external instructions | Not run                                                     |
+| E2  | Park legibility         | Guest can identify current location, available destinations, and how to return                                    | Not run                                                     |
+| E3  | Consequential play      | Two different action histories produce visibly different later state and finales                                  | Automated pass: deterministic divergent-recipe tests        |
+| E4  | Short and deep routes   | A 5-minute completion route and a 30–60 minute discovery route both work                                          | Not run                                                     |
+| E5  | Inclusive critical path | Keyboard-only, touch, reduced-motion, muted, and low-power routes reach the finale                                | Automated pass: 8/8 desktop/mobile E2E; observed QA pending |
+| E6  | Production resilience   | Live Cloudflare URL loads and completes the critical path on representative desktop and mobile viewports          | Not run                                                     |
 
 ## Regression evals
 
@@ -65,9 +65,9 @@ Done when: another capable agent could implement a vertical slice without invent
 
 ### P2 — Vertical slice
 
-- [ ] Bootstrap tested application and deployment configuration.
-- [ ] Implement arrival, park navigation, one attraction, persistent consequence, and miniature finale.
-- [ ] Validate desktop, mobile, keyboard, reduced-motion, mute, and low-power paths.
+- [x] Bootstrap tested application and static-only deployment configuration.
+- [x] Implement arrival, park navigation, four attraction choice shells, persistent consequence, personalized finale, and downloadable keepsake.
+- [x] Validate desktop, mobile, keyboard, reduced-motion, mute, and low-power paths in Playwright.
 
 Done when: the complete emotional loop works locally and is evaluated before scaling content.
 
@@ -98,19 +98,23 @@ Done when: all `PROJECT.md` completion conditions are evidenced.
 
 ## Active work units
 
-| Unit | Dominant risk | Owner/model | Done condition | State | Retries/time |
-|---|---|---|---|---|---|
-| U001 Foundation records | Context loss | Primary / Sol Max | Init and ledger files read back from disk | Completed | 0 / ~35m |
-| U002 Experience research | Copying surface features instead of principles | Research agent / Terra Max | Dated, cited principles plus counterevidence | Completed | 0 / parallel |
-| U003 Browser immersion research | Choosing spectacle that harms access/performance | Research agent / Terra Max | Current technical options and failure modes | Completed | 0 / parallel |
-| U004 Cloudflare architecture research | Premature infrastructure | Research agent / Terra Max | Smallest live architecture with constraints | Completed | 0 / parallel |
-| U005 Concept synthesis | Generic or derivative park | Primary / Sol Max | Fixed distinctive concept and journey | Completed | 1 rename / ~45m |
-| U006 Application bootstrap | Toolchain drift | Primary / Sol Max | Check script runs red baselines, then scaffold builds | In progress | 0 / tracking |
-| U007 Guest reducer | State inconsistency | Primary / Sol Max | Determinism, migration, and divergent-finale tests pass | Queued | 0 / — |
+| Unit                                  | Dominant risk                                    | Owner/model                | Done condition                                       | State       | Retries/time    |
+| ------------------------------------- | ------------------------------------------------ | -------------------------- | ---------------------------------------------------- | ----------- | --------------- |
+| U001 Foundation records               | Context loss                                     | Primary / Sol Max          | Init and ledger files read back from disk            | Completed   | 0 / ~35m        |
+| U002 Experience research              | Copying surface features instead of principles   | Research agent / Terra Max | Dated, cited principles plus counterevidence         | Completed   | 0 / parallel    |
+| U003 Browser immersion research       | Choosing spectacle that harms access/performance | Research agent / Terra Max | Current technical options and failure modes          | Completed   | 0 / parallel    |
+| U004 Cloudflare architecture research | Premature infrastructure                         | Research agent / Terra Max | Smallest live architecture with constraints          | Completed   | 0 / parallel    |
+| U005 Concept synthesis                | Generic or derivative park                       | Primary / Sol Max          | Fixed distinctive concept and journey                | Completed   | 1 rename / ~45m |
+| U006 Application bootstrap            | Toolchain drift                                  | Primary / Sol Max          | Typecheck, tests, production build, asset check pass | Completed   | 0 / ~40m        |
+| U007 Guest reducer                    | State inconsistency                              | Primary / Sol Max          | Determinism and divergent-finale tests pass          | Completed   | 0 / ~25m        |
+| U008 Persistence and keepsake         | Losing or leaking the guest's night              | Primary + Terra Max        | Safe local roundtrip and offline SVG export pass     | Completed   | 0 / parallel    |
+| U009 Generative score core            | Audio blocking or excluding muted guests         | Terra Max                  | Pure score + safe gesture-gated runtime tests pass   | Completed   | 0 / parallel    |
+| U010 Inclusive browser route          | DOM checks hiding browser/device failures        | Primary + Terra Max        | 8 desktop/mobile Playwright routes pass              | Completed   | 1 mobile fix    |
+| U011 Attraction depth                 | Park feeling like a styled questionnaire         | Primary / Sol Max          | Each realm has a distinct learn-play-transform loop  | In progress | 0 / —           |
 
 ## Session handoff
 
-Last verified state: foundation commit `284934c` is on `origin/main`; 54 dated research/source records were reviewed; P0 and P1 are closed; concept gate accepted.
-Exact next action: start U006 with toolchain discovery, failing eval baselines, and the smallest React/Vite/TypeScript scaffold.
-External state: GitHub foundation was pushed; no Cloudflare resource has been created.
-Known risks: actual local toolchain/dependency availability; visual ambition versus measured performance; browser audio quality; Cloudflare CLI/account state deferred to P5.
+Last verified state: P2 is locally closed: TypeScript, 38 Vitest tests, production Vite build, and 8/8 desktop/mobile Playwright routes pass. Static Cloudflare asset validation and an unauthenticated dry-run pass with no bindings.
+Exact next action: checkpoint P2 to GitHub, then replace the attraction choice shells with distinct learn-play-transform mechanics, beginning with Bloomworks.
+External state: GitHub foundation/design commits are pushed; no Cloudflare resource has been created and no deployment has occurred.
+Known risks: attraction interactions are currently expressive choice shells rather than deep play; browser audio quality is fake-node verified but not listened to; visual hierarchy and overflow await the planned batched screenshot QA; live Cloudflare authentication/deployment is deferred to P5.

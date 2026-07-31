@@ -2,10 +2,10 @@
 
 Last reviewed: 2026-08-01 JST
 
-| Resource | Why it is needed | Current evidence | Allowed project use | Not allowed without new approval |
-|---|---|---|---|---|
-| GitHub (`rohto4/pj-themepark`) | Canonical source, history, recovery | User supplied the repository; clone succeeded and showed an empty repository | Commit and push this project | Org-wide changes, new paid products, unrelated repositories |
-| Cloudflare | Production hosting and optional same-account runtime resources | User states the current Edge session is signed in | One scoped Workers/Pages project; add bindings only after a capability gate | Paid plan, domain purchase/transfer, unrelated zones, broad account settings |
+| Resource                       | Why it is needed                                               | Current evidence                                                             | Allowed project use                                                         | Not allowed without new approval                                             |
+| ------------------------------ | -------------------------------------------------------------- | ---------------------------------------------------------------------------- | --------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| GitHub (`rohto4/pj-themepark`) | Canonical source, history, recovery                            | User supplied the repository; clone succeeded and showed an empty repository | Commit and push this project                                                | Org-wide changes, new paid products, unrelated repositories                  |
+| Cloudflare                     | Production hosting and optional same-account runtime resources | User states the current Edge session is signed in                            | One scoped Workers/Pages project; add bindings only after a capability gate | Paid plan, domain purchase/transfer, unrelated zones, broad account settings |
 
 ## Decision
 

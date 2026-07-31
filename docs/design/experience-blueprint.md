@@ -19,16 +19,16 @@ The park has no villain and no lecture. Hope is expressed through responsive sys
 
 ## Guest emotional arc
 
-| Beat | Intended feeling | Guest action | Park response |
-|---|---|---|---|
-| Threshold | Curiosity | Touch/focus the last ember of sunset | The first star wakes immediately |
-| Orientation | Anticipation | Open the living map and choose a landmark | A visible path threads itself across the park |
-| First attraction | Capability | Learn one verb through play | The realm transforms and the star gains a motif |
-| Free exploration | Ownership | Choose order, linger, revisit, find quiet details | Weather, creatures, and music reflect accumulated traces |
-| Recognition | Being seen | Notice a previous action recur elsewhere | The park creates cross-attraction echoes |
-| Gathering | Wonder | Bring at least three motifs to the Constellary | The skyline prepares a guest-specific procession |
-| Finale | Release | Conduct or simply watch the sky-parade | Motifs combine into a deterministic personal composition |
-| Farewell | Warmth | Save a local keepsake or begin another night | A compact “night code” preserves the seed without an account |
+| Beat             | Intended feeling | Guest action                                      | Park response                                                |
+| ---------------- | ---------------- | ------------------------------------------------- | ------------------------------------------------------------ |
+| Threshold        | Curiosity        | Touch/focus the last ember of sunset              | The first star wakes immediately                             |
+| Orientation      | Anticipation     | Open the living map and choose a landmark         | A visible path threads itself across the park                |
+| First attraction | Capability       | Learn one verb through play                       | The realm transforms and the star gains a motif              |
+| Free exploration | Ownership        | Choose order, linger, revisit, find quiet details | Weather, creatures, and music reflect accumulated traces     |
+| Recognition      | Being seen       | Notice a previous action recur elsewhere          | The park creates cross-attraction echoes                     |
+| Gathering        | Wonder           | Bring at least three motifs to the Constellary    | The skyline prepares a guest-specific procession             |
+| Finale           | Release          | Conduct or simply watch the sky-parade            | Motifs combine into a deterministic personal composition     |
+| Farewell         | Warmth           | Save a local keepsake or begin another night      | A compact “night code” preserves the seed without an account |
 
 ## Park topology
 

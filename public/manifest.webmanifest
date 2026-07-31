@@ -1,0 +1,17 @@
+{
+  "name": "Morrowlight — The Park Between Tomorrows",
+  "short_name": "Morrowlight",
+  "description": "An original browser-native theme park that remembers how you played.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#100f26",
+  "theme_color": "#100f26",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

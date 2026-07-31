@@ -1,7 +1,7 @@
 # CI design evidence
 
 Recorded: 2026-08-01 JST  
-Scope: local workflow design and structural validation only. No GitHub workflow run, deployment, secret, or API write was performed.
+Scope: local workflow design, structural validation, and two observed GitHub-hosted runs. No deployment, secret, or authenticated third-party API write is part of the workflow.
 
 ## Implemented workflow contract
 
@@ -37,3 +37,10 @@ The action READMEs use the maintained `@v7` major references. At the recorded ac
 - Commit: `85247a1488cf51c0eb5ba39366965b5f46d1ba30`
 - Observed: `completed` / `success`, 2026-08-01 01:34–01:36 JST.
 - No rerun, workflow mutation, or failure diagnosis was needed.
+
+## P4 hosted observation
+
+- Run: [CI #30649239286](https://github.com/rohto4/pj-themepark/actions/runs/30649239286)
+- Commit: `4a13b995c29c58fe00999f674e77b274b3526afc`
+- Observed: `completed` / `success`, 2026-08-01 01:57–01:58 JST.
+- This run includes the P4 geometry/order regressions and axe-tagged accessibility scans used to close local browser QA.

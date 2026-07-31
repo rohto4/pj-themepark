@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>MORROWLIGHT Cloudflare認証チェックリスト</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --review-bg: #050c10;
+        --review-panel: #0d1d24;
+        --review-panel-alt: #081820;
+        --review-ink: #f7fbff;
+        --review-muted: #c5d5dc;
+        --review-line: #668895;
+        --review-link: #ffd166;
+        --review-focus: #7ee8ff;
+        --review-complete: #263238;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body.review-shell {
+        margin: 0;
+        background: linear-gradient(135deg, #050c10, #10252d 58%, #07151b);
+        color: var(--review-ink);
+        font-family: Inter, 'Noto Sans JP', 'Yu Gothic UI', system-ui, sans-serif;
+        font-size: 13px;
+        line-height: 1.38;
+      }
+      .review-header {
+        padding: 20px 24px 14px;
+        background: #081c24;
+        border-bottom: 1px solid var(--review-line);
+      }
+      .review-header h1 {
+        margin: 2px 0 4px;
+        color: #fff;
+        font-size: clamp(1.15rem, 1.8vw, 1.55rem);
+        line-height: 1.2;
+        white-space: nowrap;
+      }
+      .review-header p {
+        max-width: 1000px;
+        margin: 4px 0;
+        color: #e0edf2;
+        font-size: 12px;
+      }
+      .review-main {
+        max-width: 980px;
+        padding: 12px 14px 36px;
+      }
+      .review-panel {
+        margin: 0 0 10px;
+        padding: 12px;
+        border: 1px solid var(--review-line);
+        background: rgb(13 29 36 / 96%);
+      }
+      .review-panel h2 {
+        margin: 0 0 6px;
+        font-size: 1.1rem;
+      }
+      .review-summary-split {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 6px;
+      }
+      .review-guidance-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 6px;
+      }
+      .review-compact-unit {
+        min-width: 0;
+        padding: 8px;
+        border: 1px solid var(--review-line);
+        background: var(--review-panel-alt);
+      }
+      .review-muted {
+        color: var(--review-muted);
+      }
+      code {
+        color: #b9f6d7;
+        font-size: 11px;
+      }
+      a {
+        color: var(--review-link);
+        text-underline-offset: 2px;
+      }
+      label {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 8px;
+        align-items: start;
+        min-height: 44px;
+        padding: 10px;
+        border: 1px solid var(--review-line);
+        background: #061218;
+        cursor: pointer;
+      }
+      input {
+        width: 18px;
+        height: 18px;
+        accent-color: var(--review-link);
+      }
+      input:checked + span {
+        color: #829397;
+        text-decoration: line-through;
+      }
+      input:focus-visible,
+      summary:focus-visible,
+      a:focus-visible {
+        outline: 2px solid var(--review-focus);
+        outline-offset: 2px;
+      }
+      details {
+        margin-top: 8px;
+      }
+      summary {
+        color: var(--review-link);
+        font-weight: 700;
+        cursor: pointer;
+      }
+      .stop {
+        border-color: #dca1a1;
+        background: #2c1518;
+      }
+      @media (max-width: 800px) {
+        .review-summary-split,
+        .review-guidance-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+      @media (max-width: 650px) {
+        .review-header {
+          padding: 14px 10px 10px;
+        }
+        .review-main {
+          padding: 8px;
+        }
+        .review-header h1 {
+          white-space: normal;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+      }
+    </style>
+  </head>
+  <body class="review-shell">
+    <header class="review-header">
+      <p>MORROWLIGHT · 手動ゲート CF-OAUTH-001</p>
+      <h1>Cloudflare公開認証 — 1分チェックリスト</h1>
+      <p>
+        必要なのはCloudflareのOAuth許可1回だけです。パスワード、認証コード、APIトークンをCodexへ渡さないでください。
+      </p>
+    </header>
+    <main class="review-main">
+      <section class="review-panel" aria-labelledby="overview">
+        <h2 id="overview">30秒概要</h2>
+        <div class="review-summary-split">
+          <div class="review-compact-unit">
+            <strong>目的</strong><br />
+            <span class="review-muted"
+              >静的MORROWLIGHTを既存Cloudflareアカウントの1 Workerとして公開する。</span
+            >
+          </div>
+          <div class="review-compact-unit">
+            <strong>許可範囲</strong><br />
+            <code>user:read</code> · <code>account:read</code> · <code>workers:write</code>
+          </div>
+        </div>
+      </section>
+
+      <section class="review-panel" aria-labelledby="steps">
+        <h2 id="steps">実施手順</h2>
+        <div class="review-guidance-grid">
+          <label>
+            <input type="checkbox" />
+            <span
+              ><strong>1. Codexへ返信</strong><br /><code>Cloudflare認証を開始</code> と送る。</span
+            >
+          </label>
+          <label>
+            <input type="checkbox" />
+            <span
+              ><strong>2. Edgeで確認</strong
+              ><br />新しく開くCloudflare画面で、上記3権限だけであることを確認して許可する。</span
+            >
+          </label>
+          <label>
+            <input type="checkbox" />
+            <span
+              ><strong>3. 完了を返信</strong><br />成功画面が出たら
+              <code>Cloudflare認証完了</code> と送る。</span
+            >
+          </label>
+        </div>
+      </section>
+
+      <section class="review-panel stop" aria-labelledby="stop-title">
+        <h2 id="stop-title">止めてよい条件</h2>
+        <p>
+          別アカウントしか表示されない、追加権限が表示される、CAPTCHA・支払い・ドメイン購入を求められる場合は許可せず、その画面の状態だけを教えてください。
+        </p>
+      </section>
+
+      <details class="review-panel">
+        <summary>この後Codexが行うこと</summary>
+        <ol>
+          <li>認証状態と対象アカウント名を読み取り確認する。</li>
+          <li><code>morrowlight-theme-park</code> という静的Workerだけを作成・デプロイする。</li>
+          <li>ライブURLをdesktop/mobileで検証し、資源・rollback・証拠を記録する。</li>
+        </ol>
+        <p class="review-muted">
+          D1、R2、KV、独自ドメイン、課金プラン、Analytics bindingは作成しません。
+        </p>
+      </details>
+    </main>
+  </body>
+</html>

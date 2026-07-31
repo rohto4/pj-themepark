@@ -89,7 +89,7 @@ Done when: the interface has a coherent visual point of view and no known critic
 
 ### P5 — Publish and live verification
 
-- [ ] Commit/push functional checkpoints.
+- [x] Commit/push functional checkpoints.
 - [ ] Create the least-privilege Cloudflare project/resources.
 - [ ] Deploy and run live E6 smoke checks.
 - [ ] Record exact commit, live URL, resource inventory, rollback, evidence, and remaining limitations.
@@ -98,30 +98,30 @@ Done when: all `PROJECT.md` completion conditions are evidenced.
 
 ## Active work units
 
-| Unit                                  | Dominant risk                                    | Owner/model                | Done condition                                       | State       | Retries/time    |
-| ------------------------------------- | ------------------------------------------------ | -------------------------- | ---------------------------------------------------- | ----------- | --------------- |
-| U001 Foundation records               | Context loss                                     | Primary / Sol Max          | Init and ledger files read back from disk            | Completed   | 0 / ~35m        |
-| U002 Experience research              | Copying surface features instead of principles   | Research agent / Terra Max | Dated, cited principles plus counterevidence         | Completed   | 0 / parallel    |
-| U003 Browser immersion research       | Choosing spectacle that harms access/performance | Research agent / Terra Max | Current technical options and failure modes          | Completed   | 0 / parallel    |
-| U004 Cloudflare architecture research | Premature infrastructure                         | Research agent / Terra Max | Smallest live architecture with constraints          | Completed   | 0 / parallel    |
-| U005 Concept synthesis                | Generic or derivative park                       | Primary / Sol Max          | Fixed distinctive concept and journey                | Completed   | 1 rename / ~45m |
-| U006 Application bootstrap            | Toolchain drift                                  | Primary / Sol Max          | Typecheck, tests, production build, asset check pass | Completed   | 0 / ~40m        |
-| U007 Guest reducer                    | State inconsistency                              | Primary / Sol Max          | Determinism and divergent-finale tests pass          | Completed   | 0 / ~25m        |
-| U008 Persistence and keepsake         | Losing or leaking the guest's night              | Primary + Terra Max        | Safe local roundtrip and offline SVG export pass     | Completed   | 0 / parallel    |
-| U009 Generative score core            | Audio blocking or excluding muted guests         | Terra Max                  | Pure score + safe gesture-gated runtime tests pass   | Completed   | 0 / parallel    |
-| U010 Inclusive browser route          | DOM checks hiding browser/device failures        | Primary + Terra Max        | 8 desktop/mobile Playwright routes pass              | Completed   | 1 mobile fix    |
-| U011 Attraction depth                 | Park feeling like a styled questionnaire         | Primary + Terra Max        | Each realm has a distinct learn-play-transform loop  | Completed   | 0 / parallel    |
-| U012 Consequence and replay           | Choices being forgotten after each scene         | Primary / Sol Max          | Echoes, alternate replay, and secret motifs regress  | Completed   | 0 / ~25m        |
-| U013 Quiet and resilient routes       | Completion pressure or a single-scene crash      | Primary + Terra Max        | Hushgarden and scoped fault escape tests pass        | Completed   | 0 / parallel    |
-| U014 Returnable nights                | Keepsake being inert or account-dependent        | Primary + Terra Max        | Download, Night Code, and fresh-night tests pass     | Completed   | 0 / parallel    |
-| U015 Hosted CI design                 | Local-only confidence                            | Terra Max                  | Read-only CI workflow and evidence validate locally  | Completed   | 0 / parallel    |
-| U016 Batched browser QA               | Automation hiding visual/audio defects           | Primary / Sol Max          | Representative desktop/mobile evidence is reviewed   | Completed   | 4 fixes / ~35m  |
-| U017 Accessibility hardening          | Hidden clip or DOM/visual-order failures         | Primary + Terra Max        | Geometry/order regressions and axe A/AA scans pass   | Completed   | 0 / parallel    |
-| U018 Production publication           | Local evidence mistaken for live resilience      | Primary / Sol Max          | Cloudflare URL and independent E6 evidence exist     | In progress | 0 / —           |
+| Unit                                  | Dominant risk                                    | Owner/model                | Done condition                                       | State              | Retries/time    |
+| ------------------------------------- | ------------------------------------------------ | -------------------------- | ---------------------------------------------------- | ------------------ | --------------- |
+| U001 Foundation records               | Context loss                                     | Primary / Sol Max          | Init and ledger files read back from disk            | Completed          | 0 / ~35m        |
+| U002 Experience research              | Copying surface features instead of principles   | Research agent / Terra Max | Dated, cited principles plus counterevidence         | Completed          | 0 / parallel    |
+| U003 Browser immersion research       | Choosing spectacle that harms access/performance | Research agent / Terra Max | Current technical options and failure modes          | Completed          | 0 / parallel    |
+| U004 Cloudflare architecture research | Premature infrastructure                         | Research agent / Terra Max | Smallest live architecture with constraints          | Completed          | 0 / parallel    |
+| U005 Concept synthesis                | Generic or derivative park                       | Primary / Sol Max          | Fixed distinctive concept and journey                | Completed          | 1 rename / ~45m |
+| U006 Application bootstrap            | Toolchain drift                                  | Primary / Sol Max          | Typecheck, tests, production build, asset check pass | Completed          | 0 / ~40m        |
+| U007 Guest reducer                    | State inconsistency                              | Primary / Sol Max          | Determinism and divergent-finale tests pass          | Completed          | 0 / ~25m        |
+| U008 Persistence and keepsake         | Losing or leaking the guest's night              | Primary + Terra Max        | Safe local roundtrip and offline SVG export pass     | Completed          | 0 / parallel    |
+| U009 Generative score core            | Audio blocking or excluding muted guests         | Terra Max                  | Pure score + safe gesture-gated runtime tests pass   | Completed          | 0 / parallel    |
+| U010 Inclusive browser route          | DOM checks hiding browser/device failures        | Primary + Terra Max        | 8 desktop/mobile Playwright routes pass              | Completed          | 1 mobile fix    |
+| U011 Attraction depth                 | Park feeling like a styled questionnaire         | Primary + Terra Max        | Each realm has a distinct learn-play-transform loop  | Completed          | 0 / parallel    |
+| U012 Consequence and replay           | Choices being forgotten after each scene         | Primary / Sol Max          | Echoes, alternate replay, and secret motifs regress  | Completed          | 0 / ~25m        |
+| U013 Quiet and resilient routes       | Completion pressure or a single-scene crash      | Primary + Terra Max        | Hushgarden and scoped fault escape tests pass        | Completed          | 0 / parallel    |
+| U014 Returnable nights                | Keepsake being inert or account-dependent        | Primary + Terra Max        | Download, Night Code, and fresh-night tests pass     | Completed          | 0 / parallel    |
+| U015 Hosted CI design                 | Local-only confidence                            | Terra Max                  | Read-only CI workflow and evidence validate locally  | Completed          | 0 / parallel    |
+| U016 Batched browser QA               | Automation hiding visual/audio defects           | Primary / Sol Max          | Representative desktop/mobile evidence is reviewed   | Completed          | 4 fixes / ~35m  |
+| U017 Accessibility hardening          | Hidden clip or DOM/visual-order failures         | Primary + Terra Max        | Geometry/order regressions and axe A/AA scans pass   | Completed          | 0 / parallel    |
+| U018 Production publication           | Local evidence mistaken for live resilience      | Primary / Sol Max          | Cloudflare URL and independent E6 evidence exist     | Waiting OAuth gate | 1 / CLI auth    |
 
 ## Session handoff
 
-Last verified state: P4 local browser QA is closed. The post-fix gate passes: formatting/lint/typecheck, 83 Vitest tests, production build, and 12/12 desktop/mobile Playwright routes including axe WCAG-tag scans. Asset budget is 11 files / 419.46 KiB. See `docs/evidence/browser-qa-2026-08-01.md`.
-Exact next action: commit and push the P4 checkpoint, observe its hosted CI run, then authenticate Wrangler only as needed to create one static Cloudflare Worker and run live E6.
-External state: `origin/main` is at P3 checkpoint `85247a1`; its first hosted CI run succeeded. No Cloudflare resource has been created and no deployment has occurred.
+Last verified state: P4 checkpoint `4a13b995c29c58fe00999f674e77b274b3526afc` is pushed to `origin/main`; hosted CI run `30649239286` completed successfully. The post-fix gate passes formatting/lint/typecheck, 83 Vitest tests, production build, and 12/12 desktop/mobile Playwright routes including axe WCAG-tag scans. Asset budget is 11 files / 419.46 KiB. See `docs/evidence/browser-qa-2026-08-01.md`.
+Exact next action: follow `docs/gates/cloudflare-oauth-checklist.html`. When the user sends `Cloudflare認証を開始`, start a least-scope Wrangler OAuth callback; after the user manually approves the three listed scopes in Edge, perform identity verification, build, deployment, resource inspection, rollback recording, and desktop/mobile live E6 smoke checks through CLI/browser automation.
+External state: GitHub source and CI are current. Wrangler remains unauthenticated; the prior OAuth callback was terminated, no consent click was automated, no Cloudflare resource has been created, and no deployment has occurred. A temporary third-party preview deploy was deliberately not used.
 Known risks: artistic audio quality was functionally activated but not listened to by a human; the 30–60 minute promise has branch coverage but not literal dwell-time observation; accessibility evidence is axe plus one Chromium/keyboard audit, not assistive-technology or cross-engine certification; live Cloudflare remains unverified.

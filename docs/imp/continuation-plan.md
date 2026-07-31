@@ -148,3 +148,16 @@ reduced-motion, and low-power routes finish with the same result fingerprint.
 | P6-E Performance finale | Checklist finale                                | Deterministic five-beat Constellary passes all modes  | Pending     |
 | P6-F Return/deep route  | Content padding                                 | Seeded continuity and observed deep-route evidence    | Pending     |
 | P6-G Closure            | Breaking stable release                         | Full/local/live/independent gates and rollback record | Pending     |
+
+## P6-C implementation record
+
+- Pure-model RED observed: 2026-08-01 JST. Four tests failed on missing node growth, moon-root
+  geometry, chorus discovery, and strategy divergence; the determinism guard already passed.
+- Pure-model GREEN observed: `npm.cmd test -- src/attractions/bloomworks-model.test.ts` — 5/5;
+  `npm.cmd run typecheck` — pass.
+- The session reducer now keeps incomplete play local, accepts repeatable gears, assigns the three
+  core sockets in order, lets guests choose three moon sockets spatially, and derives SVG-ready
+  nodes/edges plus a bounded v1 trace only at completion.
+- Exact next fixture: the component must expose the graph as semantic SVG, keep the three-root exit,
+  reveal moon sockets explicitly, commit mastery through a bounded discovery callback, and preserve
+  keyboard/reset behavior.

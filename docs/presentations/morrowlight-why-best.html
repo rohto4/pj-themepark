@@ -1,0 +1,1904 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="MORROWLIGHTがなぜ最高のウェブ・テーマパークを目指せるのかを、体験設計と実証結果から説明するプレゼンテーション。"
+    />
+    <title>MORROWLIGHT — なぜこれは最高のウェブ・テーマパークなのか</title>
+    <style>
+      /* Canonical dense review-table theme. Inlined from knowledge-html-style. */
+      :root {
+        color-scheme: dark;
+        --review-bg: #050c10;
+        --review-panel: #0d1d24;
+        --review-panel-alt: #081820;
+        --review-table-bg: #061218;
+        --review-header: #28505e;
+        --review-filter-header: #12323d;
+        --review-ink: #f7fbff;
+        --review-muted: #c5d5dc;
+        --review-line: #668895;
+        --review-link: #ffd166;
+        --review-link-hover: #fff1ad;
+        --review-focus: #7ee8ff;
+        --review-active: #ffd166;
+        --review-active-ink: #172027;
+        --review-progress: #4a3c17;
+        --review-complete: #263238;
+        --night-violet: #171127;
+        --moon-paper: #fff4cf;
+        --bloom: #7fe5a8;
+        --tide: #7fdfff;
+        --near-violet: #c5a9ff;
+        --wind-rose: #ff9db0;
+        --deck-header-height: 74px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body.review-shell {
+        margin: 0;
+        background: linear-gradient(135deg, #050c10, #10252d 58%, #07151b);
+        color: var(--review-ink);
+        font-family: Inter, 'Noto Sans JP', 'Yu Gothic UI', system-ui, sans-serif;
+        font-size: 13px;
+        line-height: 1.38;
+      }
+
+      .review-shell a {
+        color: var(--review-link);
+        text-decoration-thickness: 1px;
+        text-underline-offset: 2px;
+      }
+
+      .review-shell a:hover {
+        color: var(--review-link-hover);
+        background: #3b3216;
+      }
+
+      .review-shell a:visited {
+        color: #f5b7ff;
+      }
+      .review-shell code {
+        color: #b9f6d7;
+        font-size: 11px;
+      }
+      .review-shell small,
+      .review-muted {
+        color: var(--review-muted);
+      }
+
+      .review-header {
+        padding: 20px 24px 14px;
+        background: #081c24;
+        border-bottom: 1px solid var(--review-line);
+      }
+
+      .review-header h1 {
+        margin: 2px 0 4px;
+        color: #fff;
+        font-family: 'BIZ UDPGothic', 'Yu Gothic UI', sans-serif;
+        font-size: clamp(1.15rem, 1.8vw, 1.55rem);
+        font-weight: 700;
+        line-height: 1.2;
+        letter-spacing: 0.02em;
+        white-space: nowrap;
+      }
+
+      .review-header p {
+        max-width: 1100px;
+        margin: 4px 0;
+        color: #e0edf2;
+        font-size: 12px;
+      }
+      .review-main {
+        max-width: none;
+        padding: 12px 14px 36px;
+      }
+
+      .review-panel {
+        margin: 0 0 10px;
+        padding: 12px;
+        border: 1px solid var(--review-line);
+        border-radius: 0;
+        box-shadow: none;
+        background: rgb(13 29 36 / 96%);
+      }
+
+      .review-panel h2 {
+        margin: 0 0 6px;
+        color: #fff;
+        font-size: 1.1rem;
+      }
+      .review-panel > p {
+        margin: 4px 0 8px;
+        color: #d9e8ed;
+      }
+
+      .review-summary-split {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 6px;
+      }
+
+      .review-metric-grid {
+        display: grid;
+        grid-template-columns: repeat(var(--review-metric-columns, 4), minmax(0, 1fr));
+        gap: 6px;
+      }
+
+      .review-guidance-grid {
+        display: grid;
+        grid-template-columns: repeat(var(--review-guidance-columns, 3), minmax(0, 1fr));
+        gap: 6px;
+      }
+
+      .review-compact-unit {
+        min-width: 0;
+        padding: 8px;
+        border: 1px solid var(--review-line);
+        border-radius: 0;
+        background: var(--review-panel-alt);
+      }
+
+      .review-table-wrap {
+        overflow: auto;
+        border: 1px solid var(--review-line);
+        border-radius: 0;
+        background: var(--review-table-bg);
+      }
+
+      .review-table {
+        width: 100%;
+        border-collapse: collapse;
+        border-spacing: 0;
+      }
+
+      .review-equal-peer-table {
+        table-layout: fixed;
+      }
+      .review-equal-peer-table col.review-key {
+        width: var(--review-key-width, 10%);
+      }
+      .review-equal-peer-table col.review-total {
+        width: var(--review-total-width, 12%);
+      }
+      .review-equal-peer-table col.review-peer {
+        width: var(--review-peer-width, 26%);
+      }
+
+      .review-table th,
+      .review-table td {
+        padding: 6px 7px;
+        border-right: 1px solid rgb(102 136 149 / 80%);
+        border-bottom: 1px solid rgb(102 136 149 / 80%);
+        font-size: 12px;
+        line-height: 1.3;
+        text-align: left;
+        vertical-align: top;
+      }
+
+      .review-table th {
+        position: sticky;
+        top: 0;
+        z-index: 2;
+        background: var(--review-header);
+        color: #fff;
+        font-size: 11px;
+        white-space: nowrap;
+      }
+
+      .review-table tbody tr:nth-child(even) {
+        background: #091a21;
+      }
+      .review-table tbody tr:hover {
+        background: #18404c;
+      }
+      .review-table .column-titles th {
+        top: 0;
+        z-index: 4;
+      }
+      .review-table .column-filters th {
+        top: 27px;
+        z-index: 3;
+        padding: 3px;
+        background: var(--review-filter-header);
+      }
+      .review-table .categorical-cell {
+        white-space: nowrap;
+      }
+
+      .review-sort,
+      .review-cell-filter,
+      .review-tag-filter,
+      .review-state,
+      .review-column-filter {
+        border: 1px solid #7898a4;
+        border-radius: 2px;
+        color: #fff;
+        background: #06151b;
+        font: inherit;
+      }
+
+      .review-sort {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        width: 100%;
+        padding: 0;
+        border: 0;
+        background: transparent;
+        font-size: 11px;
+        font-weight: 800;
+        text-align: left;
+        cursor: pointer;
+      }
+
+      .review-cell-filter,
+      .review-tag-filter,
+      .review-state {
+        padding: 2px 5px;
+        font-weight: 700;
+        cursor: pointer;
+      }
+      .review-column-filter {
+        width: 100%;
+        min-width: 0;
+        min-height: 24px;
+        padding: 2px 4px;
+        font-size: 10px;
+      }
+      .review-column-filter::placeholder {
+        color: #aec2ca;
+      }
+
+      .review-sort:hover,
+      .review-cell-filter:hover,
+      .review-tag-filter:hover,
+      .review-state:hover {
+        border-color: var(--review-active);
+        color: var(--review-active);
+      }
+
+      .review-cell-filter.active,
+      .review-tag-filter.active,
+      .review-column-filter.active,
+      [aria-pressed='true'].review-cell-filter,
+      [aria-pressed='true'].review-tag-filter {
+        border-color: var(--review-active);
+        background: var(--review-active);
+        color: var(--review-active-ink);
+        box-shadow: 0 0 0 1px var(--review-active);
+      }
+
+      .review-sort:focus-visible,
+      .review-cell-filter:focus-visible,
+      .review-tag-filter:focus-visible,
+      .review-state:focus-visible,
+      .review-column-filter:focus-visible,
+      .review-shell button:focus-visible,
+      .review-shell a:focus-visible,
+      .review-shell summary:focus-visible,
+      .review-table-wrap:focus-visible,
+      .journey-line:focus-visible {
+        outline: 2px solid var(--review-focus);
+        outline-offset: 2px;
+      }
+
+      .review-table tr.state-progress {
+        background: var(--review-progress);
+      }
+      .review-table tr.state-done {
+        background: var(--review-complete);
+        color: #829397;
+        filter: grayscale(1);
+        opacity: 0.46;
+      }
+      .review-table tr.state-done:hover {
+        background: #34454c;
+        opacity: 0.64;
+      }
+      .review-shell details {
+        margin: 0;
+      }
+      .review-shell details summary {
+        color: var(--review-link);
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      .review-flash {
+        animation: review-flash 1s ease-out;
+      }
+
+      @keyframes review-flash {
+        0%,
+        100% {
+          outline: 0 solid transparent;
+        }
+        25% {
+          outline: 4px solid var(--review-active);
+          outline-offset: -4px;
+        }
+      }
+
+      /* Presentation extensions: the information structure stays readable without JavaScript. */
+      .skip-link {
+        position: fixed;
+        top: 6px;
+        left: 6px;
+        z-index: 50;
+        padding: 7px 10px;
+        background: var(--review-focus);
+        color: #061218 !important;
+        transform: translateY(-150%);
+      }
+
+      .skip-link:focus {
+        transform: translateY(0);
+      }
+
+      .deck-top {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        display: grid;
+        grid-template-columns: minmax(260px, 1fr) auto;
+        gap: 12px;
+        align-items: center;
+      }
+
+      .eyebrow {
+        margin: 0;
+        color: var(--review-link);
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+      }
+
+      .deck-controls,
+      .final-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        align-items: center;
+      }
+
+      .deck-button,
+      .primary-link {
+        display: inline-flex;
+        min-height: 34px;
+        align-items: center;
+        justify-content: center;
+        padding: 6px 10px;
+        border: 1px solid var(--review-line);
+        border-radius: 1px;
+        background: #07151b;
+        color: var(--review-ink);
+        font: inherit;
+        font-weight: 800;
+        text-decoration: none;
+        cursor: pointer;
+      }
+
+      .deck-button:hover,
+      .primary-link:hover {
+        border-color: var(--review-link);
+        background: #302817;
+        color: var(--review-link-hover);
+      }
+
+      .deck-button[aria-pressed='true'],
+      .primary-link {
+        border-color: var(--review-link);
+        background: var(--review-link);
+        color: #17120a !important;
+      }
+
+      .deck-progress {
+        min-width: 54px;
+        color: var(--review-muted);
+        font-variant-numeric: tabular-nums;
+        text-align: center;
+      }
+
+      .deck-nav {
+        position: sticky;
+        top: var(--deck-header-height);
+        z-index: 15;
+        display: flex;
+        gap: 2px;
+        overflow-x: auto;
+        padding: 5px 14px;
+        border-bottom: 1px solid var(--review-line);
+        background: rgb(5 12 16 / 96%);
+        scrollbar-width: thin;
+      }
+
+      .deck-nav a {
+        flex: 0 0 auto;
+        padding: 4px 8px;
+        border: 1px solid transparent;
+        color: var(--review-muted);
+        font-size: 11px;
+        font-weight: 700;
+        text-decoration: none;
+      }
+
+      .deck-nav a[aria-current='true'] {
+        border-color: var(--review-link);
+        color: var(--review-link);
+      }
+
+      .deck-section {
+        position: relative;
+        scroll-margin-top: calc(var(--deck-header-height) + 44px);
+        overflow: clip;
+      }
+
+      .section-index {
+        position: absolute;
+        top: 10px;
+        right: 12px;
+        color: #9ab1ba;
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 0.12em;
+      }
+
+      .section-title {
+        max-width: 950px;
+        margin: 0 0 4px;
+        color: var(--moon-paper);
+        font-family: Georgia, 'Yu Mincho', serif;
+        font-size: clamp(1.45rem, 3vw, 3rem);
+        line-height: 1.04;
+        letter-spacing: -0.025em;
+      }
+
+      .section-lede {
+        max-width: 900px;
+        margin: 4px 0 12px !important;
+        color: #e2edf1 !important;
+        font-size: clamp(0.95rem, 1.4vw, 1.15rem);
+      }
+
+      .thesis-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1.12fr) minmax(300px, 0.88fr);
+        gap: 8px;
+        align-items: stretch;
+      }
+
+      .thesis-statement {
+        display: grid;
+        align-content: center;
+        min-height: 300px;
+        padding: clamp(18px, 4vw, 52px);
+        border: 1px solid #846f3e;
+        background:
+          radial-gradient(circle at 78% 28%, rgb(255 209 102 / 16%), transparent 22%),
+          linear-gradient(142deg, #171127, #09131b 72%);
+      }
+
+      .thesis-statement strong {
+        display: block;
+        max-width: 930px;
+        color: var(--moon-paper);
+        font-family: Georgia, 'Yu Mincho', serif;
+        font-size: clamp(2rem, 5.7vw, 5.7rem);
+        font-weight: 500;
+        line-height: 0.98;
+        letter-spacing: -0.045em;
+      }
+
+      .thesis-statement span {
+        max-width: 780px;
+        margin-top: 18px;
+        color: #d6e3e8;
+        font-size: clamp(0.98rem, 1.6vw, 1.25rem);
+      }
+
+      .orbit-figure {
+        display: grid;
+        min-height: 300px;
+        place-items: center;
+        margin: 0;
+        border: 1px solid var(--review-line);
+        background: #080d1a;
+      }
+
+      .orbit-figure svg {
+        width: min(100%, 520px);
+        height: auto;
+      }
+
+      .metric-value {
+        display: block;
+        color: var(--moon-paper);
+        font-family: Georgia, serif;
+        font-size: clamp(1.45rem, 2.4vw, 2.3rem);
+        line-height: 1;
+      }
+
+      .metric-label {
+        display: block;
+        margin-top: 5px;
+        color: var(--review-muted);
+      }
+
+      .answer-box {
+        padding: 10px;
+        border-left: 3px solid var(--review-link);
+        background: #101d22;
+      }
+
+      .answer-box strong {
+        color: var(--moon-paper);
+      }
+
+      .promise-grid {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(170px, 1fr));
+        gap: 6px;
+      }
+
+      .promise-card {
+        min-height: 190px;
+        padding: 11px;
+        border: 1px solid var(--review-line);
+        background: var(--review-panel-alt);
+      }
+
+      .promise-card .number {
+        display: block;
+        margin-bottom: 16px;
+        color: var(--review-link);
+        font-family: Georgia, serif;
+        font-size: 2rem;
+      }
+
+      .promise-card h3 {
+        margin: 0 0 6px;
+        color: #fff;
+        font-size: 1rem;
+      }
+      .promise-card p {
+        margin: 0;
+        color: var(--review-muted);
+      }
+
+      .journey-line {
+        display: grid;
+        grid-template-columns: repeat(6, minmax(150px, 1fr));
+        gap: 0;
+        margin: 10px 0;
+        overflow-x: auto;
+      }
+
+      .journey-step {
+        position: relative;
+        min-height: 132px;
+        padding: 11px 16px 10px 11px;
+        border: 1px solid var(--review-line);
+        border-right: 0;
+        background: #081820;
+      }
+
+      .journey-step:last-child {
+        border-right: 1px solid var(--review-line);
+      }
+      .journey-step::after {
+        position: absolute;
+        top: 18px;
+        right: -6px;
+        z-index: 2;
+        width: 11px;
+        height: 11px;
+        border: 1px solid var(--review-link);
+        background: #081820;
+        content: '';
+        transform: rotate(45deg);
+      }
+
+      .journey-step:last-child::after {
+        display: none;
+      }
+      .journey-step b {
+        display: block;
+        color: var(--review-link);
+        font-size: 10px;
+        letter-spacing: 0.1em;
+      }
+      .journey-step strong {
+        display: block;
+        margin: 10px 0 4px;
+        color: #fff;
+        font-size: 0.98rem;
+      }
+      .journey-step span {
+        color: var(--review-muted);
+      }
+
+      .realm-name {
+        font-weight: 800;
+      }
+      .realm-bloom {
+        color: var(--bloom);
+      }
+      .realm-tide {
+        color: var(--tide);
+      }
+      .realm-near {
+        color: var(--near-violet);
+      }
+      .realm-wind {
+        color: var(--wind-rose);
+      }
+
+      .screenshot-grid {
+        display: grid;
+        grid-template-columns: 1.15fr 1.15fr 0.7fr;
+        gap: 6px;
+        align-items: stretch;
+      }
+
+      .screenshot-card {
+        display: flex;
+        min-width: 0;
+        flex-direction: column;
+        margin: 0;
+        border: 1px solid var(--review-line);
+        background: #050a12;
+      }
+
+      .screenshot-card img {
+        display: block;
+        width: 100%;
+        min-height: 230px;
+        max-height: 460px;
+        flex: 1 1 auto;
+        object-fit: cover;
+        object-position: top;
+        background: #090815;
+      }
+
+      .screenshot-card.mobile img {
+        object-fit: contain;
+      }
+      .screenshot-card figcaption {
+        padding: 7px 9px;
+        color: var(--review-muted);
+        font-size: 11px;
+      }
+      .screenshot-card figcaption strong {
+        display: block;
+        color: #fff;
+      }
+
+      .consequence-ladder {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(150px, 1fr));
+        gap: 6px;
+      }
+
+      .consequence-rung {
+        padding: 10px;
+        border-top: 3px solid var(--review-line);
+        background: #081820;
+      }
+
+      .consequence-rung:nth-child(1) {
+        border-color: var(--review-link);
+      }
+      .consequence-rung:nth-child(2) {
+        border-color: var(--bloom);
+      }
+      .consequence-rung:nth-child(3) {
+        border-color: var(--tide);
+      }
+      .consequence-rung:nth-child(4) {
+        border-color: var(--near-violet);
+      }
+      .consequence-rung strong {
+        display: block;
+        margin-bottom: 5px;
+        color: #fff;
+      }
+
+      .five-acts {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(150px, 1fr));
+        gap: 4px;
+      }
+
+      .act {
+        min-height: 130px;
+        padding: 10px;
+        border: 1px solid #766943;
+        background: linear-gradient(150deg, #241b26, #0c1720);
+      }
+
+      .act b {
+        color: var(--review-link);
+        font-family: Georgia, serif;
+        font-size: 1.6rem;
+      }
+      .act strong {
+        display: block;
+        margin: 8px 0 4px;
+        color: var(--moon-paper);
+      }
+      .act span {
+        color: var(--review-muted);
+      }
+
+      .speaker-note {
+        margin-top: 8px !important;
+        padding: 7px 9px;
+        border: 1px dashed #55727d;
+        background: #061218;
+      }
+
+      .speaker-note p {
+        margin: 6px 0 0;
+        color: #d7e5ea;
+      }
+
+      .evidence-status {
+        display: inline-block;
+        padding: 2px 5px;
+        border: 1px solid #5fa77b;
+        color: #baf7ce;
+        font-size: 10px;
+        font-weight: 800;
+        white-space: nowrap;
+      }
+
+      .boundary-status {
+        display: inline-block;
+        padding: 2px 5px;
+        border: 1px solid #9a7f42;
+        color: #ffe5a0;
+        font-size: 10px;
+        font-weight: 800;
+        white-space: nowrap;
+      }
+
+      .closing-line {
+        max-width: 1000px;
+        margin: 14px 0;
+        color: var(--moon-paper);
+        font-family: Georgia, 'Yu Mincho', serif;
+        font-size: clamp(1.6rem, 4vw, 4rem);
+        line-height: 1.06;
+      }
+
+      .source-list {
+        columns: 2;
+        column-gap: 24px;
+        margin: 8px 0 0;
+        padding-left: 18px;
+      }
+
+      .source-list li {
+        margin-bottom: 5px;
+        break-inside: avoid;
+      }
+
+      .copy-status {
+        min-height: 1.2em;
+        margin: 5px 0 0;
+        color: #baf7ce;
+      }
+
+      .presentation-mode {
+        scroll-snap-type: y proximity;
+      }
+      .presentation-mode .review-main {
+        padding-bottom: 10vh;
+      }
+      .presentation-mode .deck-section {
+        display: grid;
+        min-height: calc(100vh - 118px);
+        align-content: center;
+        scroll-snap-align: start;
+      }
+
+      @media (max-width: 1250px) {
+        .review-summary-split {
+          grid-template-columns: 1fr;
+        }
+        .promise-grid {
+          grid-template-columns: repeat(3, minmax(180px, 1fr));
+        }
+      }
+
+      @media (max-width: 900px) {
+        .thesis-grid {
+          grid-template-columns: 1fr;
+        }
+        .orbit-figure {
+          min-height: 220px;
+        }
+        .promise-grid {
+          grid-template-columns: repeat(2, minmax(160px, 1fr));
+        }
+        .screenshot-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+        .screenshot-card.mobile {
+          grid-column: 1 / -1;
+        }
+        .screenshot-card.mobile img {
+          max-height: 520px;
+        }
+        .five-acts {
+          grid-template-columns: repeat(3, minmax(140px, 1fr));
+        }
+      }
+
+      @media (max-width: 800px) {
+        .review-metric-grid {
+          grid-template-columns: repeat(2, minmax(140px, 1fr));
+        }
+        .review-guidance-grid {
+          grid-template-columns: 1fr;
+        }
+        .deck-top {
+          grid-template-columns: 1fr;
+        }
+        .deck-controls {
+          justify-content: flex-start;
+        }
+        .consequence-ladder {
+          grid-template-columns: repeat(2, minmax(140px, 1fr));
+        }
+      }
+
+      @media (max-width: 650px) {
+        .review-header {
+          padding: 14px 10px 10px;
+        }
+        .review-header h1 {
+          font-size: 1.05rem;
+          white-space: normal;
+        }
+        .review-main {
+          padding: 8px;
+        }
+        .deck-top {
+          gap: 5px;
+        }
+        .deck-top > div:first-child > p:not(.eyebrow) {
+          display: none;
+        }
+        .deck-top .eyebrow {
+          font-size: 8px;
+          letter-spacing: 0.1em;
+        }
+        .deck-controls {
+          flex-wrap: nowrap;
+          gap: 4px;
+        }
+        .deck-button {
+          min-height: 31px;
+          padding: 5px 7px;
+        }
+        .deck-progress {
+          min-width: 38px;
+        }
+        .review-panel {
+          padding: 9px;
+        }
+        .deck-nav {
+          padding-inline: 8px;
+        }
+        .thesis-statement {
+          min-height: 250px;
+          padding: 20px 15px;
+        }
+        .promise-grid,
+        .screenshot-grid,
+        .five-acts {
+          grid-template-columns: 1fr;
+        }
+        .screenshot-card.mobile {
+          grid-column: auto;
+        }
+        .screenshot-card img {
+          min-height: 190px;
+          max-height: 330px;
+        }
+        .consequence-ladder {
+          grid-template-columns: 1fr;
+        }
+        .source-list {
+          columns: 1;
+        }
+        .presentation-mode .deck-section {
+          min-height: auto;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+        .review-flash {
+          animation: none;
+          outline: 3px solid var(--review-active);
+        }
+      }
+
+      @media print {
+        :root {
+          color-scheme: light;
+        }
+        body.review-shell {
+          background: #fff;
+          color: #111;
+        }
+        .deck-controls,
+        .deck-nav,
+        .skip-link {
+          display: none;
+        }
+        .review-header,
+        .review-panel,
+        .review-compact-unit,
+        .promise-card,
+        .journey-step,
+        .consequence-rung,
+        .act,
+        .speaker-note {
+          border-color: #555;
+          background: #fff;
+          color: #111;
+        }
+        .review-header {
+          position: static;
+        }
+        .review-header h1,
+        .review-header p,
+        .section-title,
+        .section-lede,
+        .review-panel h2,
+        .promise-card h3,
+        .journey-step strong,
+        .consequence-rung strong,
+        .act strong,
+        .speaker-note p,
+        .review-panel > p {
+          color: #111 !important;
+        }
+        .review-muted,
+        .promise-card p,
+        .journey-step span,
+        .act span {
+          color: #333 !important;
+        }
+        .deck-section {
+          break-inside: avoid;
+          page-break-inside: avoid;
+        }
+        .screenshot-card img {
+          max-height: 360px;
+        }
+      }
+    </style>
+  </head>
+  <body class="review-shell">
+    <a class="skip-link" href="#main">本文へ移動</a>
+
+    <header class="review-header deck-top">
+      <div>
+        <p class="eyebrow">MORROWLIGHT · PRESENTATION · 2026-08-01</p>
+        <h1>なぜこれは「最高のウェブ・テーマパーク」なのか</h1>
+        <p>完成した体験、設計思想、実画面、検証証拠を一つの物語として読むプレゼンテーション。</p>
+      </div>
+      <div class="deck-controls" aria-label="プレゼン操作">
+        <button class="deck-button" id="prev-section" type="button" aria-label="前の章へ">←</button>
+        <span class="deck-progress" id="deck-progress" aria-live="polite">1 / 7</span>
+        <button class="deck-button" id="next-section" type="button" aria-label="次の章へ">→</button>
+        <button class="deck-button" id="presentation-toggle" type="button" aria-pressed="false">
+          発表表示
+        </button>
+        <button class="deck-button" id="copy-pitch" type="button">要約コピー</button>
+      </div>
+    </header>
+
+    <nav class="deck-nav" aria-label="章">
+      <a href="#thesis" aria-current="true">01 結論</a>
+      <a href="#reasons">02 最高性</a>
+      <a href="#journey">03 一夜</a>
+      <a href="#park">04 パーク</a>
+      <a href="#memory">05 記憶</a>
+      <a href="#proof">06 実証</a>
+      <a href="#invitation">07 招待</a>
+    </nav>
+
+    <main class="review-main" id="main">
+      <section
+        class="review-panel deck-section"
+        id="thesis"
+        tabindex="-1"
+        aria-labelledby="thesis-title"
+      >
+        <span class="section-index">01 / 07</span>
+        <p class="eyebrow">30-SECOND OVERVIEW</p>
+        <h2 class="section-title" id="thesis-title">これは、テーマパークの紹介サイトではない。</h2>
+        <p class="section-lede">
+          ブラウザそのものが、開園からフィナーレまで続く一夜のパークです。ゲストの行動を世界が覚え、別の場所へ響かせ、最後にその人だけの空として返します。
+        </p>
+
+        <div class="thesis-grid">
+          <div class="thesis-statement">
+            <strong>最高とは、<br />あなたの遊び方を<br />世界が覚えること。</strong>
+            <span>
+              大きさやIPの物量では競わない。URLを開いた一人ひとりに、待ち時間も失敗ペナルティもない、固有の「今夜」をつくる。これはウェブだから到達できるテーマパークです。
+            </span>
+          </div>
+          <figure class="orbit-figure" aria-labelledby="orbit-caption">
+            <svg viewBox="0 0 520 400" role="img" aria-labelledby="orbit-title orbit-desc">
+              <title id="orbit-title">ゲストの遊びが個別の星空へ集まる図</title>
+              <desc id="orbit-desc">
+                四つのアトラクションから伸びた線が中央の星へ集まり、五幕のフィナーレとして広がる。
+              </desc>
+              <defs>
+                <radialGradient id="ember-glow">
+                  <stop offset="0" stop-color="#fff4cf" />
+                  <stop offset="0.35" stop-color="#ffd166" />
+                  <stop offset="1" stop-color="#ffd166" stop-opacity="0" />
+                </radialGradient>
+              </defs>
+              <circle cx="260" cy="200" r="168" fill="none" stroke="#668895" stroke-opacity=".34" />
+              <circle
+                cx="260"
+                cy="200"
+                r="108"
+                fill="none"
+                stroke="#668895"
+                stroke-dasharray="3 7"
+                stroke-opacity=".45"
+              />
+              <path
+                d="M88 118 C164 84 190 165 260 200"
+                fill="none"
+                stroke="#7fe5a8"
+                stroke-width="3"
+              />
+              <path
+                d="M432 112 C355 94 334 164 260 200"
+                fill="none"
+                stroke="#7fdfff"
+                stroke-width="3"
+              />
+              <path
+                d="M86 296 C176 330 192 242 260 200"
+                fill="none"
+                stroke="#c5a9ff"
+                stroke-width="3"
+              />
+              <path
+                d="M434 298 C354 332 324 244 260 200"
+                fill="none"
+                stroke="#ff9db0"
+                stroke-width="3"
+              />
+              <path
+                d="M260 200 C226 250 185 261 131 250 M260 200 C300 248 350 258 397 236"
+                fill="none"
+                stroke="#ffd166"
+                stroke-width="2"
+                stroke-dasharray="4 6"
+              />
+              <circle cx="260" cy="200" r="42" fill="url(#ember-glow)" />
+              <circle cx="260" cy="200" r="9" fill="#fff4cf" />
+              <circle cx="88" cy="118" r="8" fill="#7fe5a8" />
+              <circle cx="432" cy="112" r="8" fill="#7fdfff" />
+              <circle cx="86" cy="296" r="8" fill="#c5a9ff" />
+              <circle cx="434" cy="298" r="8" fill="#ff9db0" />
+              <text x="35" y="94" fill="#baf7ce" font-size="12">Bloomworks</text>
+              <text x="360" y="88" fill="#b8efff" font-size="12">Driftglass</text>
+              <text x="28" y="330" fill="#ddcfff" font-size="12">Near Things</text>
+              <text x="390" y="330" fill="#ffc8d3" font-size="12">Windthread</text>
+              <text x="260" y="154" fill="#fff4cf" font-size="11" text-anchor="middle">
+                YOUR NIGHT
+              </text>
+            </svg>
+            <figcaption id="orbit-caption" class="review-muted">
+              遊んだ痕跡が一つの空へ集まる、MORROWLIGHTの中心構造。
+            </figcaption>
+          </figure>
+        </div>
+
+        <div class="review-metric-grid" style="--review-metric-columns: 4; margin-top: 6px">
+          <div class="review-compact-unit">
+            <span class="metric-value">0</span
+            ><span class="metric-label">ログイン・課金・広告</span>
+          </div>
+          <div class="review-compact-unit">
+            <span class="metric-value">4＋1</span
+            ><span class="metric-label">主要アトラクション＋静かな庭</span>
+          </div>
+          <div class="review-compact-unit">
+            <span class="metric-value">5幕</span
+            ><span class="metric-label">個別に構成される空のフィナーレ</span>
+          </div>
+          <div class="review-compact-unit">
+            <span class="metric-value">1 URL</span
+            ><span class="metric-label">インストール不要の入園口</span>
+          </div>
+        </div>
+
+        <div class="review-summary-split" style="margin-top: 6px">
+          <div class="answer-box">
+            <strong>この資料が答えること</strong
+            ><br />なぜMORROWLIGHTの体験設計が、ウェブ固有の最高のテーマパーク像になっているのか。
+          </div>
+          <div class="answer-box">
+            <strong>この資料が誇張しないこと</strong
+            ><br />物理的な規模、実機・全ブラウザ認証、あるいは人間が本当に30〜60分滞在したという未観測事項。
+          </div>
+        </div>
+
+        <details class="speaker-note">
+          <summary>話者ノート：60秒ピッチ</summary>
+          <p id="sixty-second-pitch">
+            MORROWLIGHTは、テーマパークを説明するサイトではなく、ウェブそのものをテーマパークにした作品です。入口で小さな星を灯し、四つの世界で遊ぶと、選んだ順番や関係、見つけたものが地図、別のアトラクション、音、そして五幕の空のフィナーレへ戻ってきます。勝敗やスコアはありません。短く巡っても、深く遊んでも、見ているだけでも一夜は完成します。ログインも課金もなく、キーボード、タッチ、低電力、動きを減らす設定でも同じ意味の体験へ到達できます。最高である理由は物量ではなく、世界が「あなたがどう遊んだか」を覚え、他の誰でもない今夜として返す、その約束をブラウザだけで実現したことです。
+          </p>
+        </details>
+        <p class="copy-status" id="copy-status" aria-live="polite"></p>
+      </section>
+
+      <section
+        class="review-panel deck-section"
+        id="reasons"
+        tabindex="-1"
+        aria-labelledby="reasons-title"
+      >
+        <span class="section-index">02 / 07</span>
+        <p class="eyebrow">FIVE REASONS</p>
+        <h2 class="section-title" id="reasons-title">最高性は、五つの設計判断から生まれる。</h2>
+        <p class="section-lede">
+          すべての判断が、ひとつの感情——「パークが私の遊び方に気づいていた」——へ収束します。
+        </p>
+
+        <div class="promise-grid">
+          <article class="promise-card">
+            <span class="number">01</span>
+            <h3>ウェブを入口ではなく場所にした</h3>
+            <p>
+              ページを眺めるのではなく、到着し、移動し、遊び、静かに休み、真夜中を迎える。サイト全体が一本の来園体験です。
+            </p>
+          </article>
+          <article class="promise-card">
+            <span class="number">02</span>
+            <h3>選択肢ではなく世界が変わる</h3>
+            <p>
+              根の置き方は、その場の図形だけで終わらない。生きた地図、別の庭、音、フィナーレの星座にまで届きます。
+            </p>
+          </article>
+          <article class="promise-card">
+            <span class="number">03</span>
+            <h3>失敗させず、薄くもしない</h3>
+            <p>
+              正解・点数・タイマーはない一方、最初の反応、意図的な関係づくり、任意の習熟という三層の遊びがあります。
+            </p>
+          </article>
+          <article class="promise-card">
+            <span class="number">04</span>
+            <h3>アクセシビリティを世界観にした</h3>
+            <p>
+              ミュート、低電力、動きを減らす、キーボード操作を代替品にしない。同じ夜を別の感覚様式で体験できます。
+            </p>
+          </article>
+          <article class="promise-card">
+            <span class="number">05</span>
+            <h3>終わったあとに次の夜が始まる</h3>
+            <p>
+              持ち帰るのは個人情報ではなくローカルなNight
+              Chart。次の夜には、前夜の根が最初のアトラクションで待っています。
+            </p>
+          </article>
+        </div>
+
+        <div
+          class="review-table-wrap"
+          style="margin-top: 8px"
+          role="region"
+          aria-label="一般的なWebコンテンツとMORROWLIGHTの比較表"
+          tabindex="0"
+        >
+          <table
+            class="review-table review-equal-peer-table"
+            aria-label="一般的なウェブ体験とMORROWLIGHTの比較"
+          >
+            <colgroup>
+              <col class="review-key" style="--review-key-width: 16%" />
+              <col class="review-peer" style="--review-peer-width: 42%" />
+              <col class="review-peer" style="--review-peer-width: 42%" />
+            </colgroup>
+            <thead>
+              <tr>
+                <th>観点</th>
+                <th>よくあるWebコンテンツ</th>
+                <th>MORROWLIGHT</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="categorical-cell">入口</td>
+                <td>説明を読んでから始める</td>
+                <td>最初の光に触れ、10秒以内に世界が応える</td>
+              </tr>
+              <tr>
+                <td class="categorical-cell">個別化</td>
+                <td>質問票やプロフィールで分類する</td>
+                <td>遊びの履歴そのものから世界を生成する</td>
+              </tr>
+              <tr>
+                <td class="categorical-cell">進行</td>
+                <td>成功／失敗、報酬、完了率</td>
+                <td>好奇心、寄り道、休息も等しく参加になる</td>
+              </tr>
+              <tr>
+                <td class="categorical-cell">記憶</td>
+                <td>アカウントへ保存する</td>
+                <td>端末内だけで夜を覚え、次の夜へ圧縮して渡す</td>
+              </tr>
+              <tr>
+                <td class="categorical-cell">フィナーレ</td>
+                <td>全員に同じエンディング</td>
+                <td>四つの世界の痕跡が五幕の個別公演になる</td>
+              </tr>
+              <tr>
+                <td class="categorical-cell">アクセス</td>
+                <td>端末性能や操作方法で体験が欠ける</td>
+                <td>音なし・低電力・動きなしでも意味と結果が一致する</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <details class="speaker-note">
+          <summary>話者ノート：ここで強調する一文</summary>
+          <p>
+            「MORROWLIGHTは、パーソナライズを“あなたは何タイプですか”と聞かず、“あなたが何をしたか”で実現しています。」
+          </p>
+        </details>
+      </section>
+
+      <section
+        class="review-panel deck-section"
+        id="journey"
+        tabindex="-1"
+        aria-labelledby="journey-title"
+      >
+        <span class="section-index">03 / 07</span>
+        <p class="eyebrow">ONE NIGHT</p>
+        <h2 class="section-title" id="journey-title">
+          ゲストは、説明を読むのではなく一夜を生きる。
+        </h2>
+        <p class="section-lede">
+          感情の起伏が、ページ遷移ではなく「到着→所有→認識→解放→余韻」の来園リズムとして設計されています。
+        </p>
+
+        <div class="journey-line" role="region" aria-label="一夜の体験順序" tabindex="0">
+          <div class="journey-step">
+            <b>00 · DUSK</b><strong>星を灯す</strong
+            ><span>最後の夕光に触れると、パークが即座に目を覚ます。</span>
+          </div>
+          <div class="journey-step">
+            <b>01 · CHOOSE</b><strong>生きた地図を選ぶ</strong
+            ><span>中心のMorrowspireから、自分の興味で次の場所へ向かう。</span>
+          </div>
+          <div class="journey-step">
+            <b>02 · PLAY</b><strong>世界の動詞を学ぶ</strong
+            ><span>配置、注意、観察、風との協働。講義ではなく反応から理解する。</span>
+          </div>
+          <div class="journey-step">
+            <b>03 · NOTICE</b><strong>自分の痕跡に再会する</strong
+            ><span>前の行動が別の場所の地形、住人、光、音として現れる。</span>
+          </div>
+          <div class="journey-step">
+            <b>04 · MIDNIGHT</b><strong>五幕の空をつくる</strong
+            ><span>自ら指揮しても、パークに任せても、同じ記憶が公演になる。</span>
+          </div>
+          <div class="journey-step">
+            <b>05 · MORROW</b><strong>夜を持ち帰る</strong
+            ><span>Night Chartと、翌夜に残る一本の記憶を受け取る。</span>
+          </div>
+        </div>
+
+        <div class="review-summary-split">
+          <div class="review-compact-unit">
+            <h3>5分でも完結する</h3>
+            <p>
+              任意の三つのアトラクションの核心を遊び、Con­stellaryへ。忙しい人を「未完」にしません。
+            </p>
+          </div>
+          <div class="review-compact-unit">
+            <h3>深く遊ぶ理由がある</h3>
+            <p>
+              全世界、異なる戦略、再訪、Hushgarden、月の根、前夜への返事が追加の意味をつくります。水増しの収集作業はありません。
+            </p>
+          </div>
+        </div>
+
+        <div class="review-guidance-grid" style="--review-guidance-columns: 3; margin-top: 6px">
+          <div class="review-compact-unit">
+            <strong>Wonder before explanation</strong><br /><span class="review-muted"
+              >最初の楽しい反応は10秒以内。</span
+            >
+          </div>
+          <div class="review-compact-unit">
+            <strong>Rest is participation</strong><br /><span class="review-muted"
+              >何もしないHushgardenも正当な来園。</span
+            >
+          </div>
+          <div class="review-compact-unit">
+            <strong>No one can miss midnight</strong><br /><span class="review-muted"
+              >指揮、鑑賞、静止画のどの経路でも結末は同等。</span
+            >
+          </div>
+        </div>
+
+        <details class="speaker-note">
+          <summary>話者ノート：テーマパークらしさ</summary>
+          <p>
+            地図、ランドマーク、選べる順路、習熟、静かな場所、再会、真夜中の公演、土産という「テーマパークの時間」を、ブラウザのスクロールではなく状態の変化として実装しています。
+          </p>
+        </details>
+      </section>
+
+      <section
+        class="review-panel deck-section"
+        id="park"
+        tabindex="-1"
+        aria-labelledby="park-title"
+      >
+        <span class="section-index">04 / 07</span>
+        <p class="eyebrow">THE PARK</p>
+        <h2 class="section-title" id="park-title">四つの未来は、四つの異なる遊び方を持つ。</h2>
+        <p class="section-lede">
+          見た目だけを着替えたミニゲームではありません。それぞれの世界が、異なる動詞、感情、残す痕跡を担当します。
+        </p>
+
+        <div
+          class="review-table-wrap"
+          role="region"
+          aria-label="MORROWLIGHTのアトラクション表"
+          tabindex="0"
+        >
+          <table class="review-table" aria-label="MORROWLIGHTのアトラクション一覧">
+            <thead>
+              <tr>
+                <th>場所</th>
+                <th>中心となる遊び</th>
+                <th>感じてほしいこと</th>
+                <th>パークに残る痕跡</th>
+                <th>深い遊び</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="realm-name realm-bloom">Bloomworks</span></td>
+                <td>根を配置し、関係を育てる</td>
+                <td>正解ではなく関係が生態系をつくる</td>
+                <td>生きた根、花粉灯、Afterlightの地形</td>
+                <td>三本の安全な出口／六本の月根による習熟</td>
+              </tr>
+              <tr>
+                <td><span class="realm-name realm-tide">Driftglass Sea</span></td>
+                <td>光を導き、どの信号に注意を向けるか選ぶ</td>
+                <td>見逃しても失敗ではなく、別の航路になる</td>
+                <td>ガラスの航跡、同行する光、和音の間隔</td>
+                <td>異なる潮流、静かな入り江、固有の星座</td>
+              </tr>
+              <tr>
+                <td><span class="realm-name realm-near">Cabinet of Near Things</span></td>
+                <td>未発明の道具を観察し、一つ迎える</td>
+                <td>役に立つ未来は、好奇心から始まる</td>
+                <td>小さな相棒、紋章、言葉の断片</td>
+                <td>展示同士と前夜が交わす参照</td>
+              </tr>
+              <tr>
+                <td><span class="realm-name realm-wind">Windthread</span></td>
+                <td>風に抗わず、傾きと解放で飛ぶ</td>
+                <td>穏やかな道も大胆な道も等しく美しい</td>
+                <td>空の糸、旗、雲の速度、フィナーレの動き</td>
+                <td>高得点ではなく、風景と視点の秘密</td>
+              </tr>
+              <tr>
+                <td><span class="realm-name">Hushgarden</span></td>
+                <td>風を弱め、音を見返し、何もしない</td>
+                <td>休むことも参加である</td>
+                <td>落ち着いた呼吸、前の世界から届く光</td>
+                <td>完了メーターのない余白</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="screenshot-grid" style="margin-top: 8px">
+          <figure class="screenshot-card">
+            <img
+              src="../evidence/screenshots/p6-return-desktop-1440.png"
+              alt="前夜の根の形が薄い線として残るBloomworksのデスクトップ画面"
+              loading="lazy"
+            />
+            <figcaption>
+              <strong>前夜を覚えるBloomworks</strong
+              >二周目では、以前の根が説明文だけでなく実際のSVG形状として待っています。
+            </figcaption>
+          </figure>
+          <figure class="screenshot-card">
+            <img
+              src="../evidence/screenshots/p6-finale-desktop-1440.png"
+              alt="遊びの痕跡が空の図形になる五幕のConstellaryのデスクトップ画面"
+              loading="lazy"
+            />
+            <figcaption>
+              <strong>空が楽器になるConstellary</strong
+              >Bloomworksの根が、第三幕で認識できる星座として帰ってきます。
+            </figcaption>
+          </figure>
+          <figure class="screenshot-card mobile">
+            <img
+              src="../evidence/screenshots/p6-finale-receipt-mobile-375.png"
+              alt="モバイルで五幕とNight receiptを表示したConstellary画面"
+              loading="lazy"
+            />
+            <figcaption>
+              <strong>モバイルも同じ一夜</strong
+              >縮小版ではなく、縦方向に再構成された同じ意味の公演です。
+            </figcaption>
+          </figure>
+        </div>
+
+        <details class="speaker-note">
+          <summary>話者ノート：実画面について</summary>
+          <p>
+            この三枚はコンセプトアートではなく、本番候補を1440pxと375pxで実際に操作して撮った画面です。レイアウト、星図、前夜の根までコードから生成されています。
+          </p>
+        </details>
+      </section>
+
+      <section
+        class="review-panel deck-section"
+        id="memory"
+        tabindex="-1"
+        aria-labelledby="memory-title"
+      >
+        <span class="section-index">05 / 07</span>
+        <p class="eyebrow">THE PARK REMEMBERS</p>
+        <h2 class="section-title" id="memory-title">一つの行動が、四段階で世界を変える。</h2>
+        <p class="section-lede">
+          “選びました”と表示するだけでは、テーマパークはゲストを覚えたことになりません。MORROWLIGHTでは、同じ意味が距離と時間を越えて再登場します。
+        </p>
+
+        <div class="consequence-ladder" aria-label="行動の影響が広がる四段階">
+          <div class="consequence-rung">
+            <strong>1 · TOUCH</strong>押す、置く、触れる。その瞬間に光と形が応える。
+          </div>
+          <div class="consequence-rung">
+            <strong>2 · SCENE</strong>アトラクション内部の地形、生き物、リズムが変わる。
+          </div>
+          <div class="consequence-rung">
+            <strong>3 · PARK</strong>地図、Hushgarden、別の世界へ同じ痕跡が届く。
+          </div>
+          <div class="consequence-rung">
+            <strong>4 · FINALE</strong>その痕跡が、五幕の公演で認識できる形として帰る。
+          </div>
+        </div>
+
+        <div class="five-acts" style="margin-top: 8px" aria-label="Constellaryの五幕">
+          <div class="act">
+            <b>01</b><strong>Awakening</strong><span>最初に灯した星が、自分の名を思い出す。</span>
+          </div>
+          <div class="act">
+            <b>02</b><strong>Gathering</strong
+            ><span>四つの世界が、それぞれの色と音で空へ入る。</span>
+          </div>
+          <div class="act">
+            <b>03</b><strong>Recognition</strong
+            ><span>庭の根、海の光、迎えた道具、風の軌跡に再会する。</span>
+          </div>
+          <div class="act">
+            <b>04</b><strong>Climax</strong><span>すべての経路が真夜中で一つの空になる。</span>
+          </div>
+          <div class="act">
+            <b>05</b><strong>Release</strong><span>星空がゲストに返され、持ち帰れる夜になる。</span>
+          </div>
+        </div>
+
+        <div class="review-summary-split" style="margin-top: 8px">
+          <div class="review-compact-unit">
+            <h3>個別化は意味を変え、設定は意味を変えない</h3>
+            <p>
+              遊び方は星図・動き・言葉・音程を変えます。一方、ミュート、低電力、動きを減らす設定は、結末の意味や結果を変えません。
+            </p>
+          </div>
+          <div class="review-compact-unit">
+            <h3>前夜を残して、進行度は残さない</h3>
+            <p>
+              二周目はまっさらな遊びとして始まります。ただし前夜の根だけが“afterimage”として待ち、返事をすると新しいdawn-rootが育ちます。
+            </p>
+          </div>
+        </div>
+
+        <div class="answer-box" style="margin-top: 8px">
+          <strong>核心：</strong
+          >これは分岐エンディングの一覧ではありません。同じパークが、ゲストの履歴を素材として、毎夜ひとつの公演を作曲する仕組みです。
+        </div>
+
+        <details class="speaker-note">
+          <summary>話者ノート：技術と感情の接続</summary>
+          <p>
+            裏側では決定的な状態モデルと純粋な投影関数が地図・庭・星空を同じ履歴から生成します。技術的な決定性は、テストのためだけでなく「同じ夜をもう一度見れば、同じ思い出に会える」という感情的な信頼に使われています。
+          </p>
+        </details>
+      </section>
+
+      <section
+        class="review-panel deck-section"
+        id="proof"
+        tabindex="-1"
+        aria-labelledby="proof-title"
+      >
+        <span class="section-index">06 / 07</span>
+        <p class="eyebrow">BUILT, NOT PITCHED</p>
+        <h2 class="section-title" id="proof-title">
+          「最高」は宣伝文句ではなく、観測可能な条件に分解した。
+        </h2>
+        <p class="section-lede">
+          面白さそのものを自動テストだけで証明はできません。しかし、約束を支える到達可能性、分岐、アクセシビリティ、表示品質、本番稼働は検証できます。
+        </p>
+
+        <div class="review-metric-grid" style="--review-metric-columns: 4">
+          <div class="review-compact-unit">
+            <span class="metric-value">115</span><span class="metric-label">Vitestテスト合格</span>
+          </div>
+          <div class="review-compact-unit">
+            <span class="metric-value">24 / 24</span
+            ><span class="metric-label">本番Playwright経路合格</span>
+          </div>
+          <div class="review-compact-unit">
+            <span class="metric-value">3 / 3</span
+            ><span class="metric-label">幅別ビジュアルQA合格</span>
+          </div>
+          <div class="review-compact-unit">
+            <span class="metric-value">457.17 KiB</span
+            ><span class="metric-label">検証時のアセット予算</span>
+          </div>
+        </div>
+
+        <div
+          class="review-table-wrap"
+          style="margin-top: 8px"
+          role="region"
+          aria-label="完成条件と検証証拠の表"
+          tabindex="0"
+        >
+          <table class="review-table" aria-label="完成条件と証拠">
+            <thead>
+              <tr>
+                <th>約束</th>
+                <th>確認方法</th>
+                <th>観測結果</th>
+                <th>状態</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>別の遊び方が別の夜をつくる</td>
+                <td>固定seedの異なる履歴を比較</td>
+                <td>根の形、地図、Hushgarden、認識幕、クライマックスが分岐</td>
+                <td><span class="evidence-status">PASS</span></td>
+              </tr>
+              <tr>
+                <td>短い経路も深い経路も成立</td>
+                <td>安全な三本根／任意の六本根、初回／翌夜をE2E</td>
+                <td>すべて到達可能。再訪では前夜の形と新しい返事を確認</td>
+                <td><span class="evidence-status">PASS</span></td>
+              </tr>
+              <tr>
+                <td>入力方法で結果を差別しない</td>
+                <td>ポインター、タッチ、Tab＋Enter/Space</td>
+                <td>同じreducer semanticsと同じ五幕の結果</td>
+                <td><span class="evidence-status">PASS</span></td>
+              </tr>
+              <tr>
+                <td>静かな経路も完全</td>
+                <td>ミュート、reduced motion、low power</td>
+                <td>ゼロ実行アニメーションの静止絵経路でも同じ意味で完了</td>
+                <td><span class="evidence-status">PASS</span></td>
+              </tr>
+              <tr>
+                <td>デスクトップとモバイルで本番稼働</td>
+                <td>Cloudflare本番URLへ24経路</td>
+                <td>伝播安定後24/24、100%がP6版、独立監査GO</td>
+                <td><span class="evidence-status">LIVE</span></td>
+              </tr>
+              <tr>
+                <td>素材が独自である</td>
+                <td>出所台帳とビルド成果を照合</td>
+                <td>二つのOFLフォント以外はプロジェクト制作のCSS/SVG/Web Audio</td>
+                <td><span class="evidence-status">VERIFIED</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="review-summary-split" style="margin-top: 8px">
+          <div class="review-compact-unit">
+            <h3>本番の事実</h3>
+            <p>
+              Cloudflare Workers Static Assets、P6 Version
+              <code>8020402d-5e63-48a2-9d18-e981c4e0f46a</code
+              >、トラフィック100%、追加bindingなし。旧版はrollback対象として保持。
+            </p>
+          </div>
+          <div class="review-compact-unit">
+            <h3>プライバシーの事実</h3>
+            <p>
+              アカウント、分析基盤、アップロード、広告なし。Night
+              Chartと前夜の記憶は端末内に留まり、個人情報を要求しません。
+            </p>
+          </div>
+        </div>
+
+        <details class="speaker-note">
+          <summary>話者ノート：数字の読み方</summary>
+          <p>
+            115という数を品質の代わりにしないことが重要です。数字が証明するのは「どの入り方でも夜が壊れず、遊びの違いが本当に後ろへ届く」こと。美しさや感動は、次のスライドから実際に体験して判断してもらいます。
+          </p>
+        </details>
+      </section>
+
+      <section
+        class="review-panel deck-section"
+        id="invitation"
+        tabindex="-1"
+        aria-labelledby="invitation-title"
+      >
+        <span class="section-index">07 / 07</span>
+        <p class="eyebrow">THE INVITATION</p>
+        <h2 class="section-title" id="invitation-title">
+          結論：MORROWLIGHTは、あなたを客ではなく共作者にする。
+        </h2>
+        <p class="section-lede">
+          最高のテーマパークとは、最も多くのものを見せる場所ではなく、世界との関係を持ち帰れる場所です。
+        </p>
+
+        <p class="closing-line">
+          「パークを見た」ではなく、<br />「パークが私を見ていた」と感じて帰る。
+        </p>
+
+        <div class="review-guidance-grid" style="--review-guidance-columns: 3">
+          <div class="review-compact-unit">
+            <strong>すぐ入れる</strong><br /><span class="review-muted"
+              >URLを開き、最後の光に触れる。説明書も登録もいりません。</span
+            >
+          </div>
+          <div class="review-compact-unit">
+            <strong>自分の速さで遊べる</strong><br /><span class="review-muted"
+              >短く巡る、深く試す、休む、音を消す。そのすべてが一夜になります。</span
+            >
+          </div>
+          <div class="review-compact-unit">
+            <strong>一度しかない夜が残る</strong><br /><span class="review-muted"
+              >遊び方が五幕の星空とNight Chartになり、次の夜に一本の根を残します。</span
+            >
+          </div>
+        </div>
+
+        <div class="final-actions" style="margin-top: 12px">
+          <a
+            class="primary-link"
+            href="https://morrowlight-theme-park.rohto-1111176221.workers.dev/"
+            target="_blank"
+            rel="noopener noreferrer"
+            >MORROWLIGHTへ入園する ↗</a
+          >
+          <a class="deck-button" href="../evidence/p6-live-deployment-2026-08-01.md"
+            >本番公開証跡を読む</a
+          >
+          <a class="deck-button" href="../assets/manifest.md">素材出所台帳を読む</a>
+          <a class="deck-button" href="../../PROJECT.md">プロジェクトの約束を読む</a>
+        </div>
+
+        <div class="review-summary-split" style="margin-top: 12px">
+          <div class="review-compact-unit">
+            <h3>実証済み</h3>
+            <p>
+              <span class="evidence-status">OBSERVED</span>
+              Chromiumのデスクトップ／モバイル経路、キーボード、reduced-motion、low-power、自動WCAG
+              A/AA、本番配信、素材出所。
+            </p>
+          </div>
+          <div class="review-compact-unit">
+            <h3>誠実に残している境界</h3>
+            <p>
+              <span class="boundary-status">OPTIONAL QA</span>
+              人間による音響評価、実時間30〜60分滞在、Safari／Firefox、スクリーンリーダー、物理端末は未認証です。
+            </p>
+          </div>
+        </div>
+
+        <details class="speaker-note" open>
+          <summary>根拠資料と読み方</summary>
+          <ul class="source-list">
+            <li>
+              <a href="../design/experience-blueprint.md">体験ブループリント</a> —
+              約束、感情曲線、各アトラクション、短期／深掘り経路。
+            </li>
+            <li>
+              <a href="../design/visual-system.md">視覚・動き・音の設計</a> —
+              「夜の科学楽器」という統一言語。
+            </li>
+            <li>
+              <a href="../evidence/p6-browser-qa-2026-08-01.md">P6ブラウザQA</a> —
+              1440／768／375pxの実画面観測。
+            </li>
+            <li>
+              <a href="../evidence/p6-functional-closure-2026-08-01.md">P6機能完了証跡</a> —
+              テストと体験密度の境界。
+            </li>
+            <li>
+              <a href="../evidence/p6-live-deployment-2026-08-01.md">P6本番公開証跡</a> —
+              Version、24経路、独立監査、rollback。
+            </li>
+            <li>
+              <a href="../assets/manifest.md">素材出所台帳</a> — 全出荷アセットの作者とライセンス。
+            </li>
+          </ul>
+        </details>
+
+        <noscript
+          ><p class="answer-box">
+            JavaScriptが無効でも資料本文はすべて読めます。章移動ボタンと要約コピーのみ拡張機能です。
+          </p></noscript
+        >
+      </section>
+    </main>
+
+    <script>
+      (() => {
+        const sections = Array.from(document.querySelectorAll('.deck-section'));
+        const navLinks = Array.from(document.querySelectorAll('.deck-nav a'));
+        const progress = document.getElementById('deck-progress');
+        const previous = document.getElementById('prev-section');
+        const next = document.getElementById('next-section');
+        const presentationToggle = document.getElementById('presentation-toggle');
+        const copyPitch = document.getElementById('copy-pitch');
+        const copyStatus = document.getElementById('copy-status');
+        const deckHeader = document.querySelector('.deck-top');
+        let activeIndex = 0;
+
+        const updateHeaderHeight = () => {
+          document.documentElement.style.setProperty(
+            '--deck-header-height',
+            `${Math.ceil(deckHeader.getBoundingClientRect().height)}px`,
+          );
+        };
+
+        updateHeaderHeight();
+        new ResizeObserver(updateHeaderHeight).observe(deckHeader);
+
+        const updateActive = (index) => {
+          activeIndex = Math.max(0, Math.min(sections.length - 1, index));
+          progress.textContent = `${activeIndex + 1} / ${sections.length}`;
+          previous.disabled = activeIndex === 0;
+          next.disabled = activeIndex === sections.length - 1;
+          navLinks.forEach((link, linkIndex) => {
+            if (linkIndex === activeIndex) link.setAttribute('aria-current', 'true');
+            else link.removeAttribute('aria-current');
+          });
+        };
+
+        const visit = (index) => {
+          const targetIndex = Math.max(0, Math.min(sections.length - 1, index));
+          updateActive(targetIndex);
+          sections[targetIndex].scrollIntoView({ behavior: 'smooth', block: 'start' });
+          history.replaceState(null, '', `#${sections[targetIndex].id}`);
+        };
+
+        previous.addEventListener('click', () => visit(activeIndex - 1));
+        next.addEventListener('click', () => visit(activeIndex + 1));
+
+        presentationToggle.addEventListener('click', () => {
+          const enabled = document.documentElement.classList.toggle('presentation-mode');
+          presentationToggle.setAttribute('aria-pressed', String(enabled));
+          presentationToggle.textContent = enabled ? '通常表示' : '発表表示';
+          if (enabled) visit(activeIndex);
+        });
+
+        copyPitch.addEventListener('click', async () => {
+          const pitch = document.getElementById('sixty-second-pitch').textContent.trim();
+          const fallbackCopy = () => {
+            const field = document.createElement('textarea');
+            field.value = pitch;
+            field.setAttribute('readonly', '');
+            field.style.position = 'fixed';
+            field.style.opacity = '0';
+            document.body.append(field);
+            field.select();
+            const copied = document.execCommand('copy');
+            field.remove();
+            return copied;
+          };
+          try {
+            if (!navigator.clipboard) throw new Error('Clipboard API unavailable');
+            await navigator.clipboard.writeText(pitch);
+            copyStatus.textContent = '60秒要約をクリップボードへコピーしました。';
+          } catch {
+            copyStatus.textContent = fallbackCopy()
+              ? '60秒要約をクリップボードへコピーしました。'
+              : 'コピーできませんでした。最初の章の「話者ノート」から選択してください。';
+          }
+        });
+
+        navLinks.forEach((link, index) => {
+          link.addEventListener('click', () => updateActive(index));
+        });
+
+        document.addEventListener('keydown', (event) => {
+          const target = event.target;
+          if (
+            target instanceof HTMLButtonElement ||
+            target instanceof HTMLAnchorElement ||
+            target instanceof HTMLInputElement ||
+            target instanceof HTMLTextAreaElement ||
+            target instanceof HTMLSelectElement
+          )
+            return;
+          if (event.key === 'ArrowRight' || event.key === 'PageDown') {
+            event.preventDefault();
+            visit(activeIndex + 1);
+          } else if (event.key === 'ArrowLeft' || event.key === 'PageUp') {
+            event.preventDefault();
+            visit(activeIndex - 1);
+          } else if (event.key === 'Home') {
+            event.preventDefault();
+            visit(0);
+          } else if (event.key === 'End') {
+            event.preventDefault();
+            visit(sections.length - 1);
+          } else if (
+            event.key === 'Escape' &&
+            document.documentElement.classList.contains('presentation-mode')
+          ) {
+            presentationToggle.click();
+          }
+        });
+
+        const observer = new IntersectionObserver(
+          (entries) => {
+            const visible = entries
+              .filter((entry) => entry.isIntersecting)
+              .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+            if (visible) updateActive(sections.indexOf(visible.target));
+          },
+          { rootMargin: '-20% 0px -55% 0px', threshold: [0.1, 0.35, 0.65] },
+        );
+        sections.forEach((section) => observer.observe(section));
+
+        const initialIndex = sections.findIndex((section) => `#${section.id}` === location.hash);
+        updateActive(initialIndex >= 0 ? initialIndex : 0);
+      })();
+    </script>
+  </body>
+</html>

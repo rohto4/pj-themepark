@@ -136,6 +136,19 @@ Done when: `docs/imp/continuation-plan.md` evals E7–E12 pass with observed evi
 | U022 Constellary performance          | Finale remaining a motif checklist                  | Primary / Sol Max          | Finale becomes an authored deterministic performance   | Completed | 1 RED/GREEN / ~75m            |
 | U023 Extended discovery route         | Automated branches standing in for meaningful depth | Primary + Terra Max        | Layered secrets/replay support an observed deep route  | Completed | 1 RED/GREEN / ~95m            |
 | U024 P6 closure and redeploy          | Regressing the stable public release                | Primary + audit agents     | E7–E12, full gate, browser QA, live E6, rollback ready | Completed | 1 auth + 2 propagation / ~50m |
+| U025 Product presentation             | Finished experience remaining hard to explain       | Primary / Sol Max          | Standalone Japanese HTML explains thesis and evidence  | Completed | 2 browser fixes / ~45m        |
+
+## Presentation delivery record
+
+- `docs/presentations/morrowlight-why-best.html` presents the product thesis, five reasons, guest
+  journey, attraction portfolio, consequence ladder, five-act finale, observed production evidence,
+  and honest quality boundary in seven chapters.
+- The normal reading surface works without JavaScript; presentation mode adds chapter controls,
+  keyboard navigation, progress, and a copyable 60-second pitch.
+- Static structure and script checks pass. Chromium observations pass at 1440 × 900, 768 × 1024
+  reduced-motion, and 375 × 812 with 3/3 images, zero horizontal overflow, zero axe A/AA violations,
+  and zero console, page, or request failures.
+- Evidence: `docs/evidence/presentation-qa-2026-08-01.md`.
 
 ## Session handoff
 

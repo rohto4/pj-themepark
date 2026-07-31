@@ -86,4 +86,52 @@ describe('world projection', () => {
       now.mockRestore();
     }
   });
+
+  it('grows a real dawn-root link on three surfaces after an overnight reply', () => {
+    const base = bloomState('bridge', 5);
+    const echoed: GuestState = {
+      ...base,
+      discoveries: [
+        'carry:bloom:v1:cluster:2:root',
+        'return:bloom:v1:cluster:2:root:bridge:gather',
+      ],
+    };
+    const counterpoint: GuestState = {
+      ...base,
+      discoveries: [
+        'carry:bloom:v1:cluster:2:root',
+        'return:bloom:v1:cluster:2:root:bridge:wander',
+      ],
+    };
+    const plain = deriveWorldProjection(base).bloom;
+    const echo = deriveWorldProjection(echoed).bloom;
+    const answer = deriveWorldProjection(counterpoint).bloom;
+
+    for (const surface of ['map', 'hushgarden', 'constellary'] as const) {
+      expect(echo?.[surface].paths).toEqual(
+        expect.arrayContaining([expect.objectContaining({ role: 'memory' })]),
+      );
+      expect(echo?.[surface].paths.length).toBeGreaterThan(plain?.[surface].paths.length ?? 0);
+      expect(echo?.[surface].geometryId).not.toBe(plain?.[surface].geometryId);
+      expect(echo?.[surface].geometryId).not.toBe(answer?.[surface].geometryId);
+      expect(echo?.[surface].paths.find((path) => path.role === 'memory')?.d).not.toBe(
+        answer?.[surface].paths.find((path) => path.role === 'memory')?.d,
+      );
+    }
+  });
+
+  it('ignores malformed or mismatched return controls instead of projecting invented history', () => {
+    const base = bloomState('wild', 6);
+    const malformed: GuestState = {
+      ...base,
+      discoveries: ['return:bloom:v1:cluster:2:root:wild:copied'],
+    };
+    const mismatched: GuestState = {
+      ...base,
+      discoveries: ['return:bloom:v1:cluster:2:root:bridge:gather'],
+    };
+
+    expect(deriveWorldProjection(malformed)).toEqual(deriveWorldProjection(base));
+    expect(deriveWorldProjection(mismatched)).toEqual(deriveWorldProjection(base));
+  });
 });

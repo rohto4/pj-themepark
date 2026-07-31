@@ -1,9 +1,10 @@
 import type { GuestState } from './guest-state';
+import { deriveBloomReturnReply, type BloomReturnReply } from './return-continuity';
 
 export type ProjectedPath = {
   id: string;
   d: string;
-  role: 'root' | 'bridge' | 'runner' | 'chorus';
+  role: 'root' | 'bridge' | 'runner' | 'chorus' | 'memory';
 };
 
 export type ProjectedNode = {
@@ -246,19 +247,57 @@ function chorusPath(surface: SurfaceName): ProjectedPath {
   return paths[surface];
 }
 
+function dawnRootPath(surface: SurfaceName, reply: BloomReturnReply): ProjectedPath {
+  const patternIndex = { cluster: 0, bridge: 1, wild: 2 }[reply.memory.pattern];
+  const gearIndex = { gather: 0, connect: 1, wander: 2 }[reply.replyGear];
+  const paths: Record<SurfaceName, string> = {
+    map: [
+      `M233 397C${286 + patternIndex * 18} 442 ${337 + gearIndex * 25} 514 ${420 + gearIndex * 42} 548`,
+      `M233 397C${310 + patternIndex * 15} 361 ${421 + gearIndex * 29} 351 ${548 + gearIndex * 31} 385`,
+      `M233 397C${190 - patternIndex * 20} 456 ${151 + gearIndex * 18} 536 ${78 + gearIndex * 34} 574`,
+    ][gearIndex]!,
+    hushgarden: [
+      `M26 69C${62 + patternIndex * 8} 82 ${111 + gearIndex * 12} 57 ${194 - gearIndex * 9} 73`,
+      `M23 71C${58 + patternIndex * 7} 31 ${121 + gearIndex * 10} 82 ${201 - gearIndex * 8} 42`,
+      `M24 70C${67 + patternIndex * 6} 91 ${131 + gearIndex * 8} 13 ${203 - gearIndex * 7} 66`,
+    ][gearIndex]!,
+    constellary: [
+      `M36 150C${88 + patternIndex * 9} 168 ${169 + gearIndex * 13} 105 ${267 - gearIndex * 7} 147`,
+      `M32 151C${82 + patternIndex * 10} 79 ${190 + gearIndex * 11} 162 ${269 - gearIndex * 8} 51`,
+      `M34 149C${91 + patternIndex * 8} 178 ${184 + gearIndex * 10} 17 ${270 - gearIndex * 7} 139`,
+    ][gearIndex]!,
+  };
+  return {
+    id: `${surface}-dawn-root-${reply.memory.pattern}-${reply.currentPattern}-${reply.replyGear}`,
+    d: paths[surface],
+    role: 'memory',
+  };
+}
+
 function makeSurface(
   surface: SurfaceName,
   pattern: BloomPattern,
   pulse: number,
   mastered: boolean,
+  returnReply: BloomReturnReply | null,
   paths: Readonly<Record<BloomPattern, readonly ProjectedPath[]>>,
 ): ProjectedSurface {
   const copy = PATTERN_COPY[pattern];
+  const hasReply = returnReply?.currentPattern === pattern;
+  const projectedPaths = [
+    ...paths[pattern],
+    ...(mastered ? [chorusPath(surface)] : []),
+    ...(hasReply ? [dawnRootPath(surface, returnReply)] : []),
+  ];
   return {
-    geometryId: `bloom-${surface}-${pattern}-${pulse}${mastered ? '-chorus' : ''}`,
+    geometryId: `bloom-${surface}-${pattern}-${pulse}${mastered ? '-chorus' : ''}${
+      hasReply ? `-dawn-${returnReply.memory.pattern}-${returnReply.replyGear}` : ''
+    }`,
     viewBox: SURFACE_VIEWBOX[surface],
-    accessibleLabel: `Bloomworks ${copy.form}, ${pulse} answering lights${mastered ? ', with the moon-root chorus' : ''}`,
-    paths: mastered ? [...paths[pattern], chorusPath(surface)] : [...paths[pattern]],
+    accessibleLabel: `Bloomworks ${copy.form}, ${pulse} answering lights${
+      mastered ? ', with the moon-root chorus' : ''
+    }${hasReply ? `, and a dawn-root answering last night’s ${returnReply.memory.pattern}` : ''}`,
+    paths: projectedPaths,
     nodes: projectedNodes(surface, pattern, pulse),
   };
 }
@@ -272,9 +311,24 @@ export function deriveWorldProjection(
   const pattern = trace.pattern;
   const pulse = boundedPulse(trace.pulse);
   const mastered = state.discoveries.includes('bloom-moon-root-chorus');
-  const map = makeSurface('map', pattern, pulse, mastered, MAP_PATHS);
-  const hushgardenBase = makeSurface('hushgarden', pattern, pulse, mastered, HUSH_PATHS);
-  const constellary = makeSurface('constellary', pattern, pulse, mastered, CONSTELLARY_PATHS);
+  const returnReply = deriveBloomReturnReply(state);
+  const map = makeSurface('map', pattern, pulse, mastered, returnReply, MAP_PATHS);
+  const hushgardenBase = makeSurface(
+    'hushgarden',
+    pattern,
+    pulse,
+    mastered,
+    returnReply,
+    HUSH_PATHS,
+  );
+  const constellary = makeSurface(
+    'constellary',
+    pattern,
+    pulse,
+    mastered,
+    returnReply,
+    CONSTELLARY_PATHS,
+  );
 
   return {
     bloom: {

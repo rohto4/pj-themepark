@@ -146,8 +146,8 @@ reduced-motion, and low-power routes finish with the same result fingerprint.
 | P6-C Hero attraction    | More buttons disguised as mastery               | Multi-stage strategy loop passes unit/component/E2E   | Completed   |
 | P6-D Living consequence | Text describing state instead of world response | Three downstream authored surfaces diverge            | Completed   |
 | P6-E Performance finale | Checklist finale                                | Deterministic five-beat Constellary passes all modes  | Completed   |
-| P6-F Return/deep route  | Content padding                                 | Seeded continuity and observed deep-route evidence    | In progress |
-| P6-G Closure            | Breaking stable release                         | Full/local/live/independent gates and rollback record | Pending     |
+| P6-F Return/deep route  | Content padding                                 | Seeded continuity and observed deep-route evidence    | Completed   |
+| P6-G Closure            | Breaking stable release                         | Full/local/live/independent gates and rollback record | In progress |
 
 ## P6-C implementation record
 
@@ -217,3 +217,33 @@ reduced-motion, and low-power routes finish with the same result fingerprint.
   first attraction. The returning guest must recognize what carried forward, then receive a new
   optional goal whose result persists into the map and finale without adding an account or schema
   migration.
+
+## P6-F implementation record
+
+- Pure continuity RED observed: three return-contract assertions failed against inert stubs, then
+  two guest-state assertions failed because the old new-night action erased all memory and had no
+  seed-only resume path.
+- Pure continuity GREEN observed: 16/16 focused state/continuity tests and typecheck pass. A finished
+  local night compresses only Bloom `pattern`, bounded `pulse`, and chorus mastery into one strict
+  `carry:bloom:v1:*` discovery. The new state remains schema v1 with empty traces, attraction
+  completion, finale, and revision. Ambiguous or malformed carry values fail closed.
+- Night Code uses the separate `RESUME_NIGHT` action and remains seed-only. Internal carry/reply
+  tokens are filtered from generic secret motifs; valid memory is normalized to authored
+  `memory:bloom:*` and `dawn-root:*` motifs.
+- Exact next fixture: Bloomworks must show the remembered pattern as real but semantically
+  compressed afterimage geometry before the first placement. Its pattern-specific moon socket must
+  accept any one expressive gear as a reply without changing the three-root short exit.
+- Component and projection GREEN observed: the return hook adds real compressed afterimage paths,
+  preserves the three-root exit, marks one pattern-specific listening moon socket, accepts any gear
+  as an expressive reply, and adds a `memory` dawn-root path to map, Hushgarden, and Constellary.
+- Public-UI return route GREEN observed on desktop and mobile: finish one night, begin another,
+  reload, verify zero old progress, answer the remembered root, and reach a changed five-act
+  recognition. Reduced-motion + low-power reported zero running afterimage animations and no
+  horizontal clipping.
+- Full P6-F gate observed: format, lint, typecheck, production build, 19 Vitest files / 114 tests,
+  and 22 Playwright desktop/mobile routes all pass. Asset budget passes at 11 files / 454.93 KiB.
+  `docs/evidence/p6-functional-closure-2026-08-01.md` records the honest interaction-density and
+  dwell-time boundary. The deployed Worker remains unchanged.
+- Exact next action: checkpoint the functional closure, run one batched browser visual review of
+  the return hook and five-act finale at 1440, 768, and 375 widths, fix only observed defects, then
+  repeat the full local gate before the deployment boundary.

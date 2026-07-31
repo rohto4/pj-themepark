@@ -203,4 +203,64 @@ describe('guest state', () => {
       preferences: { motion: 'reduced', audio: 'on' },
     });
   });
+
+  it('carries one bounded Bloom memory only from a finished local night', () => {
+    let state = createGuestState(12, { motion: 'reduced', audio: 'on' });
+    state = reduceGuestState(state, { type: 'LIGHT_STAR' });
+    state = complete(state, { attractionId: 'bloomworks', pattern: 'bridge', pulse: 4 });
+    state = reduceGuestState(state, {
+      type: 'DISCOVER',
+      discoveryId: 'bloom-moon-root-chorus',
+    });
+    state = complete(state, {
+      attractionId: 'driftglass',
+      route: 'horizon',
+      companions: ['bell'],
+    });
+    state = complete(state, { attractionId: 'cabinet', nearThing: 'weather-loom' });
+    state = reduceGuestState(state, { type: 'BEGIN_FINALE' });
+    state = reduceGuestState(state, { type: 'COMPLETE_FINALE' });
+
+    const another = reduceGuestState(state, { type: 'BEGIN_NEW_NIGHT', seed: 99 });
+
+    expect(another).toMatchObject({
+      schemaVersion: 1,
+      seed: 99,
+      phase: 'arrival',
+      currentScene: 'arrival',
+      completedAttractions: [],
+      discoveries: ['carry:bloom:v1:bridge:4:chorus'],
+      traces: {},
+      finale: null,
+      revision: 0,
+      preferences: { motion: 'reduced', audio: 'on' },
+    });
+  });
+
+  it('keeps Night Code resume seed-only and never leaks continuity control tokens into motifs', () => {
+    let state = createGuestState(12);
+    state = reduceGuestState(state, { type: 'LIGHT_STAR' });
+    state = complete(state, { attractionId: 'bloomworks', pattern: 'wild', pulse: 7 });
+    state = complete(state, {
+      attractionId: 'driftglass',
+      route: 'cove',
+      companions: ['flicker'],
+    });
+    state = complete(state, { attractionId: 'cabinet', nearThing: 'enough-clock' });
+    state = reduceGuestState(state, { type: 'BEGIN_FINALE' });
+    state = reduceGuestState(state, { type: 'COMPLETE_FINALE' });
+
+    const resumed = reduceGuestState(state, { type: 'RESUME_NIGHT', seed: 99 });
+    expect(resumed.discoveries).toEqual([]);
+
+    const returned: GuestState = {
+      ...createGuestState(99),
+      discoveries: ['carry:bloom:v1:wild:7:root', 'return:bloom:v1:wild:7:root:bridge:connect'],
+    };
+    const recipe = deriveFinaleRecipe(returned);
+    expect(recipe.motifIds).toContain('memory:bloom:wild:7:root');
+    expect(recipe.motifIds).toContain('dawn-root:wild:bridge:connect');
+    expect(recipe.motifIds.some((motif) => motif.startsWith('secret:carry:'))).toBe(false);
+    expect(recipe.motifIds.some((motif) => motif.startsWith('secret:return:'))).toBe(false);
+  });
 });

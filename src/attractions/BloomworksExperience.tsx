@@ -1,6 +1,8 @@
 import { useState } from 'react';
 
 import { getAttraction, type AttractionChoice } from '../content/attractions';
+import { deriveBloomReplyDiscovery, type BloomReturnMemory } from '../experience/return-continuity';
+import { deriveWorldProjection } from '../experience/world-projection';
 import {
   canCompleteBloom,
   createBloomSession,
@@ -99,9 +101,11 @@ function placementLabel(count: number, depth: 'core' | 'moon'): string {
 export function BloomworksExperience({
   onComplete,
   onDiscover,
+  returnMemory = null,
 }: {
   onComplete: (choice: AttractionChoice) => void;
   onDiscover?: (discoveryId: string) => void;
+  returnMemory?: BloomReturnMemory | null;
 }) {
   const [session, setSession] = useState(createBloomSession);
   const graph = deriveBloomGraph(session);
@@ -111,6 +115,31 @@ export function BloomworksExperience({
   const selectedSocket = session.selectedMoonSocket
     ? getMoonSocket(session.selectedMoonSocket)
     : null;
+  const returnAfterimage = returnMemory
+    ? (deriveWorldProjection({
+        traces: {
+          bloomworks: {
+            attractionId: 'bloomworks',
+            pattern: returnMemory.pattern,
+            pulse: returnMemory.pulse,
+          },
+        },
+        discoveries: returnMemory.mastered ? ['bloom-moon-root-chorus'] : [],
+      }).bloom?.constellary ?? null)
+    : null;
+  const replyPlacement = returnMemory
+    ? session.placements.find((placement) => placement.socketId === returnMemory.replySocket)
+    : null;
+  const replyDiscovery =
+    returnMemory && outcome?.choice.trace.attractionId === 'bloomworks'
+      ? deriveBloomReplyDiscovery(returnMemory, session.placements, outcome.choice.trace.pattern)
+      : null;
+  const replyKind =
+    returnMemory && replyPlacement
+      ? replyPlacement.gearId === returnMemory.previousGear
+        ? 'echo'
+        : 'counterpoint'
+      : null;
   const canPlant =
     (session.depth === 'core' && session.placements.length < 3) ||
     (session.depth === 'moon' && session.selectedMoonSocket !== null && !moonComplete);
@@ -122,6 +151,7 @@ export function BloomworksExperience({
   function completeGarden(): void {
     if (!outcome) return;
     if (outcome.masteryDiscoveryId) onDiscover?.(outcome.masteryDiscoveryId);
+    if (replyDiscovery) onDiscover?.(replyDiscovery);
     onComplete(outcome.choice);
   }
 
@@ -139,6 +169,17 @@ export function BloomworksExperience({
           Every root settles immediately. No dragging, timing, or score is required.
         </p>
       </header>
+
+      {returnMemory ? (
+        <aside className="bloom-play__return" data-testid="bloom-return-hook">
+          <p className="bloom-play__return-eyebrow">Root afterimage · local memory</p>
+          <h3>A root remembered overnight</h3>
+          <p>{returnMemory.formLabel} stayed awake beneath the glass.</p>
+          <strong>{returnMemory.goalTitle}</strong>
+          <p>{returnMemory.goalCopy}</p>
+          <small>The first three roots are entirely new. This reply is optional.</small>
+        </aside>
+      ) : null}
 
       <div
         className="bloom-play__garden"
@@ -160,12 +201,19 @@ export function BloomworksExperience({
             Moon-root chorus found — the second garden remembers the first root phrase.
           </p>
         ) : null}
+        {replyKind ? (
+          <p className="bloom-play__return-response" data-reply-kind={replyKind}>
+            {replyKind === 'echo'
+              ? 'The old rhythm recognizes itself in the new root.'
+              : 'The old rhythm bends toward a new answer.'}
+          </p>
+        ) : null}
       </div>
 
       <div className="bloom-play__network-shell">
         <svg
           className="bloom-play__network"
-          viewBox="0 0 300 150"
+          viewBox="0 0 300 180"
           role="img"
           aria-label="Living root network"
           data-node-count={graph.nodes.length}
@@ -181,6 +229,28 @@ export function BloomworksExperience({
               </feMerge>
             </filter>
           </defs>
+          {returnAfterimage && returnMemory ? (
+            <g
+              className="bloom-play__return-afterimage"
+              data-testid="bloom-return-afterimage"
+              data-return-pattern={returnMemory.pattern}
+              data-return-kind={returnMemory.kind}
+              aria-hidden="true"
+            >
+              {returnAfterimage.paths.map((path) => (
+                <path key={path.id} d={path.d} data-return-role={path.role} />
+              ))}
+              {returnAfterimage.nodes.map((node) => (
+                <circle
+                  key={node.id}
+                  cx={node.cx}
+                  cy={node.cy}
+                  r={node.radius}
+                  data-return-role={node.role}
+                />
+              ))}
+            </g>
+          ) : null}
           <g className="bloom-play__empty-sockets" aria-hidden="true">
             <circle cx="74" cy="116" r="8" />
             <circle cx="150" cy="88" r="8" />
@@ -247,6 +317,7 @@ export function BloomworksExperience({
                 (placement) => placement.socketId === socket.id,
               );
               const selected = session.selectedMoonSocket === socket.id;
+              const isReturnReply = returnMemory?.replySocket === socket.id;
               return (
                 <button
                   type="button"
@@ -254,11 +325,16 @@ export function BloomworksExperience({
                   className={`bloom-play__moon-socket${selected ? ' is-selected' : ''}`}
                   aria-label={socket.buttonLabel}
                   aria-pressed={selected}
+                  data-return-reply={isReturnReply || undefined}
                   disabled={occupied}
                   onClick={() => act({ type: 'SELECT_MOON_SOCKET', socketId: socket.id })}
                 >
                   <strong>{socket.label}</strong>
-                  <span>{occupied ? 'Root placed' : socket.detail}</span>
+                  <span>
+                    {occupied
+                      ? 'Root placed'
+                      : `${socket.detail}${isReturnReply ? ' · Listening across nights' : ''}`}
+                  </span>
                 </button>
               );
             })}

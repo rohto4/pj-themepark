@@ -1,3 +1,10 @@
+import {
+  createBloomReturnDiscovery,
+  deriveBloomReturnMemory,
+  deriveBloomReturnReply,
+  isBloomContinuityControl,
+} from './return-continuity';
+
 export const GUEST_STATE_VERSION = 1 as const;
 
 export type AttractionId = 'bloomworks' | 'driftglass' | 'cabinet' | 'windthread';
@@ -56,7 +63,8 @@ export type GuestAction =
   | { type: 'SET_PREFERENCE'; key: PreferenceKey; value: GuestPreferences[PreferenceKey] }
   | { type: 'BEGIN_FINALE' }
   | { type: 'COMPLETE_FINALE' }
-  | { type: 'BEGIN_NEW_NIGHT'; seed: number };
+  | { type: 'BEGIN_NEW_NIGHT'; seed: number }
+  | { type: 'RESUME_NIGHT'; seed: number };
 
 const DEFAULT_PREFERENCES: GuestPreferences = {
   audio: 'off',
@@ -252,7 +260,13 @@ export function reduceGuestState(state: GuestState, action: GuestAction): GuestS
         revision: state.revision + 1,
       };
 
-    case 'BEGIN_NEW_NIGHT':
+    case 'BEGIN_NEW_NIGHT': {
+      const carry = createBloomReturnDiscovery(state);
+      const next = createGuestState(action.seed, state.preferences);
+      return carry ? { ...next, discoveries: [carry] } : next;
+    }
+
+    case 'RESUME_NIGHT':
       return createGuestState(action.seed, state.preferences);
   }
 }
@@ -274,6 +288,11 @@ export function deriveFinaleRecipe(state: GuestState): FinaleRecipe {
   const drift = state.traces.driftglass;
   const cabinet = state.traces.cabinet;
   const wind = state.traces.windthread;
+  const returnMemory = deriveBloomReturnMemory(state);
+  const returnReply = deriveBloomReturnReply(state);
+  const publicDiscoveries = state.discoveries.filter(
+    (discovery) => !isBloomContinuityControl(discovery),
+  );
 
   const titleLead = bloom ? BLOOM_TITLES[bloom.pattern] : wind ? 'Wind-Written' : 'Emberlit';
   const titleEnd = drift
@@ -287,7 +306,13 @@ export function deriveFinaleRecipe(state: GuestState): FinaleRecipe {
     drift ? `drift:${drift.route}:${[...drift.companions].sort().join('+') || 'solo'}` : null,
     cabinet ? `near:${cabinet.nearThing}` : null,
     wind ? `wind:${wind.flight}:${wind.rings}` : null,
-    ...state.discoveries.map((discovery) => `secret:${discovery}`),
+    returnMemory
+      ? `memory:bloom:${returnMemory.pattern}:${returnMemory.pulse}:${returnMemory.kind}`
+      : null,
+    returnReply
+      ? `dawn-root:${returnReply.memory.pattern}:${returnReply.currentPattern}:${returnReply.replyGear}`
+      : null,
+    ...publicDiscoveries.map((discovery) => `secret:${discovery}`),
   ].filter((motif): motif is string => motif !== null);
 
   const palettes = ['ember-tide', 'bloom-moon', 'violet-wind'] as const;
@@ -297,7 +322,14 @@ export function deriveFinaleRecipe(state: GuestState): FinaleRecipe {
     title: `The ${titleLead} ${titleEnd}`,
     palette: drift?.route ?? palettes[state.seed % palettes.length] ?? palettes[0],
     growth: bloom?.pattern ?? 'ember',
-    emblem: cabinet?.nearThing ?? state.discoveries[0] ?? `star-${state.seed % 7}`,
+    emblem:
+      cabinet?.nearThing ??
+      publicDiscoveries[0] ??
+      (returnReply
+        ? `dawn-${returnReply.memory.pattern}-${returnReply.currentPattern}`
+        : returnMemory
+          ? `remembered-${returnMemory.pattern}`
+          : `star-${state.seed % 7}`),
     movement: wind?.flight ?? (drift?.route === 'horizon' ? 'soar' : 'drift'),
     motifIds,
   };

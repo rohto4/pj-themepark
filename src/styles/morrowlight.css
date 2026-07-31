@@ -770,6 +770,11 @@ button:disabled {
   stroke-dasharray: 2 7;
 }
 
+.map-bloom-afterlight__path--memory {
+  color: var(--ember-pale);
+  stroke-dasharray: 1 5;
+}
+
 .map-bloom-afterlight__node {
   fill: var(--ink);
   stroke: currentcolor;
@@ -1099,6 +1104,11 @@ button:disabled {
 .hushgarden-afterlight__path--chorus {
   color: var(--ember-hot);
   stroke-dasharray: 2 5;
+}
+
+.hushgarden-afterlight__path--memory {
+  color: var(--ember-pale);
+  stroke-dasharray: 1 4;
 }
 
 .hushgarden-afterlight__node {
@@ -1508,6 +1518,69 @@ button:disabled {
   font-size: 0.75rem;
 }
 
+.bloom-play__return {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(9rem, 0.65fr) minmax(14rem, 1.35fr);
+  gap: 0.35rem clamp(1rem, 4vw, 3rem);
+  max-width: 52rem;
+  padding: 1rem 0 1rem 1.2rem;
+  border-left: 1px solid var(--ember-hot);
+}
+
+.bloom-play__return::before {
+  position: absolute;
+  top: 0.9rem;
+  left: -0.28rem;
+  width: 0.5rem;
+  aspect-ratio: 1;
+  border: 1px solid var(--ember-hot);
+  border-radius: 50%;
+  background: var(--ink-deep);
+  box-shadow: 0 0 1rem rgb(242 167 95 / 46%);
+  content: '';
+}
+
+.bloom-play__return-eyebrow {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: var(--ember-hot);
+  font-size: 0.65rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.bloom-play__return h3 {
+  grid-row: span 2;
+  margin: 0;
+  color: var(--paper);
+  font-family: var(--display);
+  font-size: clamp(1.4rem, 3vw, 2.2rem);
+  font-weight: 500;
+  line-height: 1.05;
+}
+
+.bloom-play__return p,
+.bloom-play__return strong,
+.bloom-play__return small {
+  margin: 0;
+  color: var(--moon-dim);
+  font-size: 0.75rem;
+  line-height: 1.5;
+}
+
+.bloom-play__return strong {
+  margin-top: 0.25rem;
+  color: var(--bloom);
+  font-family: var(--display);
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.bloom-play__return small {
+  color: var(--ember-pale);
+}
+
 .bloom-play__garden {
   padding: 1.2rem;
   border: 1px solid rgb(146 214 160 / 35%);
@@ -1545,6 +1618,18 @@ button:disabled {
   font-style: italic;
 }
 
+.bloom-play__return-response {
+  margin: 0.45rem 0 0;
+  color: var(--ember-pale);
+  font-family: var(--display);
+  font-size: 1rem;
+  font-style: italic;
+}
+
+.bloom-play__return-response[data-reply-kind='counterpoint'] {
+  color: var(--rose);
+}
+
 .bloom-play__network-shell {
   position: relative;
   display: grid;
@@ -1570,6 +1655,34 @@ button:disabled {
   width: min(100%, 44rem);
   min-height: 14rem;
   overflow: visible;
+}
+
+.bloom-play__return-afterimage {
+  color: var(--ember-pale);
+  opacity: 0.34;
+  pointer-events: none;
+}
+
+.bloom-play__return-afterimage path {
+  fill: none;
+  stroke: currentcolor;
+  stroke-dasharray: 3 7;
+  stroke-linecap: round;
+  stroke-width: 1.4;
+  vector-effect: non-scaling-stroke;
+  animation: bloom-memory-breathe 4.8s ease-in-out infinite alternate;
+}
+
+.bloom-play__return-afterimage [data-return-role='chorus'] {
+  color: var(--ember-hot);
+  stroke-dasharray: 1 4;
+}
+
+.bloom-play__return-afterimage circle {
+  fill: var(--ink-deep);
+  stroke: currentcolor;
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
 }
 
 .bloom-play__empty-sockets circle {
@@ -1695,6 +1808,15 @@ button:disabled {
   border-style: solid;
   border-color: var(--bloom);
   background: rgb(146 214 160 / 10%);
+}
+
+.bloom-play__moon-socket[data-return-reply='true']:not(:disabled) {
+  border-style: double;
+  border-color: var(--ember-hot);
+  background:
+    radial-gradient(circle at 88% 18%, rgb(242 167 95 / 22%), transparent 20%),
+    rgb(146 214 160 / 5%);
+  box-shadow: inset 0 0 1.5rem rgb(242 167 95 / 5%);
 }
 
 .bloom-play__moon-socket:disabled {
@@ -2145,6 +2267,12 @@ button:disabled {
 .finale-recognition__path--chorus {
   color: var(--ember-hot);
   stroke-dasharray: 2 5;
+}
+
+.finale-recognition__path--memory,
+.constellary-stage [data-path-role='memory'] {
+  color: var(--ember-pale);
+  stroke-dasharray: 1 4;
 }
 
 .finale-recognition__node {
@@ -2754,6 +2882,7 @@ button:disabled {
 
 .park-root[data-power='low'] .bloom-play__edge,
 .park-root[data-power='low'] .bloom-play__node,
+.park-root[data-power='low'] .bloom-play__return-afterimage path,
 .park-root[data-power='low'] .map-bloom-afterlight__path,
 .park-root[data-power='low'] .map-bloom-afterlight__node,
 .park-root[data-power='low'] .hushgarden-afterlight__path,
@@ -2768,6 +2897,13 @@ button:disabled {
   from {
     opacity: 0;
     transform: scale(0.96);
+  }
+}
+
+@keyframes bloom-memory-breathe {
+  to {
+    opacity: 0.62;
+    transform: translateY(-1px);
   }
 }
 
@@ -2921,6 +3057,14 @@ button:disabled {
 
   .arrival-scene__dek {
     max-width: 100%;
+  }
+
+  .bloom-play__return {
+    grid-template-columns: 1fr;
+  }
+
+  .bloom-play__return h3 {
+    grid-row: auto;
   }
 
   .ember-invitation {

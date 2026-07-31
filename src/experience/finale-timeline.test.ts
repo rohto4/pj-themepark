@@ -99,4 +99,31 @@ describe('five-beat finale timeline', () => {
       now.mockRestore();
     }
   });
+
+  it('turns an overnight reply into recognition geometry and an authored finale fingerprint', () => {
+    const baseFinale = history('gentle');
+    const base: GuestState = {
+      ...baseFinale,
+      phase: 'explore',
+      currentScene: 'map',
+      finale: null,
+    };
+    const returned = reduceGuestState(
+      {
+        ...base,
+        discoveries: ['carry:bloom:v1:wild:7:root', 'return:bloom:v1:wild:7:root:cluster:connect'],
+      },
+      { type: 'BEGIN_FINALE' },
+    );
+
+    const plain = createFinaleTimeline(reduceGuestState(base, { type: 'BEGIN_FINALE' }));
+    const replied = createFinaleTimeline(returned);
+
+    expect(replied.recognition?.geometryId).toContain('dawn-wild-connect');
+    expect(replied.recognition?.paths).toEqual(
+      expect.arrayContaining([expect.objectContaining({ role: 'memory' })]),
+    );
+    expect(replied.resultFingerprint).not.toBe(plain.resultFingerprint);
+    expect(returned.finale?.motifIds).toContain('dawn-root:wild:cluster:connect');
+  });
 });

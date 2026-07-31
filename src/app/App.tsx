@@ -32,6 +32,7 @@ import { buildNightChartSvg, nightChartFilename } from '../experience/keepsake';
 import { decodeNightCode, encodeNightCode } from '../experience/night-code';
 import { deriveParkEchoes } from '../experience/park-echoes';
 import { loadGuestState, saveGuestState } from '../experience/persistence';
+import { deriveBloomReturnMemory } from '../experience/return-continuity';
 import { deriveWorldProjection, type ProjectedSurface } from '../experience/world-projection';
 import { SceneErrorBoundary } from './SceneErrorBoundary';
 
@@ -579,16 +580,24 @@ function HushgardenScene({
 
 function RealmExperience({
   id,
+  state,
   onComplete,
   onDiscover,
 }: {
   id: AttractionId;
+  state: GuestState;
   onComplete: (choice: AttractionChoice) => void;
   onDiscover: (discoveryId: string) => void;
 }) {
   switch (id) {
     case 'bloomworks':
-      return <BloomworksExperience onComplete={onComplete} onDiscover={onDiscover} />;
+      return (
+        <BloomworksExperience
+          returnMemory={deriveBloomReturnMemory(state)}
+          onComplete={onComplete}
+          onDiscover={onDiscover}
+        />
+      );
     case 'driftglass':
       return <DriftglassExperience onComplete={onComplete} />;
     case 'cabinet':
@@ -644,7 +653,7 @@ function AttractionScene({
         </aside>
       ) : null}
       <div className="attraction-scene__play">
-        <RealmExperience id={id} onComplete={onComplete} onDiscover={onDiscover} />
+        <RealmExperience id={id} state={state} onComplete={onComplete} onDiscover={onDiscover} />
       </div>
     </section>
   );
@@ -891,7 +900,7 @@ export function App({ initialState }: AppProps) {
           state={state}
           onAction={dispatch}
           onToggleAudio={toggleAudio}
-          onResumeNight={(seed) => dispatch({ type: 'BEGIN_NEW_NIGHT', seed })}
+          onResumeNight={(seed) => dispatch({ type: 'RESUME_NIGHT', seed })}
           soundStatus={soundStatus}
           onClose={() => setSettingsOpen(false)}
         />

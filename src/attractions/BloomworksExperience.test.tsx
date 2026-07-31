@@ -2,7 +2,12 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 
+import { deriveBloomReturnMemory } from '../experience/return-continuity';
 import { BloomworksExperience } from './BloomworksExperience';
+
+const bridgeMemory = deriveBloomReturnMemory({
+  discoveries: ['carry:bloom:v1:bridge:4:root'],
+});
 
 describe('BloomworksExperience', () => {
   it('grows a semantic root graph on every repeatable core placement and preserves the short exit', async () => {
@@ -141,5 +146,69 @@ describe('BloomworksExperience', () => {
 
     expect(screen.getByRole('status')).toHaveTextContent('0 of 3 core roots placed');
     expect(gather).toBeEnabled();
+  });
+
+  it('shows a real compressed afterimage immediately without blocking the three-root exit', async () => {
+    if (!bridgeMemory) throw new Error('fixture should produce a return memory');
+    const user = userEvent.setup();
+    const onComplete = vi.fn();
+    const onDiscover = vi.fn();
+    render(
+      <BloomworksExperience
+        returnMemory={bridgeMemory}
+        onComplete={onComplete}
+        onDiscover={onDiscover}
+      />,
+    );
+
+    expect(
+      screen.getByRole('heading', { name: 'A root remembered overnight' }),
+    ).toBeInTheDocument();
+    expect(screen.getByText(/pale crossing with one rail unfinished/i)).toBeInTheDocument();
+    const afterimage = screen.getByTestId('bloom-return-afterimage');
+    expect(afterimage).toHaveAttribute('data-return-pattern', 'bridge');
+    expect(afterimage.querySelectorAll('path').length).toBeGreaterThan(0);
+    expect(afterimage.querySelectorAll('circle')).toHaveLength(4);
+
+    for (const gear of ['Gather seed gear', 'Connect seed gear', 'Wander seed gear']) {
+      await user.click(screen.getByRole('button', { name: gear }));
+    }
+    await user.click(screen.getByRole('button', { name: 'Wake Bloomworks' }));
+
+    expect(onComplete).toHaveBeenCalledTimes(1);
+    expect(onDiscover).not.toHaveBeenCalledWith(expect.stringMatching(/^return:bloom:/));
+  });
+
+  it('lets any one gear answer at the listening moon socket and persists the authored reply', async () => {
+    if (!bridgeMemory) throw new Error('fixture should produce a return memory');
+    const user = userEvent.setup();
+    const onComplete = vi.fn();
+    const onDiscover = vi.fn();
+    render(
+      <BloomworksExperience
+        returnMemory={bridgeMemory}
+        onComplete={onComplete}
+        onDiscover={onDiscover}
+      />,
+    );
+
+    for (const gear of ['Gather seed gear', 'Connect seed gear', 'Wander seed gear']) {
+      await user.click(screen.getByRole('button', { name: gear }));
+    }
+    await user.click(screen.getByRole('button', { name: 'Tend the moon roots' }));
+
+    const listeningSocket = screen.getByRole('button', { name: 'Choose Crossing socket' });
+    expect(listeningSocket).toHaveAttribute('data-return-reply', 'true');
+    expect(listeningSocket).toHaveTextContent(/listening across nights/i);
+    await user.click(listeningSocket);
+    await user.click(screen.getByRole('button', { name: 'Connect seed gear' }));
+
+    expect(screen.getByRole('status')).toHaveTextContent(/old rhythm recognizes itself/i);
+    await user.click(screen.getByRole('button', { name: 'Wake Bloomworks' }));
+
+    expect(onDiscover).toHaveBeenCalledWith('return:bloom:v1:bridge:4:root:bridge:connect');
+    expect(onComplete).toHaveBeenCalledWith(
+      expect.objectContaining({ trace: expect.objectContaining({ pattern: 'bridge' }) }),
+    );
   });
 });

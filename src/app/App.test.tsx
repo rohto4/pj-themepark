@@ -133,6 +133,15 @@ describe('Morrowlight guest journey', () => {
     expect(
       screen.getByRole('button', { name: 'Touch the last light of today' }),
     ).toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: 'Touch the last light of today' }));
+    await user.click(screen.getByRole('button', { name: /Enter Bloomworks/ }));
+    expect(
+      screen.getByRole('heading', { name: 'A root remembered overnight' }),
+    ).toBeInTheDocument();
+    expect(screen.getByTestId('bloom-return-afterimage')).toHaveAttribute(
+      'data-return-pattern',
+      'bridge',
+    );
   });
 
   it('authors reduced motion and low power as explicit guest settings', async () => {

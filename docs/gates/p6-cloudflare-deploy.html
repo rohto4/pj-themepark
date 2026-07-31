@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>MORROWLIGHT — P6 Cloudflare公開ゲート</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        font-family: system-ui, sans-serif;
+        --night: #090819;
+        --panel: #17142d;
+        --paper: #fff8dc;
+        --dim: #cbc3ad;
+        --ember: #ffd88f;
+        --bloom: #92d6a0;
+        --line: rgb(255 248 220 / 22%);
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: radial-gradient(circle at 80% 0%, #30214e, var(--night) 42%);
+        color: var(--paper);
+      }
+      main {
+        width: min(880px, calc(100% - 32px));
+        margin: 0 auto;
+        padding: 64px 0 96px;
+      }
+      .eyebrow {
+        color: var(--ember);
+        font-size: 0.78rem;
+        font-weight: 750;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+      h1 {
+        max-width: 12ch;
+        margin: 12px 0 20px;
+        font-family: Georgia, serif;
+        font-size: clamp(2.7rem, 8vw, 5.8rem);
+        font-weight: 500;
+        line-height: 0.95;
+      }
+      h2 {
+        margin-top: 0;
+        font-family: Georgia, serif;
+        font-weight: 500;
+      }
+      p,
+      li {
+        color: var(--dim);
+        line-height: 1.7;
+      }
+      strong,
+      code {
+        color: var(--paper);
+      }
+      .status-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+        gap: 12px;
+        margin: 32px 0;
+      }
+      .status,
+      section {
+        border: 1px solid var(--line);
+        background: rgb(23 20 45 / 84%);
+      }
+      .status {
+        padding: 18px;
+      }
+      .status span {
+        display: block;
+        color: var(--dim);
+        font-size: 0.76rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+      .status strong {
+        display: block;
+        margin-top: 8px;
+        font-size: 1.1rem;
+      }
+      .ok strong {
+        color: var(--bloom);
+      }
+      .gate strong {
+        color: var(--ember);
+      }
+      section {
+        margin-top: 16px;
+        padding: clamp(22px, 5vw, 38px);
+      }
+      .scope {
+        display: inline-block;
+        margin: 8px 0;
+        padding: 10px 14px;
+        border: 1px solid var(--ember);
+        color: var(--ember);
+        background: #0d0b1e;
+        font-family: ui-monospace, monospace;
+        font-weight: 700;
+      }
+      .approval {
+        padding: 16px;
+        border-left: 3px solid var(--ember);
+        background: rgb(255 216 143 / 7%);
+      }
+      .checklist {
+        display: grid;
+        gap: 12px;
+        padding: 0;
+        list-style: none;
+      }
+      .checklist label {
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+        color: var(--dim);
+        line-height: 1.55;
+      }
+      input {
+        width: 1.2rem;
+        height: 1.2rem;
+        margin-top: 0.15rem;
+        accent-color: var(--bloom);
+      }
+      a {
+        color: var(--ember);
+      }
+      footer {
+        margin-top: 28px;
+        color: var(--dim);
+        font-size: 0.82rem;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <p class="eyebrow">Morrowlight · one explicit permission gate</p>
+      <h1>P6は完成。公開だけ待機中です。</h1>
+      <p>
+        ローカル候補とGitHubへの固定は完了しています。Cloudflareは旧安定版のまま正常稼働中です。
+        新版の公開には、既存Wrangler OAuthへ名前付き権限を1つ追加する明示許可が必要です。
+      </p>
+
+      <div class="status-grid" aria-label="現在の状態">
+        <div class="status ok"><span>Local candidate</span><strong>GO · 5b7278a</strong></div>
+        <div class="status ok"><span>GitHub main</span><strong>Push済み</strong></div>
+        <div class="status ok"><span>Public baseline</span><strong>HTTP 200</strong></div>
+        <div class="status gate"><span>P6 deployment</span><strong>権限待ち</strong></div>
+      </div>
+
+      <section>
+        <p class="eyebrow">必要な明示許可</p>
+        <h2>追加するのはこのスコープだけ</h2>
+        <div class="scope">workers_scripts:write</div>
+        <p>
+          既存の <code>user:read</code>、<code>account:read</code>、<code>workers:write</code>、
+          <code>offline_access</code>
+          に追加します。KV、D1、Pages、AI、R2、独自ドメインなどの権限・資源は追加しません。
+        </p>
+        <p class="approval">
+          Codexの会話へ、次の一文を送ってください：<br />
+          <strong>「workers_scripts:write の追加を許可します」</strong>
+        </p>
+      </section>
+
+      <section>
+        <p class="eyebrow">許可後にCodexが行うこと</p>
+        <h2>公開チェックリスト</h2>
+        <ul class="checklist">
+          <li>
+            <label
+              ><input type="checkbox" />固定ポート8976・Windows Credential
+              Manager保存で、上記5スコープだけを再認証</label
+            >
+          </li>
+          <li>
+            <label
+              ><input type="checkbox" />既存Worker <code>morrowlight-theme-park</code> へ commit
+              <code>5b7278a</code> をデプロイ</label
+            >
+          </li>
+          <li>
+            <label><input type="checkbox" />本番URLで24経路のdesktop/mobileテストを実行</label>
+          </li>
+          <li>
+            <label
+              ><input
+                type="checkbox"
+              />version、traffic、bindingなし、rollback先を読み取り確認</label
+            >
+          </li>
+          <li>
+            <label><input type="checkbox" />公開証跡とtask ledgerを更新し、GitHubへ最終push</label>
+          </li>
+        </ul>
+      </section>
+
+      <section>
+        <p class="eyebrow">安全境界</p>
+        <h2>現在の公開版は壊していません</h2>
+        <p>
+          Cloudflare
+          APIはアップロード前に認証エラー10000で拒否しました。GUIフォールバックもURLを安全に確認できず、
+          クリック前に停止しています。旧版は
+          <a href="https://morrowlight-theme-park.rohto-1111176221.workers.dev">公開URL</a>
+          でHTTP 200を維持しています。
+        </p>
+      </section>
+
+      <footer>
+        生成日: 2026-08-01 JST · このHTMLはローカルのチェックリストで、送信機能はありません。
+      </footer>
+    </main>
+  </body>
+</html>

@@ -266,3 +266,20 @@ reduced-motion, and low-power routes finish with the same result fingerprint.
 - The Worker remains on the P0–P5 baseline. Exact next action: commit and push this controlled local
   candidate, deploy the same source to the existing static Worker, run the live functional route,
   and record deployment identity plus the honest rollback boundary before closing P6-G.
+
+## P6-G deployment gate record
+
+- Candidate `5b7278abcef058c19ab59c1355647414afd37ebb` is committed and pushed; local HEAD and
+  `origin/main` were observed aligned before the deployment attempt.
+- `npm.cmd run deploy` reached the existing Worker deployments endpoint but was rejected before
+  upload with Cloudflare authentication error 10000. The encrypted credential lacks the named
+  `workers_scripts:write` scope required by the endpoint.
+- No OAuth scope was added. The logged-in Edge fallback stopped before any input because Windows
+  Computer Use could not establish the current URL with sufficient confidence.
+- A read-only post-attempt HEAD returned HTTP 200 with the existing security headers. The public
+  Worker therefore remains the P0–P5 baseline; P6 is not claimed live.
+- Evidence is `docs/evidence/p6-deployment-attempt-2026-08-01.md`. The unavoidable named-permission
+  request and user checklist is `docs/gates/p6-cloudflare-deploy.html`.
+- Exact next action after explicit user authorization of `workers_scripts:write`: reauthenticate on
+  callback port 8976 with only the five recorded scopes and keyring storage, deploy `5b7278a`, run
+  the 24 live routes, verify version/traffic/bindings/rollback, and close P6-G.

@@ -114,7 +114,7 @@ Done when: all `PROJECT.md` completion conditions are evidenced.
 
 ## Session handoff
 
-Last verified state: P2 is locally closed: TypeScript, 38 Vitest tests, production Vite build, and 8/8 desktop/mobile Playwright routes pass. Static Cloudflare asset validation and an unauthenticated dry-run pass with no bindings.
+Last verified state: functional checkpoint `8c5d09b` is on `origin/main`. P2 is locally closed: TypeScript, 38 Vitest tests, production Vite build, and 8/8 desktop/mobile Playwright routes pass. Static Cloudflare asset validation and an unauthenticated dry-run pass with no bindings.
 Exact next action: checkpoint P2 to GitHub, then replace the attraction choice shells with distinct learn-play-transform mechanics, beginning with Bloomworks.
-External state: GitHub foundation/design commits are pushed; no Cloudflare resource has been created and no deployment has occurred.
+External state: GitHub P2 is pushed; no Cloudflare resource has been created and no deployment has occurred.
 Known risks: attraction interactions are currently expressive choice shells rather than deep play; browser audio quality is fake-node verified but not listened to; visual hierarchy and overflow await the planned batched screenshot QA; live Cloudflare authentication/deployment is deferred to P5.

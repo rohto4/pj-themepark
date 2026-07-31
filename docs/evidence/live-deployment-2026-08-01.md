@@ -33,6 +33,7 @@ No account identifier, email address, token, authorization code, cookie, or cred
 - Observed effective scopes after a fixed-port reauthorization: `user:read`, `account:read`, `workers:write`, and OAuth refresh scope `offline_access` only.
 - An earlier custom-port attempt listened on 8981 while the registered OAuth redirect remained fixed at 8976. It timed out and left a broader prior/default token visible to `whoami`; no token value was read. Reauthorization on the documented default port replaced it with the intended least-scope credential.
 - Wrangler warns that its other optional product scopes are missing. This is expected: MORROWLIGHT does not use those products.
+- `whoami` continues to succeed with the narrow token. A post-release `versions list`, however, returned Cloudflare API code 500 twice after the token was narrowed. Wrangler 4.118.0 separately reports `workers_scripts:write` as an expected missing scope. Adding that persistent account-wide permission was not authorized, so it was not granted. This does not affect the deployed route; it leaves future version/rollback CLI access unverified under the current narrow token.
 
 ## Pre-deploy checks
 
@@ -92,7 +93,7 @@ This is version 1, so no earlier MORROWLIGHT version exists to receive traffic. 
 npx.cmd wrangler rollback 8eea7f8c-3ce6-445a-a89b-bf006bbc3fe8 --name morrowlight-theme-park --message "Restore first public MORROWLIGHT release" --yes
 ```
 
-Deleting the Worker is not a rollback and remains a separate destructive action.
+The target and command are recorded from the successful pre-narrowing version inventory and Wrangler 4.118.0 help. The current narrow token may require an explicitly approved `workers_scripts:write` scope before this command can be used; that permission was not added. Deleting the Worker is not a rollback and remains a separate destructive action.
 
 ## Evidence boundary
 

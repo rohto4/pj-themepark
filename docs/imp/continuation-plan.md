@@ -1,6 +1,6 @@
 # MORROWLIGHT P6 deep park expansion
 
-Status: active
+Status: completed
 Started: 2026-08-01 JST
 Autonomy window: at least three hours from the user's resume instruction; the original project allows up to 48 hours.
 
@@ -139,15 +139,15 @@ reduced-motion, and low-power routes finish with the same result fingerprint.
 
 ## Immediate work units
 
-| Unit                    | Risk                                            | Done condition                                        | State       |
-| ----------------------- | ----------------------------------------------- | ----------------------------------------------------- | ----------- |
-| P6-A Gap baseline       | Solving the wrong shallowness                   | Three independent audits plus ranked synthesis        | Completed   |
-| P6-B Eval fixtures      | Spectacle without measurable depth              | E7–E12 assertions and failure signatures checked in   | Completed   |
-| P6-C Hero attraction    | More buttons disguised as mastery               | Multi-stage strategy loop passes unit/component/E2E   | Completed   |
-| P6-D Living consequence | Text describing state instead of world response | Three downstream authored surfaces diverge            | Completed   |
-| P6-E Performance finale | Checklist finale                                | Deterministic five-beat Constellary passes all modes  | Completed   |
-| P6-F Return/deep route  | Content padding                                 | Seeded continuity and observed deep-route evidence    | Completed   |
-| P6-G Closure            | Breaking stable release                         | Full/local/live/independent gates and rollback record | In progress |
+| Unit                    | Risk                                            | Done condition                                        | State     |
+| ----------------------- | ----------------------------------------------- | ----------------------------------------------------- | --------- |
+| P6-A Gap baseline       | Solving the wrong shallowness                   | Three independent audits plus ranked synthesis        | Completed |
+| P6-B Eval fixtures      | Spectacle without measurable depth              | E7–E12 assertions and failure signatures checked in   | Completed |
+| P6-C Hero attraction    | More buttons disguised as mastery               | Multi-stage strategy loop passes unit/component/E2E   | Completed |
+| P6-D Living consequence | Text describing state instead of world response | Three downstream authored surfaces diverge            | Completed |
+| P6-E Performance finale | Checklist finale                                | Deterministic five-beat Constellary passes all modes  | Completed |
+| P6-F Return/deep route  | Content padding                                 | Seeded continuity and observed deep-route evidence    | Completed |
+| P6-G Closure            | Breaking stable release                         | Full/local/live/independent gates and rollback record | Completed |
 
 ## P6-C implementation record
 
@@ -263,13 +263,13 @@ reduced-motion, and low-power routes finish with the same result fingerprint.
   act sentence and every CSS custom property.
 - An independent post-fix read-only audit returned local GO with no P0/P1 finding. Its P2 limits are
   recorded in `docs/evidence/p6-browser-qa-2026-08-01.md`.
-- The Worker remains on the P0–P5 baseline. Exact next action: commit and push this controlled local
+- At this local checkpoint the Worker remained on the P0–P5 baseline. The next action was to push the controlled
   candidate, deploy the same source to the existing static Worker, run the live functional route,
   and record deployment identity plus the honest rollback boundary before closing P6-G.
 
-## P6-G deployment gate record
+## P6-G deployment gate record (historical)
 
-- Candidate `5b7278abcef058c19ab59c1355647414afd37ebb` is committed and pushed; local HEAD and
+- Before authorization, candidate `5b7278abcef058c19ab59c1355647414afd37ebb` was committed and pushed; local HEAD and
   `origin/main` were observed aligned before the deployment attempt.
 - `npm.cmd run deploy` reached the existing Worker deployments endpoint but was rejected before
   upload with Cloudflare authentication error 10000. The encrypted credential lacks the named
@@ -283,3 +283,28 @@ reduced-motion, and low-power routes finish with the same result fingerprint.
 - Exact next action after explicit user authorization of `workers_scripts:write`: reauthenticate on
   callback port 8976 with only the five recorded scopes and keyring storage, deploy `5b7278a`, run
   the 24 live routes, verify version/traffic/bindings/rollback, and close P6-G.
+
+## P6-G live closure record
+
+- The user explicitly authorized `workers_scripts:write`. Wrangler reauthentication completed with
+  the four explicit narrow scopes plus automatic `offline_access`; credentials remain encrypted and
+  keyring-backed.
+- P6 executable candidate `5b7278a` deployed to the existing static Worker as Version
+  `8020402d-5e63-48a2-9d18-e981c4e0f46a`, Deployment
+  `cafba5f9-2e9f-48c4-8098-b562de9cafba`, at 100% traffic. The repository commits after the
+  candidate were documentation-only.
+- Initial live runs passed 20/24 and 22/24 while different contexts still received the earlier
+  four-pulse/single-use-gear assets. The affected routes then passed 4/4, and the final complete
+  live gate passed 24/24 after propagation stabilized.
+- Cloudflare Version details show direct Static Assets, SPA fallback, compatibility date
+  `2026-08-01`, project security headers, immutable hashed assets, and `bindings: []`. No new
+  Worker, Cloudflare product, route, custom domain, or binding was added.
+- Version 1 `8eea7f8c-3ce6-445a-a89b-bf006bbc3fe8` remains readable as the rollback target. Its
+  existence, prior deployment, and compatibility were verified; production was not intentionally
+  rolled back and redeployed solely as a test.
+- Independent Cloudflare release audit returned GO with no runtime P0/P1. Independent live browser
+  observations and remaining evidence boundaries are recorded in
+  `docs/evidence/p6-live-deployment-2026-08-01.md`.
+- P6-G is complete. No implementation step remains for this release. Human listening, literal
+  30–60 minute dwell, Safari/Firefox, screen-reader, and physical-device checks remain optional
+  quality follow-ups rather than silently claimed evidence.

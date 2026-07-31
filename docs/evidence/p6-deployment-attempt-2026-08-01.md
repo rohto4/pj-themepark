@@ -1,5 +1,9 @@
 # P6 deployment attempt evidence — 2026-08-01 JST
 
+> Resolved at 07:03 JST after the user explicitly authorized `workers_scripts:write`. The
+> historical failed attempt below remains unchanged as evidence. The successful release is recorded
+> in `docs/evidence/p6-live-deployment-2026-08-01.md`.
+
 ## Candidate identity
 
 - Candidate commit: `5b7278abcef058c19ab59c1355647414afd37ebb`.

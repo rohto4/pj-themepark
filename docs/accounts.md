@@ -1,6 +1,6 @@
 # Resource account ledger
 
-Last reviewed: 2026-08-01 JST
+Last reviewed: 2026-08-01 JST after the P6 release
 
 | Resource                       | Why it is needed                                               | Current evidence                                                              | Allowed project use                                                         | Not allowed without new approval                                             |
 | ------------------------------ | -------------------------------------------------------------- | ----------------------------------------------------------------------------- | --------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
@@ -17,4 +17,10 @@ Accounts must never be created merely to collect assets, references, fonts, musi
 
 ## Current authorization state
 
-Wrangler's observed effective scopes are `user:read`, `account:read`, `workers:write`, and the refresh scope `offline_access`. Credentials are stored in an encrypted file whose key is held by Windows Credential Manager; no token value is stored in the repository. The live account resource is one static Worker named `morrowlight-theme-park`, with no bindings. See `docs/evidence/live-deployment-2026-08-01.md` for the redacted resource inventory and verification boundary.
+Wrangler's observed effective scopes are `user:read`, `account:read`, `workers:write`,
+`workers_scripts:write`, and the refresh scope `offline_access`. The user explicitly authorized the
+additional named script scope for the P6 deployment and rollback boundary. Credentials are stored in
+an encrypted file whose key is held by Windows Credential Manager; no token value is stored in the
+repository. The live account resource remains one static Worker named `morrowlight-theme-park`,
+with no bindings. See `docs/evidence/p6-live-deployment-2026-08-01.md` for the redacted resource
+inventory and verification boundary.

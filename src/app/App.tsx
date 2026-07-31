@@ -498,13 +498,15 @@ function HushgardenScene({
 function RealmExperience({
   id,
   onComplete,
+  onDiscover,
 }: {
   id: AttractionId;
   onComplete: (choice: AttractionChoice) => void;
+  onDiscover: (discoveryId: string) => void;
 }) {
   switch (id) {
     case 'bloomworks':
-      return <BloomworksExperience onComplete={onComplete} />;
+      return <BloomworksExperience onComplete={onComplete} onDiscover={onDiscover} />;
     case 'driftglass':
       return <DriftglassExperience onComplete={onComplete} />;
     case 'cabinet':
@@ -518,11 +520,13 @@ function AttractionScene({
   id,
   state,
   onComplete,
+  onDiscover,
   onReturn,
 }: {
   id: AttractionId;
   state: GuestState;
   onComplete: (choice: AttractionChoice) => void;
+  onDiscover: (discoveryId: string) => void;
   onReturn: () => void;
 }) {
   const attraction = getAttraction(id);
@@ -558,7 +562,7 @@ function AttractionScene({
         </aside>
       ) : null}
       <div className="attraction-scene__play">
-        <RealmExperience id={id} onComplete={onComplete} />
+        <RealmExperience id={id} onComplete={onComplete} onDiscover={onDiscover} />
       </div>
     </section>
   );
@@ -816,6 +820,7 @@ export function App({ initialState }: AppProps) {
               onComplete={(choice) =>
                 dispatch({ type: 'COMPLETE_ATTRACTION', trace: choice.trace })
               }
+              onDiscover={(discoveryId) => dispatch({ type: 'DISCOVER', discoveryId })}
             />
           ) : null}
           {state.currentScene === 'hushgarden' ? (

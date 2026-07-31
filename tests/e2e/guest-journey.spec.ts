@@ -117,9 +117,9 @@ test.describe('Morrowlight guest journey', () => {
     await page.getByRole('button', { name: 'Tie off the sky-thread', exact: true }).click();
 
     await page.getByRole('button', { name: /Enter Bloomworks/ }).click();
-    await page.getByRole('button', { name: 'Gather seed gear', exact: true }).click();
     await page.getByRole('button', { name: 'Wander seed gear', exact: true }).click();
-    await page.getByRole('button', { name: 'Connect seed gear', exact: true }).click();
+    await page.getByRole('button', { name: 'Wander seed gear', exact: true }).click();
+    await page.getByRole('button', { name: 'Wander seed gear', exact: true }).click();
     await page.getByRole('button', { name: 'Wake Bloomworks', exact: true }).click();
     await expect(page.getByText(/learned a second way through bloomworks/i)).toBeVisible();
 
@@ -178,7 +178,11 @@ test.describe('Morrowlight guest journey', () => {
     await page.keyboard.press('Tab');
     await expect(gather).toBeFocused();
     await page.keyboard.press('Space');
-    await expect(gather).toHaveAttribute('aria-pressed', 'true');
+    await expect(page.getByRole('img', { name: 'Living root network' })).toHaveAttribute(
+      'data-node-count',
+      '1',
+    );
+    await expect(gather).toBeEnabled();
 
     const connect = page.getByRole('button', { name: 'Connect seed gear', exact: true });
     await page.keyboard.press('Tab');
@@ -190,6 +194,7 @@ test.describe('Morrowlight guest journey', () => {
     await expect(wander).toBeFocused();
     await page.keyboard.press('Space');
 
+    await page.keyboard.press('Tab');
     await page.keyboard.press('Tab');
     await page.keyboard.press('Tab');
     const completion = page.getByRole('button', { name: 'Wake Bloomworks', exact: true });

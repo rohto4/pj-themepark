@@ -143,8 +143,8 @@ reduced-motion, and low-power routes finish with the same result fingerprint.
 | ----------------------- | ----------------------------------------------- | ----------------------------------------------------- | ----------- |
 | P6-A Gap baseline       | Solving the wrong shallowness                   | Three independent audits plus ranked synthesis        | Completed   |
 | P6-B Eval fixtures      | Spectacle without measurable depth              | E7–E12 assertions and failure signatures checked in   | Completed   |
-| P6-C Hero attraction    | More buttons disguised as mastery               | Multi-stage strategy loop passes unit/component/E2E   | In progress |
-| P6-D Living consequence | Text describing state instead of world response | Three downstream authored surfaces diverge            | Pending     |
+| P6-C Hero attraction    | More buttons disguised as mastery               | Multi-stage strategy loop passes unit/component/E2E   | Completed   |
+| P6-D Living consequence | Text describing state instead of world response | Three downstream authored surfaces diverge            | In progress |
 | P6-E Performance finale | Checklist finale                                | Deterministic five-beat Constellary passes all modes  | Pending     |
 | P6-F Return/deep route  | Content padding                                 | Seeded continuity and observed deep-route evidence    | Pending     |
 | P6-G Closure            | Breaking stable release                         | Full/local/live/independent gates and rollback record | Pending     |
@@ -161,3 +161,10 @@ reduced-motion, and low-power routes finish with the same result fingerprint.
 - Exact next fixture: the component must expose the graph as semantic SVG, keep the three-root exit,
   reveal moon sockets explicitly, commit mastery through a bounded discovery callback, and preserve
   keyboard/reset behavior.
+- Component/E2E GREEN observed: semantic SVG and discovery component tests 7/7; full repository
+  gate passes 90 Vitest tests and 16 Playwright routes across desktop/mobile projects. The dedicated
+  reduced-motion + low-power deep route retains six nodes, reports zero running animations, and has
+  no measured horizontal clipping. Asset budget passes at 11 files / 429.67 KiB.
+- P6-C closed without changing the guest-state schema or the deployed Worker. Exact next fixture is
+  F8.1: two fixed Bloom traces must derive different non-text map, later-realm, and Constellary
+  geometry from one pure world projection.

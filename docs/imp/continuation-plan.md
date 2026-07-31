@@ -247,3 +247,22 @@ reduced-motion, and low-power routes finish with the same result fingerprint.
 - Exact next action: checkpoint the functional closure, run one batched browser visual review of
   the return hook and five-act finale at 1440, 768, and 375 widths, fix only observed defects, then
   repeat the full local gate before the deployment boundary.
+
+## P6-G local closure record
+
+- The post-fix local gate passes formatting, ESLint, TypeScript, production build, 20 Vitest files /
+  115 tests, and 24/24 desktop/mobile Playwright routes. The new keyboard route uses Tab plus
+  Enter/Space from an overnight Bloom reply through all five Constellary acts and the Night Chart.
+- The asset budget passes at 11 files / 457.17 KiB. No external asset or service was added.
+- The final visual batch passes 3/3 at 1440×900, 768×1024, and 375×812. Nine screenshots cover the
+  return hook, recognition, and the open Night receipt. Browser JSON records all five non-empty SVG
+  beat geometries, zero axe violations, zero console warnings/errors, zero page/request/HTTP
+  failures, and zero horizontal overflow on all three observed surfaces.
+- The batch closed the motif-ledger hierarchy, skip-link screenshot artifact, duplicated act
+  sentence, undeclared palette tokens, and test-runner boundary. Regression tests now protect the
+  act sentence and every CSS custom property.
+- An independent post-fix read-only audit returned local GO with no P0/P1 finding. Its P2 limits are
+  recorded in `docs/evidence/p6-browser-qa-2026-08-01.md`.
+- The Worker remains on the P0–P5 baseline. Exact next action: commit and push this controlled local
+  candidate, deploy the same source to the existing static Worker, run the live functional route,
+  and record deployment identity plus the honest rollback boundary before closing P6-G.

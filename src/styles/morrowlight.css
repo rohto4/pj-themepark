@@ -3,11 +3,15 @@
   font-family: 'Atkinson Hyperlegible Next Variable', 'Segoe UI', sans-serif;
   font-synthesis: none;
   --ink: #0c0b1d;
+  --ink-deep: #070615;
+  --night: #05040f;
   --ink-soft: #171532;
   --ink-raised: #211c40;
   --moon: #fff8dc;
   --moon-dim: #d8d0b8;
+  --paper: #fffaf0;
   --ember: #f2a75f;
+  --ember-pale: #ffe8bd;
   --ember-hot: #ffe0a0;
   --bloom: #92d6a0;
   --drift: #70d4dc;
@@ -113,18 +117,30 @@ button:disabled {
 .skip-link {
   position: fixed;
   z-index: 100;
-  top: 0.75rem;
-  left: 50%;
-  padding: 0.75rem 1rem;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
   color: var(--ink);
+  white-space: nowrap;
   background: var(--moon);
   border-radius: 2rem;
-  transform: translate(-50%, -170%);
+  clip-path: inset(50%);
+  transform: none;
   transition: transform 180ms ease;
 }
 
 .skip-link:focus {
-  transform: translate(-50%, 0);
+  top: 0.75rem;
+  left: 50%;
+  width: auto;
+  height: auto;
+  padding: 0.75rem 1rem;
+  overflow: visible;
+  clip-path: none;
+  transform: translateX(-50%);
 }
 
 .atmosphere {
@@ -2307,19 +2323,74 @@ button:disabled {
   line-height: 1.6;
 }
 
-.motif-ledger {
-  margin: 2rem 0;
-  padding: 0;
+.motif-receipt {
+  margin: 1.5rem 0 0;
   border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.motif-receipt summary {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 0.25rem 0.8rem;
+  align-items: center;
+  padding: 0.9rem 0;
+  color: var(--moon-dim);
+  cursor: pointer;
+  list-style: none;
+}
+
+.motif-receipt summary::-webkit-details-marker {
+  display: none;
+}
+
+.motif-receipt summary::after {
+  color: var(--ember-hot);
+  font-family: var(--display);
+  font-size: 1.2rem;
+  content: '+';
+}
+
+.motif-receipt[open] summary::after {
+  content: '−';
+}
+
+.motif-receipt summary span {
+  color: var(--ember-hot);
+  font-size: 0.65rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.motif-receipt summary strong {
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.motif-ledger {
+  margin: 0;
+  padding: 0;
   list-style: none;
 }
 
 .motif-ledger li {
+  display: grid;
+  grid-template-columns: 2rem 1fr;
+  gap: 0.6rem;
   padding: 0.7rem 0;
   border-bottom: 1px solid var(--line);
   color: var(--moon-dim);
   overflow-wrap: anywhere;
-  text-transform: capitalize;
+  font-size: 0.78rem;
+}
+
+.motif-ledger li:last-child {
+  border-bottom: 0;
+}
+
+.motif-ledger li span {
+  color: var(--ember-hot);
+  font-family: var(--display);
 }
 
 .score-pulses {

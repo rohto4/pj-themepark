@@ -137,8 +137,9 @@ test.describe('Morrowlight guest journey', () => {
     await page.getByRole('button', { name: 'Return to the Morrowspire' }).click();
 
     await page.getByRole('button', { name: 'Open the Constellary', exact: true }).click();
-    await expect(page.getByText('secret:revisit:bloomworks:wild', { exact: true })).toBeVisible();
-    await expect(page.getByText('secret:hush-bench-constellation', { exact: true })).toBeVisible();
+    await page.getByText(/traces are woven into this sky/).click();
+    await expect(page.locator('[data-motif-id="secret:revisit:bloomworks:wild"]')).toBeVisible();
+    await expect(page.locator('[data-motif-id="secret:hush-bench-constellation"]')).toBeVisible();
 
     const pulses = page
       .getByRole('list', { name: 'Constellary performance sequence' })
@@ -209,11 +210,13 @@ test.describe('Morrowlight guest journey', () => {
       exact: true,
     });
 
-    await expect(skip).toBeVisible();
+    await expect(skip).toHaveCSS('clip-path', 'inset(50%)');
     await expect(enter).toBeVisible();
 
     await page.keyboard.press('Tab');
     await expect(skip).toBeFocused();
+    await expect(skip).toBeVisible();
+    await expect(skip).toHaveCSS('clip-path', 'none');
     await page.keyboard.press('Tab');
     await page.keyboard.press('Tab');
     await page.keyboard.press('Tab');

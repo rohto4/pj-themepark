@@ -143,7 +143,7 @@ export function ConstellaryConductor({
         setMessage(
           nextCount === beatCount
             ? 'The park has performed all five acts. The night is ready to carry.'
-            : `${performedBeat?.title ?? 'The next act'} enters the sky.`,
+            : `${performedBeat?.title ?? 'The next act'}.`,
         );
         if (nextCount === beatCount) window.clearInterval(interval);
         return nextCount;
@@ -177,7 +177,7 @@ export function ConstellaryConductor({
     setMessage(
       nextCount === beatCount
         ? 'All five acts are ready to resolve.'
-        : `${beat.title} enters the sky. Next: ${nextBeat?.title ?? 'release'}.`,
+        : `${beat.title}. Next: ${nextBeat?.title ?? 'release'}.`,
     );
   }
 

@@ -1,0 +1,64 @@
+{
+  "project": "desktop-1440",
+  "viewport": { "width": 1440, "height": 900 },
+  "scenes": [
+    "Bloomworks return hook",
+    "Constellary recognition beat",
+    "Constellary release with open night receipt"
+  ],
+  "observedBeats": [
+    { "beat": "awakening", "geometry": "ember-a4-c4-c5-e4", "marks": 4 },
+    {
+      "beat": "gathering",
+      "geometry": "gathering-bloomworks-bridge-driftglass-horizon-cabinet-weather-loom-windthread-soar",
+      "marks": 7
+    },
+    {
+      "beat": "recognition",
+      "geometry": "bloom-constellary-bridge-4-dawn-bridge-wander",
+      "marks": 7
+    },
+    {
+      "beat": "climax",
+      "geometry": "climax-bridge-soar-horizon-bell-comet-moonray",
+      "marks": 4
+    },
+    { "beat": "release", "geometry": "release-weather-loom-6", "marks": 4 }
+  ],
+  "axeViolations": { "returnHook": 0, "finale": 0, "openReceipt": 0 },
+  "consoleErrors": [],
+  "consoleWarnings": [],
+  "pageErrors": [],
+  "failedResponses": [],
+  "failedRequests": [],
+  "overflow": {
+    "returnHook": {
+      "clientWidth": 1440,
+      "scrollWidth": 1440,
+      "clientHeight": 900,
+      "scrollHeight": 1943
+    },
+    "finale": {
+      "clientWidth": 1440,
+      "scrollWidth": 1440,
+      "clientHeight": 900,
+      "scrollHeight": 1917
+    },
+    "openReceipt": {
+      "clientWidth": 1440,
+      "scrollWidth": 1440,
+      "clientHeight": 900,
+      "scrollHeight": 1917
+    }
+  },
+  "skipLinkState": {
+    "focused": false,
+    "activeElement": "02The realms enter the skyC4",
+    "transform": "none",
+    "clipPath": "inset(50%)",
+    "width": 1,
+    "height": 1,
+    "top": 0,
+    "bottom": 1
+  }
+}

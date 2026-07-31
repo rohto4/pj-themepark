@@ -115,9 +115,12 @@ describe('Morrowlight guest journey', () => {
 
     expect(screen.getByRole('heading', { name: 'The Constellary remembers' })).toBeInTheDocument();
     expect(screen.getByText('The Bridged Far Horizon')).toBeInTheDocument();
-    expect(screen.getByText(/bloom:bridge/)).toBeInTheDocument();
-    expect(screen.getByText(/drift:horizon/)).toBeInTheDocument();
-    expect(screen.getByText(/near:weather-loom/)).toBeInTheDocument();
+    const receipt = screen.getByText('3 traces are woven into this sky');
+    expect(receipt.closest('details')).not.toHaveAttribute('open');
+    await user.click(receipt);
+    expect(screen.getByText('Bloomworks · Living crossings · 4 lights')).toBeInTheDocument();
+    expect(screen.getByText(/Driftglass · Far Horizon ·/)).toBeInTheDocument();
+    expect(screen.getByText('Cabinet · Weather Loom')).toBeInTheDocument();
     expect(
       screen.getByRole('list', { name: 'Constellary performance sequence' }).children,
     ).toHaveLength(5);

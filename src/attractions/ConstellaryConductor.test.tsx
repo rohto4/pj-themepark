@@ -127,6 +127,12 @@ describe('ConstellaryConductor', () => {
       'data-beat',
       'gathering',
     );
+
+    await user.click(actButton(2, beats[1]!.title, beats[1]!.note));
+    expect(screen.getByRole('status')).toHaveTextContent(
+      'The realms enter the sky. Next: The garden returns as a constellation.',
+    );
+    expect(screen.getByRole('status')).not.toHaveTextContent('enters the sky enters the sky');
   });
 
   it('conducts all five acts before resolving the exact timeline result', async () => {

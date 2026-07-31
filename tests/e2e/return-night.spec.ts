@@ -1,4 +1,16 @@
-import { expect, test, type Page } from '@playwright/test';
+import { expect, test, type Locator, type Page } from '@playwright/test';
+
+const storageKey = 'morrowlight:guest-state:v1';
+
+async function activateByTab(page: Page, target: Locator, key: 'Enter' | 'Space', maxTabs = 80) {
+  await expect(target).toBeVisible();
+  for (let index = 0; index < maxTabs; index += 1) {
+    if (await target.evaluate((element) => document.activeElement === element)) break;
+    await page.keyboard.press('Tab');
+  }
+  await expect(target).toBeFocused();
+  await page.keyboard.press(key);
+}
 
 async function growBridgeWithCrossing(page: Page, replyGear: 'Connect' | 'Wander') {
   await page.getByRole('button', { name: 'Enter Bloomworks', exact: true }).click();
@@ -89,8 +101,9 @@ test.describe('return-night continuity', () => {
 
     await completeTwoMoreRealms(page);
     await page.getByRole('button', { name: 'Open the Constellary', exact: true }).click();
-    await expect(page.getByText('memory:bloom:bridge:5:root', { exact: true })).toBeVisible();
-    await expect(page.getByText('dawn-root:bridge:bridge:wander', { exact: true })).toBeVisible();
+    await page.getByText(/traces are woven into this sky/).click();
+    await expect(page.locator('[data-motif-id="memory:bloom:bridge:5:root"]')).toBeVisible();
+    await expect(page.locator('[data-motif-id="dawn-root:bridge:bridge:wander"]')).toBeVisible();
     await expect(page.getByText(/carry:bloom:/)).toHaveCount(0);
     const recognition = page.locator('.finale-recognition');
     await expect(recognition).toHaveAttribute(
@@ -117,5 +130,124 @@ test.describe('return-night continuity', () => {
       .locator('html')
       .evaluate((html) => html.scrollWidth <= html.clientWidth + 1);
     expect(noHorizontalClipping).toBe(true);
+  });
+
+  test('keeps the overnight reply and all five acts operable by keyboard', async ({ page }) => {
+    await page.goto('/');
+    await page.evaluate(
+      ({ key, value }) => window.localStorage.setItem(key, JSON.stringify(value)),
+      {
+        key: storageKey,
+        value: {
+          schemaVersion: 1,
+          nightId: 'night-00000063',
+          seed: 99,
+          phase: 'explore',
+          currentScene: 'bloomworks',
+          preferences: {
+            audio: 'off',
+            motion: 'reduced',
+            contrast: 'standard',
+            power: 'low',
+          },
+          completedAttractions: [],
+          traces: {},
+          discoveries: ['carry:bloom:v1:bridge:5:root'],
+          finale: null,
+          revision: 1,
+        },
+      },
+    );
+    await page.reload();
+
+    await expect(page.getByRole('heading', { name: 'A root remembered overnight' })).toBeVisible();
+    for (const [gear, key] of [
+      ['Gather seed gear', 'Enter'],
+      ['Connect seed gear', 'Space'],
+      ['Wander seed gear', 'Enter'],
+    ] as const) {
+      await activateByTab(page, page.getByRole('button', { name: gear, exact: true }), key);
+    }
+    await activateByTab(
+      page,
+      page.getByRole('button', { name: 'Tend the moon roots', exact: true }),
+      'Space',
+    );
+    await activateByTab(
+      page,
+      page.getByRole('button', { name: 'Choose Crossing socket', exact: true }),
+      'Enter',
+    );
+    await activateByTab(
+      page,
+      page.getByRole('button', { name: 'Wander seed gear', exact: true }),
+      'Space',
+    );
+    await expect(page.getByRole('status')).toContainText('old rhythm bends toward a new answer');
+    await activateByTab(
+      page,
+      page.getByRole('button', { name: 'Wake Bloomworks', exact: true }),
+      'Enter',
+    );
+
+    await activateByTab(
+      page,
+      page.getByRole('button', { name: 'Enter Driftglass Sea', exact: true }),
+      'Space',
+    );
+    for (let index = 0; index < 3; index += 1) {
+      await activateByTab(
+        page,
+        page.getByRole('button', { name: 'Starboard', exact: true }),
+        index % 2 === 0 ? 'Enter' : 'Space',
+      );
+    }
+    await activateByTab(
+      page,
+      page.getByRole('button', { name: 'Enter the Cabinet of Near Things', exact: true }),
+      'Enter',
+    );
+    await activateByTab(
+      page,
+      page.getByRole('button', { name: 'Inspect weather loom drawer', exact: true }),
+      'Space',
+    );
+    await activateByTab(
+      page,
+      page.getByRole('button', { name: 'Inspect enough clock drawer', exact: true }),
+      'Enter',
+    );
+    await activateByTab(
+      page,
+      page.getByRole('button', { name: 'Let it follow me', exact: true }),
+      'Space',
+    );
+    await activateByTab(
+      page,
+      page.getByRole('button', { name: 'Open the Constellary', exact: true }),
+      'Enter',
+    );
+    await activateByTab(
+      page,
+      page.getByRole('button', { name: 'Conduct the sky', exact: true }),
+      'Space',
+    );
+
+    const acts = page
+      .getByRole('list', { name: 'Constellary performance sequence' })
+      .getByRole('button');
+    await expect(acts).toHaveCount(5);
+    for (let index = 0; index < 5; index += 1) {
+      await activateByTab(page, acts.nth(index), index % 2 === 0 ? 'Enter' : 'Space');
+    }
+    await expect(page.getByRole('status', { name: 'Constellary conductor status' })).toContainText(
+      'The five-act sky is complete',
+    );
+    await activateByTab(
+      page,
+      page.getByRole('button', { name: 'Carry this night with me', exact: true }),
+      'Space',
+    );
+    await expect(page.getByRole('heading', { name: 'This night can wait here.' })).toBeVisible();
   });
 });

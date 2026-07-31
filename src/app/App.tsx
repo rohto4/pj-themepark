@@ -659,6 +659,53 @@ function AttractionScene({
   );
 }
 
+function titleWords(value: string): string {
+  return value
+    .split(/[-+]/)
+    .filter(Boolean)
+    .map((word) => `${word.charAt(0).toUpperCase()}${word.slice(1)}`)
+    .join(' ');
+}
+
+function describeMotif(motif: string): string {
+  const [kind, ...parts] = motif.split(':');
+  if (kind === 'bloom') {
+    const form = {
+      cluster: 'Sheltering circles',
+      bridge: 'Living crossings',
+      wild: 'Pollinator runners',
+    }[parts[0] ?? ''];
+    return `Bloomworks · ${form ?? titleWords(parts[0] ?? 'root')} · ${parts[1] ?? 'quiet'} lights`;
+  }
+  if (kind === 'drift') {
+    const route = {
+      cove: 'Moonlit Cove',
+      current: 'Living Current',
+      horizon: 'Far Horizon',
+    }[parts[0] ?? ''];
+    const companions =
+      parts[1] === 'solo'
+        ? 'Solo light'
+        : (parts[1] ?? 'solo')
+            .split('+')
+            .map((companion) => titleWords(companion))
+            .join(', ');
+    return `Driftglass · ${route ?? titleWords(parts[0] ?? 'quiet water')} · ${companions}`;
+  }
+  if (kind === 'near') return `Cabinet · ${titleWords(parts[0] ?? 'near thing')}`;
+  if (kind === 'wind') {
+    return `Windthread · ${titleWords(parts[0] ?? 'drift')} · ${parts[1] ?? '0'} rings`;
+  }
+  if (kind === 'memory' && parts[0] === 'bloom') {
+    return `Overnight root · ${titleWords(parts[1] ?? 'root')} held ${parts[2] ?? 'one'} lights through dawn`;
+  }
+  if (kind === 'dawn-root') {
+    return `Dawn-root · ${titleWords(parts[0] ?? 'old root')} answered by ${titleWords(parts[2] ?? parts[1] ?? 'new root')}`;
+  }
+  if (kind === 'secret') return `Hidden path · ${titleWords(parts.join('-'))}`;
+  return titleWords(motif.replaceAll(':', '-'));
+}
+
 function FinaleScene({ state, onComplete }: { state: GuestState; onComplete: () => void }) {
   const finale = state.finale;
   if (!finale) return null;
@@ -700,14 +747,23 @@ function FinaleScene({ state, onComplete }: { state: GuestState; onComplete: () 
         </h1>
         <p className="finale-title">{finale.title}</p>
         <p>
-          Your routes have become a sky-instrument. Every line below is a receipt from something the
-          park noticed.
+          Your routes have become a sky-instrument. The night receipt stays folded nearby; the
+          performance is the memory in motion.
         </p>
-        <ul className="motif-ledger" aria-label="Remembered motifs">
-          {finale.motifIds.map((motif) => (
-            <li key={motif}>{motif}</li>
-          ))}
-        </ul>
+        <details className="motif-receipt">
+          <summary>
+            <span>Night receipt</span>
+            <strong>{finale.motifIds.length} traces are woven into this sky</strong>
+          </summary>
+          <ul className="motif-ledger" aria-label="Remembered motifs">
+            {finale.motifIds.map((motif, index) => (
+              <li key={motif} data-motif-id={motif}>
+                <span>{String(index + 1).padStart(2, '0')}</span>
+                {describeMotif(motif)}
+              </li>
+            ))}
+          </ul>
+        </details>
         <ConstellaryConductor timeline={timeline} onComplete={onComplete} />
       </div>
     </section>

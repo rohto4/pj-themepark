@@ -2,10 +2,10 @@
 
 Last reviewed: 2026-08-01 JST
 
-| Resource                       | Why it is needed                                               | Current evidence                                                             | Allowed project use                                                         | Not allowed without new approval                                             |
-| ------------------------------ | -------------------------------------------------------------- | ---------------------------------------------------------------------------- | --------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
-| GitHub (`rohto4/pj-themepark`) | Canonical source, history, recovery                            | User supplied the repository; clone succeeded and showed an empty repository | Commit and push this project                                                | Org-wide changes, new paid products, unrelated repositories                  |
-| Cloudflare                     | Production hosting and optional same-account runtime resources | Edge is signed in per user; Wrangler CLI is not yet authorized               | One scoped Workers/Pages project; add bindings only after a capability gate | Paid plan, domain purchase/transfer, unrelated zones, broad account settings |
+| Resource                       | Why it is needed                                               | Current evidence                                                              | Allowed project use                                                         | Not allowed without new approval                                             |
+| ------------------------------ | -------------------------------------------------------------- | ----------------------------------------------------------------------------- | --------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| GitHub (`rohto4/pj-themepark`) | Canonical source, history, recovery                            | User supplied the repository; clone succeeded and showed an empty repository  | Commit and push this project                                                | Org-wide changes, new paid products, unrelated repositories                  |
+| Cloudflare                     | Production hosting and optional same-account runtime resources | Wrangler is authorized via encrypted OS-keyring-backed OAuth; one Worker live | One scoped Workers/Pages project; add bindings only after a capability gate | Paid plan, domain purchase/transfer, unrelated zones, broad account settings |
 
 ## Decision
 
@@ -15,6 +15,6 @@ Likely runtime needs can be met by Cloudflare Workers Static Assets and browser-
 
 Accounts must never be created merely to collect assets, references, fonts, music, or ideas.
 
-## Current authorization gate
+## Current authorization state
 
-Wrangler will request only `user:read`, `account:read`, and `workers:write`, storing the resulting credential in the operating-system keyring. The CLI can perform every subsequent build, deploy, identity check, resource inspection, and rollback-related operation. Cloudflare's browser OAuth consent itself remains a user action; the project-owned checklist is `docs/gates/cloudflare-oauth-checklist.html`.
+Wrangler's observed effective scopes are `user:read`, `account:read`, `workers:write`, and the refresh scope `offline_access`. Credentials are stored in an encrypted file whose key is held by Windows Credential Manager; no token value is stored in the repository. The live account resource is one static Worker named `morrowlight-theme-park`, with no bindings. See `docs/evidence/live-deployment-2026-08-01.md` for the redacted resource inventory and verification boundary.

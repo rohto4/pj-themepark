@@ -152,6 +152,9 @@ test.describe('Morrowlight guest journey', () => {
       exact: true,
     });
 
+    await expect(skip).toBeVisible();
+    await expect(enter).toBeVisible();
+
     await page.keyboard.press('Tab');
     await expect(skip).toBeFocused();
     await page.keyboard.press('Tab');

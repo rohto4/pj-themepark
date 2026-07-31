@@ -2,11 +2,12 @@ import { defineConfig, devices } from '@playwright/test';
 
 const host = '127.0.0.1';
 const port = 4318;
-const baseURL = 'http://' + host + ':' + port;
+const externalBaseURL = process.env.MORROWLIGHT_BASE_URL?.trim();
+const baseURL = externalBaseURL || 'http://' + host + ':' + port;
 
 export default defineConfig({
   testDir: './tests/e2e',
-  globalSetup: './tests/e2e/global-setup.ts',
+  globalSetup: externalBaseURL ? undefined : './tests/e2e/global-setup.ts',
   fullyParallel: true,
   forbidOnly: Boolean(process.env.CI),
   retries: 0,

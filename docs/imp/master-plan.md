@@ -1,7 +1,7 @@
 # MORROWLIGHT master implementation ledger
 
 Status timestamp: 2026-08-01 JST  
-Overall state: **Public release complete**
+Overall state: **Phase 6 — deep park expansion in progress**
 Hard continuity rule: update this file before changing phase or ending a session.
 
 ## Objective
@@ -19,6 +19,8 @@ Before the user's planned pause around 2026-08-01 06:00 JST:
 - complete at least one technical risk spike if time permits.
 
 The overall project may continue for up to 48 hours. If the result still cannot meet the completion definition at hour 40, prepare a concise status report with observed evidence, remaining scope, and a revised duration estimate.
+
+The public release closed P0–P5 but is a recovery-safe milestone, not the end of the original 48-hour ambition. From the user's 2026-08-01 autonomous-resume instruction, continue without product-direction questions for at least the next three hours. The active phase record is `docs/imp/continuation-plan.md`.
 
 ## Capability evals
 
@@ -96,32 +98,48 @@ Done when: the interface has a coherent visual point of view and no known critic
 
 Done when: all `PROJECT.md` completion conditions are evidenced.
 
+### P6 — Deep park expansion
+
+- [ ] Measure the public v1 against attraction mastery, interaction density, park-wide consequence, sensory craft, and literal long-route quality.
+- [ ] Replace the highest-impact shallow interaction loops with authored multi-stage play that remains keyboard/touch/reduced-motion equivalent.
+- [ ] Make accumulated traces alter more of the living map, other realms, ambient score, Constellary, and return visit.
+- [ ] Add enough layered discoveries and replay variance for a genuinely rewarding extended route rather than only branch reachability.
+- [ ] Re-run the full local gate, batched browser QA, live deployment gate, and independent audit after functional closure.
+
+Done when: `docs/imp/continuation-plan.md` evals E7–E12 pass with observed evidence and the new release is materially more park-like than the current public baseline.
+
 ## Active work units
 
-| Unit                                  | Dominant risk                                    | Owner/model                | Done condition                                       | State     | Retries/time               |
-| ------------------------------------- | ------------------------------------------------ | -------------------------- | ---------------------------------------------------- | --------- | -------------------------- |
-| U001 Foundation records               | Context loss                                     | Primary / Sol Max          | Init and ledger files read back from disk            | Completed | 0 / ~35m                   |
-| U002 Experience research              | Copying surface features instead of principles   | Research agent / Terra Max | Dated, cited principles plus counterevidence         | Completed | 0 / parallel               |
-| U003 Browser immersion research       | Choosing spectacle that harms access/performance | Research agent / Terra Max | Current technical options and failure modes          | Completed | 0 / parallel               |
-| U004 Cloudflare architecture research | Premature infrastructure                         | Research agent / Terra Max | Smallest live architecture with constraints          | Completed | 0 / parallel               |
-| U005 Concept synthesis                | Generic or derivative park                       | Primary / Sol Max          | Fixed distinctive concept and journey                | Completed | 1 rename / ~45m            |
-| U006 Application bootstrap            | Toolchain drift                                  | Primary / Sol Max          | Typecheck, tests, production build, asset check pass | Completed | 0 / ~40m                   |
-| U007 Guest reducer                    | State inconsistency                              | Primary / Sol Max          | Determinism and divergent-finale tests pass          | Completed | 0 / ~25m                   |
-| U008 Persistence and keepsake         | Losing or leaking the guest's night              | Primary + Terra Max        | Safe local roundtrip and offline SVG export pass     | Completed | 0 / parallel               |
-| U009 Generative score core            | Audio blocking or excluding muted guests         | Terra Max                  | Pure score + safe gesture-gated runtime tests pass   | Completed | 0 / parallel               |
-| U010 Inclusive browser route          | DOM checks hiding browser/device failures        | Primary + Terra Max        | 8 desktop/mobile Playwright routes pass              | Completed | 1 mobile fix               |
-| U011 Attraction depth                 | Park feeling like a styled questionnaire         | Primary + Terra Max        | Each realm has a distinct learn-play-transform loop  | Completed | 0 / parallel               |
-| U012 Consequence and replay           | Choices being forgotten after each scene         | Primary / Sol Max          | Echoes, alternate replay, and secret motifs regress  | Completed | 0 / ~25m                   |
-| U013 Quiet and resilient routes       | Completion pressure or a single-scene crash      | Primary + Terra Max        | Hushgarden and scoped fault escape tests pass        | Completed | 0 / parallel               |
-| U014 Returnable nights                | Keepsake being inert or account-dependent        | Primary + Terra Max        | Download, Night Code, and fresh-night tests pass     | Completed | 0 / parallel               |
-| U015 Hosted CI design                 | Local-only confidence                            | Terra Max                  | Read-only CI workflow and evidence validate locally  | Completed | 0 / parallel               |
-| U016 Batched browser QA               | Automation hiding visual/audio defects           | Primary / Sol Max          | Representative desktop/mobile evidence is reviewed   | Completed | 4 fixes / ~35m             |
-| U017 Accessibility hardening          | Hidden clip or DOM/visual-order failures         | Primary + Terra Max        | Geometry/order regressions and axe A/AA scans pass   | Completed | 0 / parallel               |
-| U018 Production publication           | Local evidence mistaken for live resilience      | Primary / Sol Max          | Cloudflare URL and independent E6 evidence exist     | Completed | 1 propagation retry / ~25m |
+| Unit                                  | Dominant risk                                       | Owner/model                | Done condition                                        | State       | Retries/time               |
+| ------------------------------------- | --------------------------------------------------- | -------------------------- | ----------------------------------------------------- | ----------- | -------------------------- |
+| U001 Foundation records               | Context loss                                        | Primary / Sol Max          | Init and ledger files read back from disk             | Completed   | 0 / ~35m                   |
+| U002 Experience research              | Copying surface features instead of principles      | Research agent / Terra Max | Dated, cited principles plus counterevidence          | Completed   | 0 / parallel               |
+| U003 Browser immersion research       | Choosing spectacle that harms access/performance    | Research agent / Terra Max | Current technical options and failure modes           | Completed   | 0 / parallel               |
+| U004 Cloudflare architecture research | Premature infrastructure                            | Research agent / Terra Max | Smallest live architecture with constraints           | Completed   | 0 / parallel               |
+| U005 Concept synthesis                | Generic or derivative park                          | Primary / Sol Max          | Fixed distinctive concept and journey                 | Completed   | 1 rename / ~45m            |
+| U006 Application bootstrap            | Toolchain drift                                     | Primary / Sol Max          | Typecheck, tests, production build, asset check pass  | Completed   | 0 / ~40m                   |
+| U007 Guest reducer                    | State inconsistency                                 | Primary / Sol Max          | Determinism and divergent-finale tests pass           | Completed   | 0 / ~25m                   |
+| U008 Persistence and keepsake         | Losing or leaking the guest's night                 | Primary + Terra Max        | Safe local roundtrip and offline SVG export pass      | Completed   | 0 / parallel               |
+| U009 Generative score core            | Audio blocking or excluding muted guests            | Terra Max                  | Pure score + safe gesture-gated runtime tests pass    | Completed   | 0 / parallel               |
+| U010 Inclusive browser route          | DOM checks hiding browser/device failures           | Primary + Terra Max        | 8 desktop/mobile Playwright routes pass               | Completed   | 1 mobile fix               |
+| U011 Attraction depth                 | Park feeling like a styled questionnaire            | Primary + Terra Max        | Each realm has a distinct learn-play-transform loop   | Completed   | 0 / parallel               |
+| U012 Consequence and replay           | Choices being forgotten after each scene            | Primary / Sol Max          | Echoes, alternate replay, and secret motifs regress   | Completed   | 0 / ~25m                   |
+| U013 Quiet and resilient routes       | Completion pressure or a single-scene crash         | Primary + Terra Max        | Hushgarden and scoped fault escape tests pass         | Completed   | 0 / parallel               |
+| U014 Returnable nights                | Keepsake being inert or account-dependent           | Primary + Terra Max        | Download, Night Code, and fresh-night tests pass      | Completed   | 0 / parallel               |
+| U015 Hosted CI design                 | Local-only confidence                               | Terra Max                  | Read-only CI workflow and evidence validate locally   | Completed   | 0 / parallel               |
+| U016 Batched browser QA               | Automation hiding visual/audio defects              | Primary / Sol Max          | Representative desktop/mobile evidence is reviewed    | Completed   | 4 fixes / ~35m             |
+| U017 Accessibility hardening          | Hidden clip or DOM/visual-order failures            | Primary + Terra Max        | Geometry/order regressions and axe A/AA scans pass    | Completed   | 0 / parallel               |
+| U018 Production publication           | Local evidence mistaken for live resilience         | Primary / Sol Max          | Cloudflare URL and independent E6 evidence exist      | Completed   | 1 propagation retry / ~25m |
+| U019 Continuation baseline            | Calling a shippable slice the best possible park    | Primary + research agents  | Ranked evidence-backed gap matrix and E7–E12 fixtures | In progress | 0 / parallel               |
+| U020 Hero-attraction depth            | Adding copy instead of play                         | Primary / Sol Max          | One realm has a multi-stage learn-play-master loop    | Pending     | 0 / —                      |
+| U021 Living consequence system        | Decorative state that guests cannot recognize       | Primary + Terra Max        | Traces alter at least three later park surfaces       | Pending     | 0 / —                      |
+| U022 Constellary performance          | Finale remaining a motif checklist                  | Primary / Sol Max          | Finale becomes an authored deterministic performance  | Pending     | 0 / —                      |
+| U023 Extended discovery route         | Automated branches standing in for meaningful depth | Primary + Terra Max        | Layered secrets/replay support an observed deep route | Pending     | 0 / —                      |
+| U024 P6 closure and redeploy          | Regressing the stable public release                | Primary + audit agents     | E7–E12, full gate, browser QA, live E6, rollback pass | Pending     | 0 / —                      |
 
 ## Session handoff
 
-Last verified state: source checkpoint `b48aa415a51e5999aa572ab7b9273052c5ae411d` is public at `https://morrowlight-theme-park.rohto-1111176221.workers.dev`. Version `8eea7f8c-3ce6-445a-a89b-bf006bbc3fe8` receives 100% of traffic. The fresh build/dry-run passed at 11 files / 419.46 KiB with no bindings. After the first-deploy placeholder propagated, the production URL passed 12/12 desktop/mobile Playwright routes in 3.5 seconds. An independent fresh-context audit also completed the desktop and reduced-motion/muted/low-power mobile routes with zero console, page, request, or HTTP failures. The post-deploy repository gate passes formatting, lint, typecheck, 83 Vitest tests, build, 12/12 Playwright routes, a focused 20/20 keyboard stress repetition, and the asset budget. See `docs/evidence/live-deployment-2026-08-01.md`.
-Exact next action: no required release work remains. Before a future content/code release or rollback, obtain explicit approval for the persistent `workers_scripts:write` OAuth scope, prove `versions list` with the resulting token, then run the local gate, `npm run deploy:dry-run`, an annotated strict deploy, the live suite with `MORROWLIGHT_BASE_URL`, and a separately observed smoke route.
+Last verified state: P0–P5 source checkpoint `b48aa415a51e5999aa572ab7b9273052c5ae411d` remains public at `https://morrowlight-theme-park.rohto-1111176221.workers.dev`, with final evidence through repository checkpoint `c56aee523545464c60bb937944ae70cc4839e551`. The stable baseline passes 83 Vitest tests, 12/12 local and live Playwright routes, focused keyboard stress, asset budget, and an independent live audit. See `docs/evidence/live-deployment-2026-08-01.md`.
+Exact next action: complete the parallel P6 baseline audits, freeze E7–E12 in `docs/imp/continuation-plan.md`, then implement the first failing hero-attraction fixture before adding visual polish.
 External state: the Cloudflare release source is `b48aa41`; later repository commits may contain test/evidence-only changes. Cloudflare has exactly one project resource in scope: the static Worker `morrowlight-theme-park`, with no bindings or custom domain. Wrangler credentials are encrypted through Windows Credential Manager and limited to `user:read`, `account:read`, `workers:write`, and `offline_access`.
-Known risks: artistic audio quality was functionally activated but not listened to by a human; the 30–60 minute promise has branch coverage but not literal dwell-time observation; accessibility evidence is axe plus Chromium/keyboard audits, not assistive-technology or cross-engine certification; the current narrow OAuth token passes identity checks but Cloudflare version/rollback CLI access remains unverified until the separately controlled `workers_scripts:write` scope is explicitly approved.
+Known risks: current attractions are short button-sequence instruments and may still read as polished questionnaires; the living park and finale recognize traces mostly through labels/motifs rather than a sustained embodied transformation; artistic audio quality has not been judged by a human; the 30–60 minute promise has branch coverage but not literal dwell-time observation; accessibility remains Chromium/axe evidence rather than assistive-technology or cross-engine certification; the current narrow OAuth token passes identity checks but Cloudflare version/rollback CLI access remains unverified until the separately controlled `workers_scripts:write` scope is explicitly approved.

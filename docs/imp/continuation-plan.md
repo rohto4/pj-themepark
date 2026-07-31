@@ -17,6 +17,32 @@ The deployed P0–P5 release is the stable baseline. P6 does not reopen MORROWLI
 - Generative audio is technically gesture-gated and deterministic, but no human listening-quality judgment exists.
 - Return visits vary by seed and code, but carry-forward curiosity is not yet strong enough to anchor another substantial night.
 
+## P6-A audit synthesis
+
+Three independent read-only audits converged on the same priority. The stable release is fast,
+legible, accessible, and visually authored, but its deepest scripted route is still a sequence of
+small fixed choice sets. A browser baseline completed arrival, four realms, one alternate replay,
+all three Hushgarden notes, and active Constellary conducting in 35 clicks / 1.814 seconds of
+automation. That is not human dwell time, but it demonstrates how little interaction structure
+currently stands between entry and exhaustion of the authored states.
+
+Ranked intervention:
+
+1. **Bloomworks root instrument.** Preserve the safe three-placement exit, then offer three
+   optional moon-root placements in a spatial, repeatable root graph. Every placement must add a
+   real node/relationship and change the next visible question.
+2. **Bloom Afterlight.** Project the compressed semantic result into actual map geometry, one
+   later realm or Hushgarden object, and Constellary geometry. Text remains supporting copy rather
+   than the primary proof of change.
+3. **Five-beat Constellary.** Replace the motif checklist as the primary experience with beginning,
+   development, recognition, climax, and release derived from the same world projection.
+
+Bloomworks was selected over Driftglass because its existing gear/root/relationship vocabulary
+already has the clearest action-to-world causality, supports semantic buttons without requiring
+timing or drag, and can leave a distinctive park-wide visual form. Driftglass is the next hero
+candidate after Bloom Afterlight; Windthread remains later because its deepest versions carry
+greater motion and low-power risk.
+
 ## P6 capability evals
 
 ### E7 — Learn, play, master
@@ -43,6 +69,57 @@ Motion, optional sound, visible notation, and environmental response must share 
 
 A new night must offer seeded variation and at least one authored continuity hook while keeping the experience account-free and local. A returning guest should encounter a meaningful difference within the first attraction, not only in the final code or title.
 
+## Frozen P6-B fixtures
+
+### F7.1 — Core route remains generous
+
+From a fixed seed, the first Bloomworks gear creates one visible root node immediately. Three legal
+placements create at least three nodes and two relationships, expose a readable core result, and
+enable `Wake Bloomworks`. The guest is never forced into the optional layer and is not returned to
+the map before explicitly accepting the result.
+
+### F7.2 — Optional moon-root mastery
+
+`Tend the moon roots` exposes three spatial sockets. For each remaining placement the guest chooses
+an empty socket and a repeatable gear. A placement adds a node and at least one relationship; the
+same gear in two different sockets must not produce the same geometry or readback. At six nodes the
+instrument exposes its topology, resident/secret if earned, and an explicit completion action.
+
+Two fixed legal strategies must diverge in all of the following:
+
+- graph topology identifier and visible SVG path/edge roles;
+- motion/readback class while retaining a static equivalent;
+- persisted Bloom trace (`pattern` and/or `pulse`);
+- map Afterlight and Constellary geometry.
+
+The authored mastery fixture repeats the three-root phrase into its paired moon sockets and reveals
+the optional `moon-root chorus`. It is a discovery, not a score or completion gate.
+
+### F7.3 — One reducer, every input route
+
+Pointer/touch activation and Enter/Space activation produce the same ordered placement intents and
+the same result. Reduced-motion and low-power modes retain identical nodes, relationships, topology,
+trace, and discovery; only transition behavior changes.
+
+### F8.1 — Visible consequence on three later surfaces
+
+For the same seed and two Bloom histories, the map landmark/root paths, a Driftglass or Hushgarden
+object/affordance, and Constellary recognition geometry differ. Assertions against explanatory echo
+copy or motif strings alone do not pass this fixture.
+
+### F9.1 — Replay adds a new goal
+
+Re-entering Bloomworks after a completed trace shows a visible afterimage of the earlier pattern.
+Completing a different topology creates an alternate-root discovery and preserves both the old and
+new ways on at least one later surface rather than visually replacing the first.
+
+### F10.1 — Five deterministic beats
+
+Watch-only and active conduct routes traverse the same beginning, development, recognition,
+climax, and release plan. Bloom pattern/pulse changes at least recognition geometry and climax
+growth; other realm traces change companions, pacing, language, or movement. Muted,
+reduced-motion, and low-power routes finish with the same result fingerprint.
+
 ## Work sequence
 
 1. Parallel baseline: experience critique, browser metrics, and technical mechanism audit.
@@ -64,9 +141,9 @@ A new night must offer seeded variation and at least one authored continuity hoo
 
 | Unit                    | Risk                                            | Done condition                                        | State       |
 | ----------------------- | ----------------------------------------------- | ----------------------------------------------------- | ----------- |
-| P6-A Gap baseline       | Solving the wrong shallowness                   | Three independent audits plus ranked synthesis        | In progress |
-| P6-B Eval fixtures      | Spectacle without measurable depth              | E7–E12 assertions and failure signatures checked in   | Pending     |
-| P6-C Hero attraction    | More buttons disguised as mastery               | Multi-stage strategy loop passes unit/component/E2E   | Pending     |
+| P6-A Gap baseline       | Solving the wrong shallowness                   | Three independent audits plus ranked synthesis        | Completed   |
+| P6-B Eval fixtures      | Spectacle without measurable depth              | E7–E12 assertions and failure signatures checked in   | Completed   |
+| P6-C Hero attraction    | More buttons disguised as mastery               | Multi-stage strategy loop passes unit/component/E2E   | In progress |
 | P6-D Living consequence | Text describing state instead of world response | Three downstream authored surfaces diverge            | Pending     |
 | P6-E Performance finale | Checklist finale                                | Deterministic five-beat Constellary passes all modes  | Pending     |
 | P6-F Return/deep route  | Content padding                                 | Seeded continuity and observed deep-route evidence    | Pending     |
